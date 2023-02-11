@@ -730,8 +730,11 @@ def switch_log_scale_single_cnv(cnv, x_axis, y_axis):
 
     if x_axis:
         cnv.main_pad.SetLogx(1)
+        cnv.second_pad.SetLogx(1)
+        # cnv.first_obj.SetLogx(1)
     else:
         cnv.main_pad.SetLogx(0)
+        cnv.second_pad.SetLogx(0)
 
     if y_axis:
         # if the cnv.first_obj has a member called 'GetMaximum', the

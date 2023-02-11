@@ -378,6 +378,7 @@ def div(wrps):
     lumi = nominator.lumi
     if isinstance(denominator, wrappers.HistoWrapper):
         histo.Divide(denominator.histo)
+        histo.SetRangeUser(-.3,.3)
         lumi = 1.
     else:
         histo.Scale(1. / denominator.float)

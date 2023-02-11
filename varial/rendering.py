@@ -251,7 +251,7 @@ def setup(wrps, kws):
         'first_obj'   : None,
         'x_bounds'    : None,
         'y_bounds'    : None,
-        'y_min_gr_0'  : 1e-10,
+        'y_min_gr_0'  : 1e-1,
         'history'     : _track_canvas_history(rnds, kws),
         '_renderers'  : rnds,
     })
@@ -271,7 +271,8 @@ def find_x_y_bounds(wrp, _):
     wrp.x_bounds = x_min, x_max
     y_min = min(r.y_min() for r in rnds)
     y_max = max(r.y_max() for r in rnds)
-    wrp.y_bounds = y_min, y_max
+    wrp.y_bounds = 1e-2, y_max
+    # wrp.y_min_gr_0 = 30 #
     wrp.y_min_gr_0 = min(r.y_min_gr_zero() for r in rnds)
     return wrp
 
@@ -868,7 +869,6 @@ def mk_pull_plot_func(**outer_kws):
         settings.set_bottom_plot_pull_style(div_hist)
         _bottom_plot_y_bounds(cnv_wrp, cnv_wrp.bottom_hist, par)
         par['draw_opt'] = 'hist'
-
     def ratio_plot_func(cnv_wrp, _):
         if not _bottom_plot_make_pad(cnv_wrp):
             return cnv_wrp
@@ -878,6 +878,7 @@ def mk_pull_plot_func(**outer_kws):
 
         # draw histo
         cnv_wrp.second_pad.cd()
+        cnv_wrp.bottom_hist.SetRangeUser(-0.3,0.3)
         cnv_wrp.bottom_hist.Draw(par['draw_opt'])
         cnv_wrp.main_pad.cd()
         return cnv_wrp

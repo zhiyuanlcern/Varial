@@ -52,19 +52,23 @@ max_open_root_files = 998
 
 
 def can_go_parallel():
-    return use_parallel_chains and max_num_processes > 1
+    return True
+    # return use_parallel_chains and max_num_processes > 1
 
 
 ########################################################### style constants ###
-canvas_size_x = 550
-canvas_size_y = 400
+# canvas_size_x = 550
+# canvas_size_y = 400
+canvas_size_x = 660
+canvas_size_y = 600
 
-box_text_size = 0.04
+
+box_text_size = 0.02
 defaults_Legend = {
-    'x_pos': 0.81,  # left edge
-    'y_pos': 0.5,   # upper edge
-    'label_width': 0.2,
-    'label_height': 0.05,
+    'x_pos': 0.8,  # left edge
+    'y_pos': 0.67,   # upper edge
+    'label_width': 0.15,
+    'label_height': 0.03,
     'opt': 'f',
     'opt_data': 'p',
     'reverse': True
@@ -78,7 +82,7 @@ defaults_BottomPlot = {
     'draw_opt_multi_line': 'E0X1',
     'y_min': -.8,
     'y_max': .8,
-    'force_y_range': False,
+    'force_y_range': True,
     'poisson_errs': False,
 }
 
@@ -108,7 +112,7 @@ def apply_axis_style(obj, y_bounds):
     obj.GetXaxis().SetNoExponent()
     obj.GetXaxis().SetLabelSize(0.052)
     obj.SetMinimum(y_min)
-    obj.SetMaximum(y_max * 1.1 + 1e-23)
+    obj.SetMaximum(y_max * 1.15 + 1e-23)
     # (the tiny addition makes sure that y_max > y_min)
 
 
@@ -132,7 +136,7 @@ def apply_split_pad_styles(cnv_wrp):
     #main.SetRightMargin(0.04)
     #main.SetLeftMargin(0.16)
 
-    scnd.SetTopMargin(0.)
+    scnd.SetTopMargin(0.07)
     scnd.SetBottomMargin(0.375)
     #scnd.SetRightMargin(0.04)
     #scnd.SetLeftMargin(0.16)
@@ -145,7 +149,9 @@ def apply_split_pad_styles(cnv_wrp):
     first_obj.GetYaxis().SetTitleSize(0.055)
     first_obj.GetYaxis().SetTitleOffset(1.3)
     first_obj.GetYaxis().SetLabelSize(0.055)
-    first_obj.GetXaxis().SetNdivisions(505)
+    first_obj.GetXaxis().SetNdivisions(510)
+    first_obj.GetYaxis().SetNdivisions(505)
+
 
 
 def stat_error_style(histo):
@@ -168,13 +174,13 @@ def set_bottom_plot_general_style(obj):
     obj.GetYaxis().SetTitleSize(0.15) #0.11
     obj.GetYaxis().SetTitleOffset(0.44) #0.55
     obj.GetYaxis().SetLabelSize(0.16)
-    obj.GetYaxis().SetNdivisions(205)
+    obj.GetYaxis().SetNdivisions(505)
     obj.GetXaxis().SetNoExponent()
     obj.GetXaxis().SetTitleSize(0.16)
     obj.GetXaxis().SetLabelSize(0.17)
     obj.GetXaxis().SetTitleOffset(1)
     obj.GetXaxis().SetLabelOffset(0.006)
-    obj.GetXaxis().SetNdivisions(505)
+    obj.GetXaxis().SetNdivisions(510)
     obj.GetXaxis().SetTickLength(obj.GetXaxis().GetTickLength() * 3.)
     obj.SetTitle('')
 
@@ -210,7 +216,7 @@ class StyleClass(TStyle):
         self.SetCanvasColor(0)
         self.SetStatColor(0)
         self.SetFillColor(0)
-        self.SetNdivisions(505, 'XY')
+        self.SetNdivisions(510, 'XY')
 
         self.SetTextFont(42) #132
         self.SetTextSize(0.09)
@@ -233,7 +239,7 @@ class StyleClass(TStyle):
         #self.SetPadRightMargin(0.02)
 
         self.SetPaperSize(20, 26)
-        self.SetPadRightMargin(0.3)
+        self.SetPadRightMargin(0.1)
         self.SetPadLeftMargin(0.16)
         #self.SetCanvasDefH(800)
         #self.SetCanvasDefW(800)

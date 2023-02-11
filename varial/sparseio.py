@@ -98,10 +98,14 @@ def bulk_write(wrps, name_func, dir_path='', suffices=None, linlog=False):
                 w.main_pad.SetLogy(0)
                 w.obj.SaveAs(img_path+'_lin'+suffix)
 
-                generators.switch_log_scale_single_cnv(w, False, True)
+                # generators.switch_log_scale_single_cnv(w, False, True)
+                # w.obj.SaveAs(img_path+'_log'+suffix)
+                # # generators.switch_log_scale_single_cnv(w, False, False) # reset to lin
+                # generators.switch_log_scale_single_cnv(w, True, False)
+                # w.obj.SaveAs(img_path+'_logx'+suffix)
+                generators.switch_log_scale_single_cnv(w, True, True)
                 w.obj.SaveAs(img_path+'_log'+suffix)
                 generators.switch_log_scale_single_cnv(w, False, False) # reset to lin
-
                 if alt_name != name:
                     os.rename(img_path+'_lin'+suffix, good_path+'_lin'+suffix)
                     os.rename(img_path+'_log'+suffix, good_path+'_log'+suffix)
