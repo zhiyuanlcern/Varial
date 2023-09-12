@@ -271,8 +271,10 @@ def find_x_y_bounds(wrp, _):
     wrp.x_bounds = x_min, x_max
     y_min = min(r.y_min() for r in rnds)
     y_max = max(r.y_max() for r in rnds)
-    wrp.y_bounds = 1e-2, y_max
+    # wrp.y_bounds = 1e-2, y_max
     # wrp.y_min_gr_0 = 30 #
+    # wrp.y_bounds = y_min, y_max*1.5
+    wrp.y_bounds = 10, y_max*1.5
     wrp.y_min_gr_0 = min(r.y_min_gr_zero() for r in rnds)
     return wrp
 

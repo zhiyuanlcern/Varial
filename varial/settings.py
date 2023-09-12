@@ -23,7 +23,7 @@ sys_var_token_up   = '__plus'
 sys_var_token_down = '__minus'
 # TODO default_colors_light (for backgrounds)
 # TODO default_colors_strong (for signals)
-default_colors = [632, 814, 596, 870, 800, 840, 902, 797, 891, 401, 434, 838,
+default_colors = [632, 814, 596, 870, 800, 840, 902, 797, 891, 434, 838,
                   872, 420, 403, 893, 881, 804, 599, 615, 831, 403, 593, 810]
 wrp_sorting_keys = ['in_file_path', 'is_signal', 'is_data', 'sample']
 
@@ -63,12 +63,12 @@ canvas_size_x = 660
 canvas_size_y = 600
 
 
-box_text_size = 0.02
+box_text_size = 0.017
 defaults_Legend = {
-    'x_pos': 0.8,  # left edge
-    'y_pos': 0.67,   # upper edge
-    'label_width': 0.15,
-    'label_height': 0.03,
+    'x_pos': 0.7,  # left edge
+    'y_pos': 0.8,   # upper edge
+    'label_width': 0.11,
+    'label_height': 0.02,
     'opt': 'f',
     'opt_data': 'p',
     'reverse': True
@@ -113,6 +113,7 @@ def apply_axis_style(obj, y_bounds):
     obj.GetXaxis().SetLabelSize(0.052)
     obj.SetMinimum(y_min)
     obj.SetMaximum(y_max * 1.15 + 1e-23)
+    print(y_min, y_max, '==============')
     # (the tiny addition makes sure that y_max > y_min)
 
 

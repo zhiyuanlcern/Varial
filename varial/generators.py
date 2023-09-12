@@ -727,13 +727,15 @@ def apply_markercolor(wrps, colors=None):
 def switch_log_scale_single_cnv(cnv, x_axis, y_axis):
     """see doc of switch_log_scale"""
     assert isinstance(cnv, rnd.wrappers.CanvasWrapper)
-
+    
     if x_axis:
         cnv.main_pad.SetLogx(1)
         cnv.second_pad.SetLogx(1)
         # cnv.first_obj.SetLogx(1)
     else:
         cnv.main_pad.SetLogx(0)
+        # if cnv.second_pad is None:
+        #     return cnv
         cnv.second_pad.SetLogx(0)
 
     if y_axis:
@@ -745,9 +747,12 @@ def switch_log_scale_single_cnv(cnv, x_axis, y_axis):
             y_min, _ = cnv.y_bounds
             y_min = max(cnv.y_min_gr_0 * 0.5, y_min)
             cnv.first_obj.SetMinimum(y_min)
+            cnv.first_obj.SetMaximum(_*10)
             cnv.main_pad.SetLogy(1)
     else:
+        y_min, _ = cnv.y_bounds
         cnv.first_obj.SetMinimum(cnv.y_bounds[0])
+        cnv.first_obj.SetMaximum(_)
         cnv.main_pad.SetLogy(0)
     return cnv
 
