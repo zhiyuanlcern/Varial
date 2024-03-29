@@ -4,7 +4,7 @@ import sys
 import ROOT as R
 import array
 import yaml
-import Htautau
+from Htautau import *
 # import wrappers
 
 ''' usage:
@@ -68,7 +68,7 @@ print(high_mass, sys.argv[4],"===================================")
 
 # samples_name = "sample_database/datasets_Run2.yaml" 
 # samples_name = "sample_database/datasets.yaml" 
-samples_name = 'sample_database/datasets.yaml'
+samples_name = 'sample_database/datasets_plotting.yaml'
 samples_f = open(samples_name, "r") 
 samples_list =  yaml.load(samples_f, Loader = yaml.Loader) 
 
@@ -276,9 +276,9 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                 
             elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ):
                 if "2HDM" not in nick:
-                    samples[nick] = ['0.1', 1 ,   "Single H", [nick] ,  0 ]
-                else:
-                    samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
+                    samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
+                # else:
+                #     samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
             elif sample_type == 'ttbar':
                 samples[nick] = ['1', 1 ,   sample_type     , [nick] ,  0 ]
                 
@@ -323,6 +323,7 @@ the_samples_dict = get_samples(
     
     sf_zjb = 1.0,
 )
+print('=======================================', the_samples_dict)
 if PNN:
     regions = {
     "ALL"                  : 'mt_1 < 70',
