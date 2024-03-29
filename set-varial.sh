@@ -16,6 +16,6 @@ if [ $varial_nonexisting != 0 ]; then
     export PATH=$PATH:$PWD/Varial/bin
 fi
 
-cd CMSSW/CMSSW_10_6_27/src/;
+cd CMSSW_10_6_27/src/;
 export VO_CMS_SW_DIR=/cvmfs/cms.cern.ch; source $VO_CMS_SW_DIR/cmsset_default.sh; cmsenv
 cd -
