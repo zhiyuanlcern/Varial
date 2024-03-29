@@ -277,7 +277,7 @@
 
 # rm -r  SR_2022EE_et_run4_nominal_double_corrected_test ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_et_run4_nominal_double_corrected_test 2022EE_et_run4_nominal_double_corrected  0 0 et 2022EE 1 SR & 
 
-# rm -r  SR_2022postEE_et_run4_nominal_double_corrected_test1 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_et_run4_nominal_double_corrected_test1 2022postEE_et_run4_nominal_double_corrected  0 0 et 2022postEE 1 SR & 
+rm -r  SR_2022postEE_et_run4_nominal_double_corrected_test1 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_et_run4_nominal_double_corrected_test1 2022postEE_et_run4_nominal_double_corrected  0 0 et 2022postEE 1 SR & 
 
 # rm -r  DR_QCD_2022postEE_tt_run4_corrected ; python run_plotting_with_varial.py plot_config_ggF.py   DR_QCD_2022postEE_tt_run4_corrected 2022postEE_tt_run4_nominal_corrected  0 0 tt 2022postEE 1 DR_QCD & 
 
@@ -286,4 +286,4 @@
 #  python run_plotting_with_varial.py plot_config_ggF.py   DR_QCD_2022EE_tt_run4_nominal_corrected 2022EE_tt_run4_nominal_corrected  0 0 tt 2022EE 1 DR_QCD& 
 #  rm -r  SR_2022postEE_mt_run4_PNN100_nofiltered ; python run_plotting_with_varial.py plot_config_ggF_PNN.py    SR_2022postEE_mt_run4_PNN100_nofiltered  2022postEE_mt_run4_for_plotting/100_nofilter  0 0 mt 2022postEE 1 SR & 
 
-  rm -r  SR_2022postEE_tt_run4_filtered;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022postEE_tt_run4_filtered 2022postEE_tt_run4_nominal_corrected_filtered 0 0 tt 2022postEE 1 SR &
+  # rm -r  SR_2022postEE_tt_run4_filtered;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022postEE_tt_run4_filtered 2022postEE_tt_run4_nominal_corrected_filtered 0 0 tt 2022postEE 1 SR &

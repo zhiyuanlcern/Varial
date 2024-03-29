@@ -160,8 +160,8 @@ else:
 if PNN:
     weight = 'Train_weight'
 else:
-    # weight = weight_dict[era]
-    weight = 'Train_weight'
+    weight = weight_dict[era]
+    # weight = 'Train_weight'
 
 plot_vars = {
 #    'genWeight'           :           ('genWeight',             ';genWeight;',           100,     0,      10000),
