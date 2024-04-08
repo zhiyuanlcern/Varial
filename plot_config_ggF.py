@@ -4,7 +4,7 @@ import sys
 import ROOT as R
 import array
 import yaml
-import Htautau
+from  Htautau import *
 # import wrappers
 
 ''' usage:
@@ -68,7 +68,7 @@ print(high_mass, sys.argv[4],"===================================")
 
 # samples_name = "sample_database/datasets_Run2.yaml" 
 # samples_name = "sample_database/datasets.yaml" 
-samples_name = 'sample_database/datasets.yaml'
+samples_name = 'sample_database_git/datasets_plotting.yaml'
 samples_f = open(samples_name, "r") 
 samples_list =  yaml.load(samples_f, Loader = yaml.Loader) 
 
@@ -262,7 +262,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
     ## for the first run, set rerun = True
     
     for nick in samples_list:
-        print(nick)
+        # print(nick)
         try:
             xsec = samples_list[nick]['xsec']
         except:
@@ -272,13 +272,21 @@ def get_samples(channel, signal_overlay=True, **kwargs):
 
 
             if sample_type == 'fakes':
-                samples["FF_Combined"] = ['1', 1,   sample_type     , ["FF_Combined"] ,  0 ]
-                
+                if region == "SR":
+                    samples["FF_Combined"] = ['1', 1,   sample_type     , ["FF_Combined"] ,  0 ]
+                elif region == "DR_QCD":
+                    samples["FF_QCD"] = ['1', 1,   sample_type     , ["FF_QCD"] ,  0 ]
+                elif region == "DR_W":
+                    samples["FF_W"] = ['1', 1,   sample_type     , ["FF_W"] ,  0 ]
+                elif region == "DR_ttbar":
+                    samples["FF_ttbar"] = ['1', 1,   sample_type     , ["FF_ttbar"] ,  0 ]
+            
             elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ):
                 if "2HDM" not in nick:
-                    samples[nick] = ['0.1', 1 ,   "Single H", [nick] ,  0 ]
+                    samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
                 else:
-                    samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
+                    continue
+                    # samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
             elif sample_type == 'ttbar':
                 samples[nick] = ['1', 1 ,   sample_type     , [nick] ,  0 ]
                 
@@ -312,10 +320,13 @@ def get_samples(channel, signal_overlay=True, **kwargs):
 Htautau = Htautau_selections()
 if channel_name == "mt":
     lepton_selection = combinecut( Htautau.mt_triggers_selections[era],Htautau.muon_selections,Htautau.lepton_veto,Htautau.mt_tau_selections[era])
+    anti_selection = combinecut( Htautau.mt_triggers_selections[era],Htautau.muon_selections,Htautau.lepton_veto,"(id_tau_vsMu_Loose_2 > 0 && id_tau_vsJet_Medium_2 < 1 &&  id_tau_vsEle_VVLoose_2 > 0 && pt_2 > 30 ) ")
 elif channel_name == "et":
     lepton_selection = combinecut( Htautau.et_triggers_selections[era],Htautau.electron_selections,Htautau.lepton_veto,Htautau.et_tau_selections[era])
+    anti_selection = combinecut( Htautau.et_triggers_selections[era],Htautau.electron_selections,Htautau.lepton_veto, "(id_tau_vsMu_VLoose_2 > 0  &&  id_tau_vsEle_Tight_2 > 0 && id_tau_vsJet_Medium_2  <1  && pt_2 > 30 )")
 elif channel_name == "tt":
     lepton_selection = combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_leadingtau_selections, Htautau.tt_secondtau_selections)
+    anti_selection =  combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_secondtau_selections, "(id_tau_vsJet_Medium_1 <1 && dz_1 < 0.2 && pt_1 > 40 && eta_1 < 2.1 && eta_1 > -2.1 && id_tau_vsEle_VVLoose_1 > 0   &&id_tau_vsMu_VLoose_1 > 0  )")
 the_samples_dict = get_samples(
     channel='Htt',
     
@@ -323,6 +334,7 @@ the_samples_dict = get_samples(
     
     sf_zjb = 1.0,
 )
+# print("===================== the_sample_dict, ========================", the_samples_dict)
 if PNN:
     regions = {
     "ALL"                  : 'mt_1 < 70',
@@ -335,20 +347,27 @@ else:
     regions = {
     # 'nob': '1> 0 '
     "nob" : combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
-
+    "btag" : combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
     # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT,lepton_selection, Htautau.W_true_only, Htautau.opposite_sign,"mt_1 < 40"),
-
-    
+    "nob_AntiID" : combinecut( Htautau.nob,   anti_selection, Htautau.W_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+    "btag_AntiID" : combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
     }
+    if channel_name == 'et' and era =="2022postEE":
+        for i in regions:
+            regions[i] = combinecut(regions[i], '( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  )')
+
 print( "printing cuts applied:   ",regions['nob'] , "for channels: ", channel_name )
 if region == "SR":
     pass
 elif region == "DR_QCD":
-    regions["DR_QCD"] = combinecut(DR_QCD, lepton_selection)
+    regions["DR_QCD"] = combinecut(Htautau.DR_QCD_tt, lepton_selection)
+    regions["AntiDR_QCD"] = combinecut(Htautau.DR_QCD_tt, anti_selection)
 elif region == "DR_W":
-    regions["DR_W"] = combinecut(DR_W, lepton_selection, W_true_only)
+    regions["DR_W"] = combinecut(Htautau.DR_W, lepton_selection, Htautau.W_true_only)
+    regions["AntiDR_W"] = combinecut(Htautau.DR_W, anti_selection, Htautau.W_true_only)
 elif region == "DR_ttbar":
-    regions["DR_ttbar"] = combinecut(DR_ttbar, lepton_selection,ttbar_true_only)
+    regions["DR_ttbar"] = combinecut(Htautau.DR_ttbar, lepton_selection,Htautau.ttbar_true_only)
+    regions["AntiDR_ttbar"] = combinecut(Htautau.DR_ttbar, anti_selection,Htautau.ttbar_true_only)
 else:
     print("wrong region provided!! region supported: SR, DR_QCD,DR_ttbar, DR_W ")
     sys.exit(0)
