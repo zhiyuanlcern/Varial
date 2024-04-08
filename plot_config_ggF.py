@@ -1,10 +1,14 @@
-from samples_HHbbmm import *
+# from samples_HHbbmm import *
 import varial
 import sys
 import ROOT as R
 import array
 import yaml
+<<<<<<< HEAD
 from  Htautau import *
+=======
+from Htautau import *
+>>>>>>> e99e9348bbfd923f40c8d51b8e184e53b6e10833
 # import wrappers
 
 ''' usage:
@@ -68,7 +72,11 @@ print(high_mass, sys.argv[4],"===================================")
 
 # samples_name = "sample_database/datasets_Run2.yaml" 
 # samples_name = "sample_database/datasets.yaml" 
+<<<<<<< HEAD
 samples_name = 'sample_database_git/datasets_plotting.yaml'
+=======
+samples_name = 'sample_database/datasets_plotting.yaml'
+>>>>>>> e99e9348bbfd923f40c8d51b8e184e53b6e10833
 samples_f = open(samples_name, "r") 
 samples_list =  yaml.load(samples_f, Loader = yaml.Loader) 
 
@@ -175,9 +183,9 @@ PNN_100 = [            0,            0.001232,            0.004982,            0
 
 # met =  make_logbinning(5, 1500, 36)
 met = [0,10,20,30,40,50,60,70,80,90,120,140,200,400]
-pt =  make_logbinning(20, 1500, 36)
+# pt =  make_logbinning(20, 1500, 36)
 pt = [30,40,50,60,70,80,90,100,120,140,200,350,500, 700, 1000]
-mt = make_logbinning(20, 2500, 36)
+# mt = make_logbinning(20, 2500, 36)
 # from Muon
 # plot_vars.update({
 #     'pnn_100' : ('pnn_100',     ';PNN 100 [GeV];NEvents', 50,0,1),     
@@ -284,9 +292,14 @@ def get_samples(channel, signal_overlay=True, **kwargs):
             elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ):
                 if "2HDM" not in nick:
                     samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
+<<<<<<< HEAD
                 else:
                     continue
                     # samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
+=======
+                # else:
+                #     samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
+>>>>>>> e99e9348bbfd923f40c8d51b8e184e53b6e10833
             elif sample_type == 'ttbar':
                 samples[nick] = ['1', 1 ,   sample_type     , [nick] ,  0 ]
                 
@@ -334,7 +347,11 @@ the_samples_dict = get_samples(
     
     sf_zjb = 1.0,
 )
+<<<<<<< HEAD
 # print("===================== the_sample_dict, ========================", the_samples_dict)
+=======
+print('=======================================', the_samples_dict)
+>>>>>>> e99e9348bbfd923f40c8d51b8e184e53b6e10833
 if PNN:
     regions = {
     "ALL"                  : 'mt_1 < 70',

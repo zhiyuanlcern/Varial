@@ -1,0 +1,3 @@
+[submodule "sample_database"]
+	path = sample_database
+	url = git@github.com:zhiyuanlcern/KingMaker_sample_database.git
