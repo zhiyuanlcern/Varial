@@ -113,7 +113,7 @@ def apply_axis_style(obj, y_bounds):
     obj.GetXaxis().SetLabelSize(0.052)
     obj.SetMinimum(y_min)
     obj.SetMaximum(y_max * 1.15 + 1e-23)
-    print(y_min, y_max, '==============')
+    # print(y_min, y_max, '==============')
     # (the tiny addition makes sure that y_max > y_min)
 
 

@@ -19,7 +19,7 @@ class Htautau_selections:
     et_tau_selections = {
         "2018": " (id_tau_vsMu_VLoose_2 > 0 && id_tau_vsJet_Medium_2 > 0 &&  id_tau_vsEle_Tight_2 > 0 && pt_2 > 30 ) ",
         "2022EE": " (id_tau_vsMu_VLoose_2 > 0 && id_tau_vsJet_Medium_2 > 0 &&  id_tau_vsEle_Tight_2 > 0 && pt_2 > 30 ) ",
-        "2022postEE":" (id_tau_vsMu_VLoose_2 > 0  &&  id_tau_vsEle_Tight_2 > 0 && id_tau_vsJet_Medium_2 > 0 && pt_2 > 30 ) ", #
+        "2022postEE":" (id_tau_vsMu_VLoose_2 > 0  &&  id_tau_vsEle_Tight_2 > 0 && id_tau_vsJet_Medium_2 > 0 && pt_2 > 30  && ( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  ) ) ", #
     } 
     DR_deeptau_selections = {}
     DR_deeptau_selections["mt"] = " (id_tau_vsMu_Tight_2 > 0 &&   id_tau_vsEle_VVLoose_2 > 0  ) "
@@ -58,7 +58,8 @@ class Htautau_selections:
     et_triggers_selections["2022postEE"]= "( (trg_single_ele30 ==1|| trg_single_ele32==1)||(trg_single_ele35==1)||trg_single_tau180_2==1)" #trg_cross_ele24tau30_hps==1||
     # et_triggers_selections["2022postEE"]= "( trg_cross_ele24tau30_hps==1)" #trg_cross_ele24tau30_hps==1||
     
-    tt_triggers_selections["2022EE"] = " (trg_double_tau35_mediumiso_hps == 1 || trg_double_tau40_mediumiso_tightid == 1 || trg_double_tau40_tightiso == 1 || trg_single_tau180_1 == 1 || trg_single_tau180_2 == 1)" 
+    # tt_triggers_selections["2022EE"] = " (trg_double_tau30_plusPFjet60  ==1 || trg_double_tau30_plusPFjet75  ==1 || trg_double_tau35_mediumiso_hps  ==1 || trg_double_tau40_mediumiso_tightid==1 || trg_double_tau40_tightiso  ==1 || trg_single_deeptau180_1  ==1 || trg_single_deeptau180_2  ==1 || trg_single_tau180_1  ==1 || trg_single_tau180_2  ==1 )"
+    tt_triggers_selections["2022EE"] = " (trg_double_tau30_plusPFjet60  ==1 || trg_double_tau30_plusPFjet75  ==1 || trg_double_tau35_mediumiso_hps  ==1 ||  trg_single_deeptau180_1  ==1 || trg_single_deeptau180_2  ==1  )"
     tt_triggers_selections["2022postEE"] = tt_triggers_selections["2022EE"] 
 
     em_electron_selection = "pt_1 > 15 && eta_1 < 2.4 && dz_1 < 0.2 && dxy_1 < 0.045 && iso_1 < 0.15 && deltaR_ditaupair > 0.3"
