@@ -79,7 +79,7 @@ stacking_order = [
 'Z->ll', 
 'ttbar',
 'wjets', 
-'Single H'
+'Single H',   ###
 'other',
 
 ]
@@ -119,8 +119,8 @@ name = sys.argv[2]
 weight_dict_mt = {
     # * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Loose_2 *iso_wgt_mu_1 *  trg_wgt_single_mu24ormu27 
     # * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Loose_2 *iso_wgt_mu_1 * trg_wgt_single_mu24ormu27 
-    "2022postEE": 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *trg_wgt_ditau_crosstau_2  '.format(lumi),
-    # "2022postEE": 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *(trg_wgt_ditau_crosstau_2 * trg_cross_mu20tau27_hps  + 1 * (trg_cross_mu20tau27_hps < 1) ) '.format(lumi),
+    #"2022postEE": 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *trg_wgt_ditau_crosstau_2  '.format(lumi),
+    "2022postEE": 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *(trg_wgt_ditau_crosstau_2 * trg_cross_mu20tau27_hps  + 1 * (trg_cross_mu20tau27_hps < 1) ) '.format(lumi),
     "2022EE": 'Xsec   * {0} * puweight * genWeight/genEventSumW * btag_weight * FF_weight   * id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1 *(trg_wgt_ditau_crosstau_2 * trg_cross_mu20tau27_hps  + 1 * (trg_cross_mu20tau27_hps < 1) )'.format(lumi),
     "2018": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
     "2017": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
@@ -148,12 +148,26 @@ weight_dict_tt = {
     "2022EE": 'Xsec  *  {0}* puweight * genWeight/genEventSumW *    btag_weight  *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * ( trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2 + 1 * (trg_double_tau35_mediumiso_hps <1))'.format(lumi),
 }
 
+
+weight_dict_em = {
+    ## id_wgt_tau_vsEle_VVLoose_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsMu_VLoose_1 * id_wgt_tau_vsMu_VLoose_2 * id_wgt_tau_vsJet_Medium_1 * id_wgt_tau_vsJet_Medium_2
+    ## id_wgt_tau_vsEle_VVLoose_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsMu_VLoose_1 * id_wgt_tau_vsMu_VLoose_2 * id_wgt_tau_vsJet_Medium_1 * id_wgt_tau_vsJet_Medium_2
+    "2022postEE": '(Xsec * genWeight *  {0} / genEventSumW)* (trg_wgt_single_ele30 * trg_single_ele30 > 0 + 1 * trg_single_ele30 < 1 ) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight * puweight * (trg_wgt_single_mu24 * trg_single_mu24 > 0 + 1 * trg_single_mu24 < 1 )'   .format(lumi) ,
+    "2022EE": '(Xsec * genWeight *  {0} / genEventSumW)* (trg_wgt_single_ele30 * trg_single_ele30 > 0 + 1 * trg_single_ele30 < 1 ) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight * puweight * (trg_wgt_single_mu24 * trg_single_mu24 > 0 + 1 * trg_single_mu24 < 1 )'  .format(lumi), 
+}
+
+
+
+
+
 if channel_name == "et":
     weight_dict = weight_dict_et 
 elif channel_name == "mt":
     weight_dict = weight_dict_mt 
 elif channel_name == "tt":
-    weight_dict = weight_dict_tt 
+    weight_dict = weight_dict_tt
+elif channel_name == "em":
+    weight_dict = weight_dict_em  
 else:
     sys.exit()
 
@@ -200,7 +214,7 @@ plot_vars.update({
     # 'jpt_2' : ('jpt_2',';jpt_{2};NEvents',100,-100,400),
     'mTdileptonMET' : ('mTdileptonMET',';mTdileptonMET;NEvents',100,0,200),
     'mTdileptonMET_pf' : ('mTdileptonMET_pf',';mTdileptonMET_pf;NEvents',100,0,200),
-    'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents', 50, 50, 500),
+    'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents', 30, 0, 500),
     'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 30, 0, 300),
     'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,1),
     'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,1),    
@@ -262,7 +276,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
     ## for the first run, set rerun = True
     
     for nick in samples_list:
-        print(nick)
+        # print(nick)
         try:
             xsec = samples_list[nick]['xsec']
         except:
@@ -272,8 +286,15 @@ def get_samples(channel, signal_overlay=True, **kwargs):
 
 
             if sample_type == 'fakes':
-                samples["FF_Combined"] = ['1', 1,   sample_type     , ["FF_Combined"] ,  0 ]
-                
+                if region == "SR":
+                    samples["FF_Combined"] = ['1', 1,   sample_type     , ["FF_Combined"] ,  0 ]
+                elif region == "DR_QCD":
+                    samples["FF_QCD"] = ['1', 1,   sample_type     , ["FF_QCD"] ,  0 ]
+                elif region == "DR_W":
+                    samples["FF_W"] = ['1', 1,   sample_type     , ["FF_W"] ,  0 ]
+                elif region == "DR_ttbar":
+                    samples["FF_ttbar"] = ['1', 1,   sample_type     , ["FF_ttbar"] ,  0 ]
+            
             elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ):
                 if "2HDM" not in nick:
                     samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
@@ -312,10 +333,13 @@ def get_samples(channel, signal_overlay=True, **kwargs):
 Htautau = Htautau_selections()
 if channel_name == "mt":
     lepton_selection = combinecut( Htautau.mt_triggers_selections[era],Htautau.muon_selections,Htautau.lepton_veto,Htautau.mt_tau_selections[era])
+    anti_selection = combinecut( Htautau.mt_triggers_selections[era],Htautau.muon_selections,Htautau.lepton_veto,"(id_tau_vsMu_Loose_2 > 0 && id_tau_vsJet_Medium_2 < 1 &&  id_tau_vsEle_VVLoose_2 > 0 && pt_2 > 30 ) ")
 elif channel_name == "et":
     lepton_selection = combinecut( Htautau.et_triggers_selections[era],Htautau.electron_selections,Htautau.lepton_veto,Htautau.et_tau_selections[era])
+    anti_selection = combinecut( Htautau.et_triggers_selections[era],Htautau.electron_selections,Htautau.lepton_veto, "(id_tau_vsMu_VLoose_2 > 0  &&  id_tau_vsEle_Tight_2 > 0 && id_tau_vsJet_Medium_2  <1  && pt_2 > 30 )")
 elif channel_name == "tt":
     lepton_selection = combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_leadingtau_selections, Htautau.tt_secondtau_selections)
+    anti_selection =  combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_secondtau_selections, "(id_tau_vsJet_Medium_1 <1 && dz_1 < 0.2 && pt_1 > 40 && eta_1 < 2.1 && eta_1 > -2.1 && id_tau_vsEle_VVLoose_1 > 0   &&id_tau_vsMu_VLoose_1 > 0  )")
 the_samples_dict = get_samples(
     channel='Htt',
     
@@ -335,21 +359,44 @@ if PNN:
 else:
     regions = {
     # 'nob': '1> 0 '
-    "nob" : combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+    
+    #####em#####
+    "low_nob"     : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.lowDzeta, ),
+    "medium_nob"  : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.mediumDzeta, ),
+    "high_nob"    : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.highDzeta, ),
+    "All"         : combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
 
-    # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT,lepton_selection, Htautau.W_true_only, Htautau.opposite_sign,"mt_1 < 40"),
+    "btag"    : combinecut(Htautau.btag, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
+    "nob"     : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
+    ####em##### 
 
+    # "nob" : combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only,Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+    # "btag" : combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+    # # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT,lepton_selection, Htautau.W_true_only, Htautau.opposite_sign,"mt_1 < 40"),
+    # "nob_AntiID" : combinecut( Htautau.nob,   anti_selection, Htautau.W_true_only, Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+    # "btag_AntiID" : combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
     
     }
+    if channel_name == 'et' and era =="2022postEE":
+        for i in regions:
+            regions[i] = combinecut(regions[i], '( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  )')
+
 print( "printing cuts applied:   ",regions['nob'] , "for channels: ", channel_name )
 if region == "SR":
     pass
 elif region == "DR_QCD":
-    regions["DR_QCD"] = combinecut(DR_QCD, lepton_selection)
+    regions["DR_QCD"] = combinecut(Htautau.DR_QCD_tt, lepton_selection)
+    regions["AntiDR_QCD"] = combinecut(Htautau.DR_QCD_tt, anti_selection)
+    regions["DR_QCD_btag"] = combinecut(Htautau.btag, Htautau.DR_QCD_tt, lepton_selection)
+    #regions["DR_QCD_btag"] = combinecut(Htautau.btag, Htautau.DR_QCD_tt ,anti_selection)
 elif region == "DR_W":
-    regions["DR_W"] = combinecut(DR_W, lepton_selection, W_true_only)
+    regions["DR_W"] = combinecut(Htautau.DR_W, lepton_selection, Htautau.W_true_only)
+    regions["AntiDR_W"] = combinecut(Htautau.DR_W, anti_selection, Htautau.W_true_only)
+    #regions["DR_W_btag"] = combinecut(Htautau.btag, Htautau.DR_W_tt ,anti_selection)
 elif region == "DR_ttbar":
-    regions["DR_ttbar"] = combinecut(DR_ttbar, lepton_selection,ttbar_true_only)
+    regions["DR_ttbar"] = combinecut(Htautau.DR_ttbar, lepton_selection,Htautau.ttbar_true_only)
+    regions["AntiDR_ttbar"] = combinecut(Htautau.DR_ttbar, anti_selection,Htautau.ttbar_true_only)
+    #regions["DR_ttbar_btag"] = combinecut(Htautau.btag, Htautau.DR_ttbar_tt ,anti_selection) 
 else:
     print("wrong region provided!! region supported: SR, DR_QCD,DR_ttbar, DR_W ")
     sys.exit(0)
@@ -368,6 +415,11 @@ the_category_dict = {
 # yields_f_tmp = open('sample_database/datayields.yaml', 'r')
 # yields = yaml.safe_load(yields_f_tmp)
 # bins = yields['bins']
+
+
+
+
+
 
 
 # Blinding the Signal Region

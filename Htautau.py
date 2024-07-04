@@ -4,6 +4,11 @@ import yaml
 from math import *
 import numpy as np
 
+
+
+
+
+
 def combinecut(*args):
     return '(' + '&&'.join(args) + ')'
 class Htautau_selections:
@@ -29,6 +34,16 @@ class Htautau_selections:
     
     # tt_triggers_selections = " (trg_double_tau40_mediumiso_tightid == 1 ||  trg_double_tau35_mediumiso_hps == 1 || trg_double_tau35_tightiso_tightid == 1 || trg_double_tau40_tightiso == 1  || trg_single_tau180_1 == 1 || trg_single_tau180_2 == 1)" 
     # tt_triggers_selections = " (  trg_double_tau35_mediumiso_hps == 1   || trg_single_tau180_1 == 1 || trg_single_tau180_2 == 1)" 
+
+    lowDzeta = '-35 <= pzetamissvis && pzetamissvis < -10'
+    mediumDzeta = '-10 <= pzetamissvis && pzetamissvis < 30'
+    highDzeta = '30 <= pzetamissvis'
+
+
+
+
+
+
     
     tt_secondtau_selections = " (id_tau_vsJet_Medium_2 > 0  && dz_2 < 0.2 &&   pt_2 > 40 && eta_2 < 2.1 && eta_2 > -2.1 && id_tau_vsEle_VVLoose_2 > 0   &&id_tau_vsMu_VLoose_2 > 0         && deltaR_ditaupair > 0.5 ) "
     tt_leadingtau_selections = "(id_tau_vsJet_Medium_1 > 0 && dz_1 < 0.2 && pt_1 > 40 && eta_1 < 2.1 && eta_1 > -2.1 && id_tau_vsEle_VVLoose_1 > 0   &&id_tau_vsMu_VLoose_1 > 0  )"
@@ -58,11 +73,28 @@ class Htautau_selections:
     et_triggers_selections["2022postEE"]= "( (trg_single_ele30 ==1|| trg_single_ele32==1)||(trg_single_ele35==1)||trg_single_tau180_2==1)" #trg_cross_ele24tau30_hps==1||
     # et_triggers_selections["2022postEE"]= "( trg_cross_ele24tau30_hps==1)" #trg_cross_ele24tau30_hps==1||
     
-    tt_triggers_selections["2022EE"] = " (trg_double_tau35_mediumiso_hps == 1 || trg_double_tau40_mediumiso_tightid == 1 || trg_double_tau40_tightiso == 1 || trg_single_tau180_1 == 1 || trg_single_tau180_2 == 1)" 
+    tt_triggers_selections["2022EE"] = " (trg_double_tau35_mediumiso_hps == 1 || trg_double_tau40_mediumiso_tightid == 1 || trg_double_tau40_tightiso == 1 || trg_single_tau180_1 == 1 || trg_single_tau180_2 == 1 || trg_double_tau30_plusPFjet60 == 1 || trg_double_tau30_plusPFjet75 == 1 )" 
     tt_triggers_selections["2022postEE"] = tt_triggers_selections["2022EE"] 
 
+    em_triggers_selections["2022EE"] = "(trg_cross_mu23ele12 == 1 || trg_cross_mu8ele23 == 1 || (trg_single_ele30 == 1) ||(trg_single_ele32 == 1)|| (trg_single_ele35 == 1) || (trg_single_mu24 == 1)|| (trg_single_mu27 == 1))"
+    em_triggers_selections["2022postEE"] = em_triggers_selections["2022EE"]
+
+
+
+####    
+
+###
+
+
+
+
+
     em_electron_selection = "pt_1 > 15 && eta_1 < 2.4 && dz_1 < 0.2 && dxy_1 < 0.045 && iso_1 < 0.15 && deltaR_ditaupair > 0.3"
+    #em_electron_selection = "(dz_1 < 0.2 && dxy_1 < 0.045 && iso_1 < 0.15 && deltaR_ditaupair > 0.3 && pt_1 > 15)"
+
+
     em_muon_selection = "pt_2 > 15 && eta_2 < 2.4 && dz_2 < 0.2 && dxy_2 < 0.045 && iso_2 < 0.2"
+    #em_muon_selection = "(dz_2 < 0.2 && dxy_2 < 0.045 && iso_2 < 0.2 && pt_2 > 15)"
     electron_selections = 'pt_1 > 30 '
     muon_selections = " pt_1> 25.0 "
     
