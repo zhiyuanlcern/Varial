@@ -4,7 +4,7 @@ import sys
 import ROOT as R
 import array
 import yaml
-from  Htautau import *
+from Htautau import *
 # import wrappers
 
 ''' usage:
@@ -25,7 +25,7 @@ input_path = sys.argv[3]
 
 use_all_signal = False
 
-high_mass = int(sys.argv[4])
+mass = int(sys.argv[4])
 PNN = int(sys.argv[5])
 channel_name = str(sys.argv[6])
 era = sys.argv[7]
@@ -63,7 +63,7 @@ else:
         print("Wrong year provided")
         sys.exit(-10)
 
-print(high_mass, sys.argv[4],"===================================")
+print(mass, sys.argv[4],"===================================")
 
 
 # samples_name = "sample_database/datasets_Run2.yaml" 
@@ -117,35 +117,24 @@ enable_reuse_step = True
 name = sys.argv[2]
 # 'DR-ttbar-Run2-fixbtag_nprebtagjets_newgensum'
 weight_dict_mt = {
-    # * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Loose_2 *iso_wgt_mu_1 *  trg_wgt_single_mu24ormu27 
-    # * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Loose_2 *iso_wgt_mu_1 * trg_wgt_single_mu24ormu27 
-    #"2022postEE": 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *trg_wgt_ditau_crosstau_2  '.format(lumi),
-    "2022postEE": 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *(trg_wgt_ditau_crosstau_2 * trg_cross_mu20tau27_hps  + 1 * (trg_cross_mu20tau27_hps < 1) ) '.format(lumi),
-    "2022EE": 'Xsec   * {0} * puweight * genWeight/genEventSumW * btag_weight * FF_weight   * id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1 *(trg_wgt_ditau_crosstau_2 * trg_cross_mu20tau27_hps  + 1 * (trg_cross_mu20tau27_hps < 1) )'.format(lumi),
+    "2022postEE": 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *trg_wgt_ditau_crosstau_2 *  id_wgt_tau_vsMu_Tight_2 * id_wgt_mu_1'.format(lumi), # 
+    "2022EE": 'Xsec   * {0} * puweight * genWeight/genEventSumW * btag_weight * FF_weight   * id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1 * trg_wgt_ditau_crosstau_2 *  id_wgt_tau_vsMu_Tight_2 * id_wgt_mu_1'.format(lumi), # 
     "2018": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
     "2017": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
     "2016": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
 }
 
 weight_dict_et = {
-    ## * puweight is temporarily remove
-#       id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *
-#   id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 * 
-    "2022postEE": 'Xsec * {0}* puweight * genWeight/genEventSumW *  (id_wgt_tau_vsEle_Tight_2 * id_tau_vsEle_Tight_2 + (1-id_tau_vsEle_Tight_2) ) *  btag_weight * FF_weight * (id_wgt_tau_vsJet_Medium_2 * id_tau_vsJet_Medium_2 + (1-id_tau_vsJet_Medium_2 ) ) * id_wgt_ele_wpTight  ' .format(lumi), #* (trg_wgt_ditau_crosstau_2 * trg_cross_ele24tau30_hps + 1 * (trg_cross_ele24tau30_hps <1) ) * (trg_wgt_single_ele30 * trg_single_ele30 + 1 *(trg_single_ele30 <1)
-    "2022EE": 'Xsec * {0}* puweight * genWeight/genEventSumW *  (id_wgt_tau_vsEle_Tight_2 * id_tau_vsEle_Tight_2 + (1-id_tau_vsEle_Tight_2) ) *  btag_weight * FF_weight * (id_wgt_tau_vsJet_Medium_2 * id_tau_vsJet_Medium_2 + (1-id_tau_vsJet_Medium_2 ) ) * id_wgt_ele_wpTight  ' .format(lumi), #* (trg_wgt_ditau_crosstau_2 * trg_cross_ele24tau30_hps + 1 * (trg_cross_ele24tau30_hps <1) ) * (trg_wgt_single_ele30 * trg_single_ele30 + 1 *(trg_single_ele30 <1)
-    # "2022postEE": 'Xsec * {0} * genWeight/genEventSumW  '.format(lumi),
-    # "2022EE": 'Xsec * {0} * genWeight/genEventSumW   '.format(lumi),
-
+    "2022postEE": 'Xsec * {0}* puweight * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2  *  btag_weight * FF_weight * id_wgt_tau_vsJet_Medium_2  * id_wgt_ele_wpTight * trg_wgt_ditau_crosstau_2  * trg_wgt_single_ele30  ' .format(lumi), 
+    "2022EE": 'Xsec * {0}* puweight * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 *  *  btag_weight * FF_weight * id_wgt_tau_vsJet_Medium_2  * id_wgt_ele_wpTight * trg_wgt_ditau_crosstau_2  * trg_wgt_single_ele30  ' .format(lumi), 
     "2018": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
     "2017": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
     "2016": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
 }
 
 weight_dict_tt = {
-    ## id_wgt_tau_vsEle_VVLoose_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsMu_VLoose_1 * id_wgt_tau_vsMu_VLoose_2 * id_wgt_tau_vsJet_Medium_1 * id_wgt_tau_vsJet_Medium_2
-    ## id_wgt_tau_vsEle_VVLoose_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsMu_VLoose_1 * id_wgt_tau_vsMu_VLoose_2 * id_wgt_tau_vsJet_Medium_1 * id_wgt_tau_vsJet_Medium_2
-    "2022postEE": 'Xsec *  {0}* puweight * genWeight/genEventSumW *    btag_weight   *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * ( trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2 + 1 * (trg_double_tau35_mediumiso_hps <1)) '.format(lumi),
-    "2022EE": 'Xsec  *  {0}* puweight * genWeight/genEventSumW *    btag_weight  *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * ( trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2 + 1 * (trg_double_tau35_mediumiso_hps <1))'.format(lumi),
+    "2022postEE": 'Xsec *  {0}* puweight * genWeight/genEventSumW *    btag_weight   *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2  '.format(lumi),
+    "2022EE": 'Xsec  *  {0}* puweight * genWeight/genEventSumW *    btag_weight  *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2 '.format(lumi),
 }
 
 
@@ -197,55 +186,82 @@ pt = [30,40,50,60,70,80,90,100,120,140,200,350,500, 700, 1000]
 #     'pnn_100' : ('pnn_100',     ';PNN 100 [GeV];NEvents', 50,0,1),     
 # })
 plot_vars.update({
-    'dxy_1' : ('dxy_1',';dxy_{1};NEvents',50,-0.1,0.1),
-    'dxy_2' : ('dxy_2',';dxy_{2};NEvents',50,-0.1,0.1),
-    'dz_1' : ('dz_1',';dz_{1};NEvents',50,-0.2,0.2),
-    'dz_2' : ('dz_2',';dz_{2};NEvents',50,-0.2,0.2),
-    'eta_1' : ('eta_1',';eta_{1};NEvents',30,-3,3),
-    'eta_2' : ('eta_2',';eta_{2};NEvents',30,-3,3),
-    'eta_fastmtt' : ('eta_fastmtt',';eta_{#tau#tau};NEvents',100,-10,10),
-    'iso_1' : ('iso_1',';iso_{1};NEvents',20,0,3),
-    'iso_2' : ('iso_2',';iso_{2};NEvents',20,0,3),
+    # 'dxy_1' : ('dxy_1',';dxy_{1};NEvents',50,-0.1,0.1),
+    # 'dxy_2' : ('dxy_2',';dxy_{2};NEvents',50,-0.1,0.1),
+    # 'dz_1' : ('dz_1',';dz_{1};NEvents',50,-0.2,0.2),
+    # 'dz_2' : ('dz_2',';dz_{2};NEvents',50,-0.2,0.2),
+    # 'iso_1' : ('iso_1',';iso_{1};NEvents',20,0,3),
+    # 'iso_2' : ('iso_2',';iso_{2};NEvents',20,0,3),
+    # 'mTdileptonMET_pf' : ('mTdileptonMET_pf',';mTdileptonMET_pf;NEvents',100,0,200),
+    # 'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,0.1),
+    # 'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,3),    
+    # 'njets' : ('njets',';njets;NEvents',10,0,10),
+    # 'phi_fastmtt' : ('phi_fastmtt',';phi_{#tau#tau};NEvents',50,-5,5),
+    
+    
+    'eta_1' : ('eta_1',';eta_{1};NEvents',30,-2.3,2.3),
+    'eta_2' : ('eta_2',';eta_{2};NEvents',30,-2.3,2.3),
+    'eta_fastmtt' : ('eta_fastmtt',';eta_{#tau#tau};NEvents',20,-10,10),
     # 'jeta_1' : ('jeta_1',';jeta_{1};NEvents',100,-20,20),
     # 'jeta_2' : ('jeta_2',';jeta_{2};NEvents',100,-20,20),
     # 'jphi_1' : ('jphi_1',';jphi_{1};NEvents',100,-20,20),
     # 'jphi_2' : ('jphi_2',';jphi_{2};NEvents',100,-20,20),
     # 'jpt_1' : ('jpt_1',';jpt_{1};NEvents',100,-100,400),
     # 'jpt_2' : ('jpt_2',';jpt_{2};NEvents',100,-100,400),
-    'mTdileptonMET' : ('mTdileptonMET',';mTdileptonMET;NEvents',100,0,200),
-    'mTdileptonMET_pf' : ('mTdileptonMET_pf',';mTdileptonMET_pf;NEvents',100,0,200),
+    'mTdileptonMET' : ('mTdileptonMET',';mTdileptonMET;NEvents',20,0,200),
     'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents', 30, 0, 500),
     'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 30, 0, 300),
-    'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,1),
-    'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,1),    
     'met' : ('met',';met;NEvents',40,0,400), 
-    'metSumEt' : ('metSumEt',';metSumEt;NEvents',200,0,1000),
+    'metSumEt' : ('metSumEt',';metSumEt;NEvents',20,0,200),
     'metphi' : ('metphi',';metphi;NEvents',80,-4,4),
     'mt_tot': ('mt_tot', ';m_{T}^{tot} [GeV];NEvents', 50, 0, 500),
     'mt_1' : ('mt_1',';mt_{1};NEvents',50,0,200),
     'mt_2' : ('mt_2',';mt_{2};NEvents',50,0,200),
-    'njets' : ('njets',';njets;NEvents',10,0,10),
     # 'nprejets' : ('nprejets',';nprejets;NEvents',10,0,10),
     # 'pfmet' : ('pfmet',';pfmet;NEvents',50,0,500),
     # 'pfmetphi' : ('pfmetphi',';pfmetphi;NEvents',50,-5,5),
-    'phi_1' : ('phi_1',';phi_{1};NEvents',50,-5,5),
-    'phi_2' : ('phi_2',';phi_{2};NEvents',50,-5,5),
-    'phi_fastmtt' : ('phi_fastmtt',';phi_{#tau#tau};NEvents',50,-5,5),
-    'pt_1' : ('pt_1',';pt_{1};NEvents',50,20,220),
-    'pt_2' : ('pt_2',';pt_{2};NEvents',50,20,220),
+    'phi_1' : ('phi_1',';phi_{1};NEvents',20,-3.14,3.14),
+    'phi_2' : ('phi_2',';phi_{2};NEvents',20,-3.14,3.14),
+    'pt_1' : ('pt_1',';pt_{1};NEvents',20,20,220),
+    'pt_2' : ('pt_2',';pt_{2};NEvents',20,20,220),
     'pt_fastmtt'   :    ('pt_fastmtt', ';p_{T}^{#tau#tau} ;NEvents', 50, 0, 500),
-    'pt_tt'   :    ('pt_tt', ';pt_{tt} ;NEvents', 50, 0, 500),
-    'pt_vis'   :    ('pt_vis', ';pt_{vis} ;NEvents', 50, 0, 500),
+    'pt_tt'   :    ('pt_tt', ';pt_{tt} ;NEvents', 40, 0, 400),
+    'pt_vis'   :    ('pt_vis', ';pt_{vis} ;NEvents', 30, 0, 300),
 
-    'pzetamissvis' : ('pzetamissvis',';D_{#zeta};NEvents',35,-200,150),    
-    'deltaR_ditaupair' :  ('deltaR_ditaupair', ';#deltaR [GeV];NEvents',60 , 0, 6),
+    'pzetamissvis' : ('pzetamissvis',';D_{#zeta};NEvents',25,-150,100),    
+    'deltaR_ditaupair' :  ('deltaR_ditaupair', ';#deltaR [GeV];NEvents',25 , 0, 5),
     
 
     #   'taujet_pt_2':    ('taujet_pt_2', '#tau_{h} jetp_{T}} [GeV];', 20,0,400),
 #     'mu0_pt'           :           ('mu0_pt',             ';p_{T}_Mu1 [GeV];',  25,     0,      600),
 #     'm_2mu'           :            ('m_2mu',              ';Mass_H(mm) [GeV];', 25,     50,     200),
 })
-
+if PNN:
+    plot_vars.update({
+        # 'PNN_60' : ('PNN_60',     ';PNN 60 [GeV];NEvents', 20,0,1),     
+        # 'PNN_80' : ('PNN_80',     ';PNN 80 [GeV];NEvents', 20,0,1),     
+        # # 'PNN_85' : ('PNN_85',     ';PNN 85 [GeV];NEvents', 20,0,1),     
+        # 'PNN_90' : ('PNN_90',     ';PNN 90 [GeV];NEvents', 20,0,1),     
+        'PNN_%s' %mass : ('PNN_%s' %mass,     ';PNN %s [GeV];NEvents' %mass,  20,0,1),     
+        # 'PNN_100' : ('PNN_100',     ';PNN 100 [GeV];NEvents', 20,0,1),     
+        # # 'PNN_105' : ('PNN_105',     ';PNN 105 [GeV];NEvents', 20,0,1),     
+        # 'PNN_110' : ('PNN_110',     ';PNN 110 [GeV];NEvents', 20,0,1),     
+        # 'PNN_120' : ('PNN_120',     ';PNN 120 [GeV];NEvents', 20,0,1),     
+    })
+else:
+    plot_vars.update({
+    'dxy_1' : ('dxy_1',';dxy_{1};NEvents',25,-0.05,0.05),
+    'dxy_2' : ('dxy_2',';dxy_{2};NEvents',25,-0.1,0.1),
+    'dz_1' : ('dz_1',';dz_{1};NEvents',25,-0.2,0.2),
+    'dz_2' : ('dz_2',';dz_{2};NEvents',25,-0.2,0.2),
+    'iso_1' : ('iso_1',';iso_{1};NEvents',20,0,3),
+    'iso_2' : ('iso_2',';iso_{2};NEvents',20,0,3),
+    'mTdileptonMET_pf' : ('mTdileptonMET_pf',';mTdileptonMET_pf;NEvents',20,0,200),
+    'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,0.1),
+    'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,3),    
+    'njets' : ('njets',';njets;NEvents',10,0,10),
+    'phi_fastmtt' : ('phi_fastmtt',';phi_{#tau#tau};NEvents',20,-3.14,3.14),
+    })
 
 #######################################
 # Samples, Selections, and Categories #
@@ -296,11 +312,13 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                     samples["FF_ttbar"] = ['1', 1,   sample_type     , ["FF_ttbar"] ,  0 ]
             
             elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ):
+                print('+++++++++++++++++++++++++', nick)
                 if "2HDM" not in nick:
                     samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
+                elif PNN and  "M-%s_2HDM" %mass in nick:
+                    samples[nick] = ['1000', 1 ,   "1000 * 2HDM %s" %mass      , [nick] ,  0 ] 
                 else:
                     continue
-                    # samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
             elif sample_type == 'ttbar':
                 samples[nick] = ['1', 1 ,   sample_type     , [nick] ,  0 ]
                 
@@ -348,10 +366,11 @@ the_samples_dict = get_samples(
     
     sf_zjb = 1.0,
 )
-print('=======================================', the_samples_dict)
+
+# print("===================== the_sample_dict, ========================", the_samples_dict)
 if PNN:
     regions = {
-    "ALL"                  : 'mt_1 < 70',
+    "ALL"                  : '1 > 0',
     # "nob_loose_mT" : combinecut(Htautau.nob, Htautau.loose_mT ),
     # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT ),
     # "btag_loose_mT"      : combinecut(Htautau.btag, Htautau.loose_mT),
@@ -382,14 +401,14 @@ else:
         for i in regions:
             regions[i] = combinecut(regions[i], '( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  )')
 
-print( "printing cuts applied:   ",regions['nob'] , "for channels: ", channel_name )
+
+
 if region == "SR":
     pass
 elif region == "DR_QCD":
     regions["DR_QCD"] = combinecut(Htautau.DR_QCD_tt, lepton_selection)
     regions["AntiDR_QCD"] = combinecut(Htautau.DR_QCD_tt, anti_selection)
     regions["DR_QCD_btag"] = combinecut(Htautau.btag, Htautau.DR_QCD_tt, lepton_selection)
-    #regions["DR_QCD_btag"] = combinecut(Htautau.btag, Htautau.DR_QCD_tt ,anti_selection)
 elif region == "DR_W":
     regions["DR_W"] = combinecut(Htautau.DR_W, lepton_selection, Htautau.W_true_only)
     regions["AntiDR_W"] = combinecut(Htautau.DR_W, anti_selection, Htautau.W_true_only)
@@ -401,6 +420,7 @@ elif region == "DR_ttbar":
 else:
     print("wrong region provided!! region supported: SR, DR_QCD,DR_ttbar, DR_W ")
     sys.exit(0)
+print( "printing cuts applied:   ",regions['nob_tight_mT'] , "for channels: ", channel_name )
 selections = [
     # Htautau.lepton_veto, # DR selections
 #    '{0}>0'.format(weight),  
@@ -430,11 +450,9 @@ def additional_input_hook(wrps):
 
     def blind_in_HmmWin(w):
         if w.legend == 'Data': # and w.in_file_path.startswith('Hmm_win'):
-            if 'PNN'  in w.name:
+            if 'm_fastmtt'  in w.name:
                 print('BLINDING Data in %s' % w.in_file_path)
                 for i in xrange(w.histo.GetNbinsX() + 1):
-                    if i < (w.histo.GetNbinsX() - 10) :
-                        continue
                     w.histo.SetBinContent(i, 0.)
                     w.histo.SetBinError(i, 0.)
         return w

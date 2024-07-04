@@ -277,7 +277,7 @@
 
 # rm -r  SR_2022EE_et_run4_nominal_double_corrected_test ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_et_run4_nominal_double_corrected_test 2022EE_et_run4_nominal_double_corrected  0 0 et 2022EE 1 SR & 
 
-rm -r  SR_2022postEE_et_run4_nominal_double_corrected_test1 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_et_run4_nominal_double_corrected_test1 2022postEE_et_run4_nominal_double_corrected  0 0 et 2022postEE 1 SR & 
+# rm -r  SR_2022postEE_et_run4_nominal_double_corrected_test1 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_et_run4_nominal_double_corrected_test1 2022postEE_et_run4_nominal_double_corrected  0 0 et 2022postEE 1 SR & 
 
 # rm -r  DR_QCD_2022postEE_tt_run4_corrected ; python run_plotting_with_varial.py plot_config_ggF.py   DR_QCD_2022postEE_tt_run4_corrected 2022postEE_tt_run4_nominal_corrected  0 0 tt 2022postEE 1 DR_QCD & 
 
@@ -286,4 +286,87 @@ rm -r  SR_2022postEE_et_run4_nominal_double_corrected_test1 ; python run_plottin
 #  python run_plotting_with_varial.py plot_config_ggF.py   DR_QCD_2022EE_tt_run4_nominal_corrected 2022EE_tt_run4_nominal_corrected  0 0 tt 2022EE 1 DR_QCD& 
 #  rm -r  SR_2022postEE_mt_run4_PNN100_nofiltered ; python run_plotting_with_varial.py plot_config_ggF_PNN.py    SR_2022postEE_mt_run4_PNN100_nofiltered  2022postEE_mt_run4_for_plotting/100_nofilter  0 0 mt 2022postEE 1 SR & 
 
-  # rm -r  SR_2022postEE_tt_run4_filtered;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022postEE_tt_run4_filtered 2022postEE_tt_run4_nominal_corrected_filtered 0 0 tt 2022postEE 1 SR &
+
+# rm -r  SR_2022EE_tt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022EE_tt_run4_reprocessed 2022EE_tt_run4_reprocess_nominal_all_corrected 0 0 tt 2022EE 1 SR &
+# rm -r  DR_QCD_2022EE_tt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_QCD_2022EE_tt_run4_reprocessed 2022EE_tt_run4_reprocess_nominal_all_corrected 0 0 tt 2022EE 1 DR_QCD &
+# rm -r  SR_2022postEE_tt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022postEE_tt_run4_reprocessed 2022postEE_tt_run4_reprocess_nominal_all_corrected 0 0 tt 2022postEE 1 SR &
+# rm -r  DR_QCD_2022postEE_tt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_QCD_2022postEE_tt_run4_reprocessed 2022postEE_tt_run4_reprocess_nominal_all_corrected 0 0 tt 2022postEE 1 DR_QCD &
+
+
+# rm -r  SR_2022EE_mt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022EE_mt_run4_reprocessed 2022EE_mt_run4_reprocess_nominal_all 0 0 mt 2022EE 1 SR &
+# rm -r  SR_2022postEE_mt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022postEE_mt_run4_reprocessed 2022postEE_mt_run4_reprocess_nominal_all 0 0 mt 2022postEE 1 SR &
+
+# rm -r  SR_2022EE_et_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022EE_et_run4_reprocessed 2022EE_et_run4_reprocess_nominal_all_double_corrected 0 0 et 2022EE 1 SR &
+# rm -r  DR_QCD_2022EE_et_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_QCD_2022EE_et_run4_reprocessed 2022EE_et_run4_reprocess_nominal_all_double_corrected 0 0 et 2022EE 1 DR_QCD &
+# rm -r  DR_ttbar_2022EE_et_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_ttbar_2022EE_et_run4_reprocessed 2022EE_et_run4_reprocess_nominal_all_double_corrected 0 0 et 2022EE 1 DR_ttbar &
+# rm -r  DR_W_2022EE_et_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_W_2022EE_et_run4_reprocessed 2022EE_et_run4_reprocess_nominal_all_double_corrected 0 0 et 2022EE 1 DR_W &
+
+# rm -r  SR_2022postEE_et_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022postEE_et_run4_reprocessed 2022postEE_et_run4_reprocess_nominal_all_double_corrected 0 0 et 2022postEE 1 SR &
+# rm -r  DR_QCD_2022postEE_et_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_QCD_2022postEE_et_run4_reprocessed 2022postEE_et_run4_reprocess_nominal_all_double_corrected 0 0 et 2022postEE 1 DR_QCD &
+# rm -r  DR_ttbar_2022postEE_et_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_ttbar_2022postEE_et_run4_reprocessed 2022postEE_et_run4_reprocess_nominal_all_double_corrected 0 0 et 2022postEE 1 DR_ttbar &
+# rm -r  DR_W_2022postEE_et_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_W_2022postEE_et_run4_reprocessed 2022postEE_et_run4_reprocess_nominal_all_double_corrected 0 0 et 2022postEE 1 DR_W &
+
+
+
+
+# rm -r  SR_2022postEE_mt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  SR_2022postEE_mt_run4_reprocessed 2022postEE_mt_run4_reprocess_nominal_all_double_corrected 0 0 mt 2022postEE 1 SR &
+# rm -r  DR_QCD_2022postEE_mt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_QCD_2022postEE_mt_run4_reprocessed 2022postEE_mt_run4_reprocess_nominal_all_double_corrected 0 0 mt 2022postEE 1 DR_QCD &
+# rm -r  DR_ttbar_2022postEE_mt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_ttbar_2022postEE_mt_run4_reprocessed 2022postEE_mt_run4_reprocess_nominal_all_double_corrected 0 0 mt 2022postEE 1 DR_ttbar &
+# rm -r  DR_W_2022postEE_mt_run4_reprocessed;  python run_plotting_with_varial.py plot_config_ggF.py  DR_W_2022postEE_mt_run4_reprocessed 2022postEE_mt_run4_reprocess_nominal_all_double_corrected 0 0 mt 2022postEE 1 DR_W &
+
+# rm -r  SR_2022postEE_tt_run4_reprocessed_PNN;  python run_plotting_with_varial.py plot_config_ggF.py SR_2022postEE_tt_run4_reprocessed_PNN test_2 0 1 tt 2022postEE 1 SR &
+
+# rm -r  SR_2022EE_mt_run4_nominal_double_corrected ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_mt_run4_nominal_double_corrected 2022EE_mt_run4_reprocess_nominal_nob  0 0 mt 2022EE 1 SR & 
+# rm -r  SR_2022postEE_mt_run4_nominal_double_corrected ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_mt_run4_nominal_double_corrected 2022postEE_mt_run4_reprocess_nominal_nob  0 0 mt 2022postEE 1 SR & 
+# rm -r  SR_2022EE_et_run4_nominal_double_corrected ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_et_run4_nominal_double_corrected 2022EE_et_run4_reprocess_nominal_nob  0 0 et 2022EE 1 SR & 
+# rm -r  SR_2022postEE_et_run4_nominal_double_corrected ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_et_run4_nominal_double_corrected 2022postEE_et_run4_reprocess_nominal_nob  0 0 et 2022postEE 1 SR & 
+
+
+# rm -r  SR_2022EE_tt_run4_nominal_corrected ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_tt_run4_nominal_corrected 2022EE_tt_run4_reprocess_nominal_nob  0 0 tt 2022EE 1 SR & 
+# rm -r  SR_2022postEE_tt_run4_nominal_corrected ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_tt_run4_nominal_corrected 2022postEE_tt_run4_reprocess_nominal_nob  0 0 tt 2022postEE 1 SR & 
+ 
+# # 
+# for m in 100 120 90 95 90 60 80 140 160 200 250 ; do
+# for channel in 'tt' 'et' 'mt' ;
+# do
+# rm -r  PNN_plots/SR_2022EE_${channel}_run4_nominal_double_corrected_PNN_$m ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_${channel}_run4_nominal_double_corrected_PNN_$m 2022EE_${channel}_run4_reprocess_nominal_nob_PNN  $m 1 $channel 2022EE 1 SR &
+# rm -r  PNN_plots/SR_2022postEE_${channel}_run4_nominal_double_corrected_PNN_$m ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_${channel}_run4_nominal_double_corrected_PNN_$m 2022postEE_${channel}_run4_reprocess_nominal_nob_PNN  $m 1 $channel 2022postEE 1 SR &
+
+# done 
+# wait
+# done
+# wait 
+# mv SR_2022*_*t_run4_nominal_double_corrected_PNN_* PNN_plots/  
+
+# for m in 100 120 90 95 90 60 80 140 160 200 250 ; do
+# for channel in 'tt' 'et' 'mt' ;
+# do 
+# mv PNN_plots/SR_2022EE_${channel}_run4_nominal_double_corrected_PNN_${m}/Plots/ALL/PNN_${m}_lin.png   PNN_plots/SR_2022EE_${channel}_PNN_${m}_lin.png
+# mv PNN_plots/SR_2022postEE_${channel}_run4_nominal_double_corrected_PNN_${m}/Plots/ALL/PNN_${m}_lin.png   PNN_plots/SR_2022postEE_${channel}_PNN_${m}_lin.png
+# mv PNN_plots/SR_2022EE_${channel}_run4_nominal_double_corrected_PNN_${m}/Plots/ALL/PNN_${m}_log.png   PNN_plots/SR_2022EE_${channel}_PNN_${m}_log.png
+# mv PNN_plots/SR_2022postEE_${channel}_run4_nominal_double_corrected_PNN_${m}/Plots/ALL/PNN_${m}_log.png   PNN_plots/SR_2022postEE_${channel}_PNN_${m}_log.png
+# done
+# done
+
+
+
+# rm -r  SR_2022EE_tt_run6 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_tt_run6 2022EE_tt_run6_nominal_corrected  0 0 tt 2022EE 1 SR & 
+# rm -r  DR_QCD_2022EE_tt_run6 ; python run_plotting_with_varial.py plot_config_ggF.py   DR_QCD_2022EE_tt_run6 2022EE_tt_run6_nominal_corrected_notrigger  0 0 tt 2022EE 1 DR_QCD & 
+# rm -r  SR_2022postEE_tt_run6 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_tt_run6 2022postEE_tt_run6_nominal_corrected  0 0 tt 2022postEE 1 SR & 
+ 
+# rm -r  SR_2022EE_mt_run6 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_mt_run6 2022EE_mt_run6_nominal  0 0 mt 2022EE 1 SR & 
+# rm -r  SR_2022postEE_mt_run6 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_mt_run6 2022postEE_mt_run6_nominal  0 0 mt 2022postEE 1 SR & 
+
+# rm -r  SR_2022EE_et_run6 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022EE_et_run6 2022EE_et_run6_nominal  0 0 et 2022EE 1 SR & 
+# rm -r  SR_2022postEE_et_run6 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_et_run6 2022postEE_et_run6_nominal  0 0 et 2022postEE 1 SR & 
+
+
+rm -r Version6_2022EE_et_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_et_SR_CMSWeek     2022EE_et_Version8_Rerun_nominal_double_corrected      0 0 et 2022EE     1 SR & 2>&1 &
+rm -r Version6_2022EE_mt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_mt_SR_CMSWeek      2022EE_mt_Version8_Rerun_nominal_double_corrected     0 0 mt 2022EE     1 SR 2>&1 &
+rm -r Version6_2022EE_tt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_tt_SR_CMSWeek    2022EE_tt_Version9_Rerun_nominal_corrected     0 0 tt 2022EE     1 SR & 2>&1 &
+rm -r Judge_Version6_2022postEE_et_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Judge_Version6_2022postEE_et_SR_CMSWeek  2022postEE_et_Version8_Rerun_nominal_double_corrected  0 0 et 2022postEE 1 SR & 2>&1 & 
+rm -r Judge_Version6_2022postEE_mt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Judge_Version6_2022postEE_mt_SR_CMSWeek  2022postEE_mt_Version8_Rerun_nominal_double_corrected  0 0 mt 2022postEE 1 SR & 2>&1 & 
+rm -r Version6_2022postEE_tt_SR_CMSWeek; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022postEE_tt_SR_CMSWeek  2022postEE_tt_Version8_Rerun_nominal_corrected  0 0 tt 2022postEE 1 SR & 2>&1 & 
+
+# python run_plotting_with_varial.py plot_config_ggF.py Version6_2022postEE_tt_SR_CMSWeek 2022postEE_tt_Version8_Rerun_nominal_corrected 0 0 tt 2022postEE 1 SR
+# rm -r Debug_Version6_2022postEE_et_SR_CMSWeek python run_plotting_with_varial.py plot_config_ggF.py   Debug_Version6_2022postEE_et_SR_CMSWeek  debug_V6_et_nominal_double_corrected  0 0 et 2022postEE 1 SR & 2>&1 &

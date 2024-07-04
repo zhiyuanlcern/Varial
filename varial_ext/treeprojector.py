@@ -49,8 +49,8 @@ class TreeProjectorBase(varial.tools.Tool):
         assert isinstance(filenames, dict), 'dict(sample -> list of files)'
         for sample, fnames in filenames.items():
             if not fnames:
-                self.message('WARNING no files for sample %s in %s'
-                             % (sample, self.name))
+                # self.message('WARNING no files for sample %s in %s'
+                #              % (sample, self.name))
                 del filenames[sample]
 
         self.samples = filenames.keys()

@@ -41,7 +41,6 @@ def map_projection(key_histo_filename, params, open_file=None, open_tree=None):
     ======================= ================================================================
     """
     from ROOT import TFile, TH1, TH1F, TTree
-
     key, histoname, filename = key_histo_filename.split()
     histoargs = params['histos'][histoname]
     if len(histoargs) == 6:
