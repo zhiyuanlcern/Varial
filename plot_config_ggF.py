@@ -4,7 +4,7 @@ import sys
 import ROOT as R
 import array
 import yaml
-from Htautau import *
+from  Htautau import *
 # import wrappers
 
 ''' usage:
@@ -298,8 +298,9 @@ def get_samples(channel, signal_overlay=True, **kwargs):
             elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ):
                 if "2HDM" not in nick:
                     samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
-                # else:
-                #     samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
+                else:
+                    continue
+                    # samples[nick] = ['1000', 1 ,   "1000 * 2HDM 100"      , [nick] ,  0 ] 
             elif sample_type == 'ttbar':
                 samples[nick] = ['1', 1 ,   sample_type     , [nick] ,  0 ]
                 
