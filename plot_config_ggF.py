@@ -172,7 +172,7 @@ plot_vars = {
 # mt_tot_b = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450, 500, 550,  600, 650, 700, 750, 800, 850,  900, 950, 1000, 1100, 1200, 1300, 1400, 1500]
 mt_tot_b = [30, 60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450, 500]
 # mt_tot_b  = make_logbinning(20, 2500, 36)
-nob_tight_mT = [0, 50.0,60.0,70.0,80.0,90.0,100.0,110.0,120.0,130.0,140.0,150.0,160.0,170.0,180.0,190.0,200.0,225.0,250.0,275.0,300.0,325.0,350.0,400.0,450.0,500.0,600.0,700.0,800.0,900.0,1100.0,1700.0,2100.0,5000]
+nob_tight_mT = [0,50.0,60.0,70.0,80.0,90.0,100.0,110.0,120.0,130.0,140.0,150.0,160.0,170.0,180.0,190.0,200.0,225.0,250.0,275.0,300.0,325.0,350.0,400.0,450.0,500.0,600.0,700.0,800.0,900.0,1100.0,1300.0,2100.0,5000.0]
 m_fastmtt = [0,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,220,240,260,300]
 PNN_100 = [            0,            0.001232,            0.004982,            0.011598,            0.021114,            0.034304,            0.052314,            0.077834,            0.114538,            0.16762,            0.24431,            0.355564,            0.489926,            0.625302,            0.724916,            0.797848,            0.86386,            0.919758,            1.0]
 
@@ -312,9 +312,10 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                     samples["FF_ttbar"] = ['1', 1,   sample_type     , ["FF_ttbar"] ,  0 ]
             
             elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ):
-                print('+++++++++++++++++++++++++', nick)
+                # print('+++++++++++++++++++++++++', nick)
                 if "2HDM" not in nick:
-                    samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
+                    # samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
+                    pass
                 elif PNN and  "M-%s_2HDM" %mass in nick:
                     samples[nick] = ['1000', 1 ,   "1000 * 2HDM %s" %mass      , [nick] ,  0 ] 
                 else:
@@ -343,7 +344,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
 
     samples.update({
 
-            'Data': ["1", 1, 'Data', ['SingleMuon_Run201', 'Tau_Run201', 'EGamma_Run201', 'SingleElectron_Run201', 'DoubleMuon_Run201','MuonEG_Run2', "Muon_Sep", "EGamma_Sep", "SingleMuon_Sep", "Tau_Sep", "Data", "MuonEG_Sep" ],0],
+            'Data': ["1", 1, 'Data', ['SingleMuon_Run201', 'Tau_Run201', 'EGamma_Run201', 'SingleElectron_Run201', 'DoubleMuon_Run201','MuonEG_Run2', "Muon_Sep", "EGamma_Sep", "SingleMuon_Sep", "Tau_Sep", "Data", "MuonEG_Sep", "Run2022" ],0],
             
         })
     
@@ -381,17 +382,17 @@ else:
     # 'nob': '1> 0 '
     
     #####em#####
-    "low_nob"     : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.lowDzeta, ),
-    "medium_nob"  : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.mediumDzeta, ),
-    "high_nob"    : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.highDzeta, ),
-    "All"         : combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
+    # "low_nob"     : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.lowDzeta, ),
+    # "medium_nob"  : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.mediumDzeta, ),
+    # "high_nob"    : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.highDzeta, ),
+    # "All"         : combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
 
-    "btag"    : combinecut(Htautau.btag, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
-    "nob"     : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
+    # "btag"    : combinecut(Htautau.btag, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
+    # "nob"     : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
     ####em##### 
 
-    # "nob" : combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only,Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
-    # "btag" : combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+    "nob" : combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only,Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+    "btag" : combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
     # # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT,lepton_selection, Htautau.W_true_only, Htautau.opposite_sign,"mt_1 < 40"),
     # "nob_AntiID" : combinecut( Htautau.nob,   anti_selection, Htautau.W_true_only, Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
     # "btag_AntiID" : combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
@@ -486,8 +487,11 @@ def additional_input_hook(wrps):
         #     w.histo = w.histo.Rebin(2)
         # if "m_fastmtt" in w.name and "zoom" not in w.name: 
         #     w.histo = w.histo.Rebin(len(m_fastmtt)-1, 'rebinned_m_fastmtt', array.array('d', m_fastmtt))
-        if "mt_tot_rebinned" in w.name:
-            w.histo = w.histo.Rebin(len(nob_tight_mT)-1, 'rebinned_mt_tot', array.array('d', nob_tight_mT))
+        # if "mt_tot_rebinned" in w.name:
+        #     w.histo = w.histo.Rebin(len(nob_tight_mT)-1, 'rebinned_mt_tot', array.array('d', nob_tight_mT))
+
+        if "mt_tot" in w.name:
+            w.histo = w.histo.Rebin(len(nob_tight_mT)-1, 'mt_tot', array.array('d', nob_tight_mT))    
         if "PNN_500_rebinned" in w.name:
             rebinned_h = w.histo.Rebin(len(PNN_500) -1, 'rebinned_mt_tot', array.array('d', PNN_500))   
             # h_PNN_500 = R.TH1F("h1", "Original Histogram", w.histo.GetNbinsX(), 0, w.histo.GetNbinsX()) 
@@ -535,7 +539,7 @@ def additional_input_hook(wrps):
     # wrps = (getyields(w) for w in wrps)
     if not use_all_signal:
         wrps = (rebin(w) for w in wrps)
-    wrps = (blind_in_HmmWin(w) for w in wrps)
+    # wrps = (blind_in_HmmWin(w) for w in wrps)
     # wrps = (setylimit(w) for w in wrps)
     # wrps = (scale_by_binwidth(w) for w in wrps)
     # for w in wrps:
