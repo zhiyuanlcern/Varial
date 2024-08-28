@@ -90,12 +90,12 @@ class Htautau_selections:
 
 
 
-    em_electron_selection = "pt_1 > 15 && eta_1 < 2.4 && dz_1 < 0.2 && dxy_1 < 0.045 && iso_1 < 0.15 && deltaR_ditaupair > 0.3"
-    #em_electron_selection = "(dz_1 < 0.2 && dxy_1 < 0.045 && iso_1 < 0.15 && deltaR_ditaupair > 0.3 && pt_1 > 15)"
+    # em_electron_selection = "pt_1 > 15 && eta_1 < 2.4 && dz_1 < 0.2 && dxy_1 < 0.045 && iso_1 < 0.15 && deltaR_ditaupair > 0.3"
+    em_electron_selection = "(dz_1 < 0.2 && dxy_1 < 0.045 && iso_1 < 0.15 && deltaR_ditaupair > 0.3 && pt_1 > 15)"
 
 
-    em_muon_selection = "pt_2 > 15 && eta_2 < 2.4 && dz_2 < 0.2 && dxy_2 < 0.045 && iso_2 < 0.2"
-    #em_muon_selection = "(dz_2 < 0.2 && dxy_2 < 0.045 && iso_2 < 0.2 && pt_2 > 15)"
+    # em_muon_selection = "pt_2 > 15 && eta_2 < 2.4 && dz_2 < 0.2 && dxy_2 < 0.045 && iso_2 < 0.2"
+    em_muon_selection = "(dz_2 < 0.2 && dxy_2 < 0.045 && iso_2 < 0.2 && pt_2 > 15)"
     electron_selections = 'pt_1 > 30 '
     muon_selections = " pt_1> 25.0 "
     
