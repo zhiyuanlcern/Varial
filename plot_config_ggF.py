@@ -5,6 +5,8 @@ import ROOT as R
 import array
 import yaml
 from Htautau import *
+import argparse
+
 # import wrappers
 
 ''' usage:
@@ -19,19 +21,33 @@ python run_plotting_with_varial.py plot_config_ggF.py input_path plot_tag &
 
 
 
-input_path = sys.argv[3]
-#  'fixbtag_nprebtagjets_newgensum_DR_ttbar'
+parser = argparse.ArgumentParser(description='Plot btag variables from ROOT files with weights.')
+parser.add_argument('dummy_input', type=str, nargs='+', help='Place holder, dummy argument')
+parser.add_argument('--input_path', type=str, help='Path to the folder containing ROOT files')
+parser.add_argument('--mass',  type=str, help='mass of signal to plot')
+parser.add_argument('--era', type=str, default='2022postEE', help='input era, 2022postEE or 2022EE')
+parser.add_argument('--channel', type=str, default='mt', help='decay channel, mt, et, tt, em')
+parser.add_argument('--region', type=str, default='nob', help='btag selection, nob, btag')
+parser.add_argument('--PNN', type=int, default=0, help='run PNN score or not')
+parser.add_argument('--signal_type', type=str, default='ggH', help='ggH or bbH or ggH_bbH')
+args = parser.parse_args()
 
+input_path= args.input_path
+mass = args.mass
+PNN = args.PNN
+channel_name = args.channel
+era = args.era
+signal_type = args.signal_type
+region = args.region
+# input_path = sys.argv[3]
+# mass = int(sys.argv[4])
+# PNN = int(sys.argv[5])
+# channel_name = str(sys.argv[6])
+# era = sys.argv[7]
+# run_fakes = int(sys.argv[8])
+# region = sys.argv[9]
+# run_dy = True
 
-use_all_signal = False
-
-mass = int(sys.argv[4])
-PNN = int(sys.argv[5])
-channel_name = str(sys.argv[6])
-era = sys.argv[7]
-run_fakes = int(sys.argv[8])
-region = sys.argv[9]
-run_dy = True
 
 
 
@@ -65,9 +81,7 @@ else:
 
 print(mass, sys.argv[4],"===================================")
 
-
-# samples_name = "sample_database/datasets_Run2.yaml" 
-# samples_name = "sample_database/datasets.yaml" 
+ 
 samples_name = 'sample_database/datasets_plotting.yaml'
 samples_f = open(samples_name, "r") 
 samples_list =  yaml.load(samples_f, Loader = yaml.Loader) 
@@ -83,6 +97,14 @@ stacking_order = [
 'other',
 
 ]
+
+if int(mass) > 200:
+    scale =10 
+elif int(mass) >= 100:
+    scale = 200
+else:
+    scale =1000
+                     
 sample_colors = {
 # 'embedding'  :  838,
 # 'electroweak_boson'  :  804,
@@ -95,6 +117,8 @@ sample_colors = {
 'wjets'  :  632,
 'Single H': 838,
 'other' : 920, 
+"%s * bbH %s" %(scale,mass) : 416,
+"%s * ggH %s" %(scale,mass) : 632,
 # 'diboson'  :  596,
 # 'ggh_hbb'  :  596,
 # 'ggh_htautau'  :  838,
@@ -145,10 +169,6 @@ weight_dict_em = {
     "2022EE": '(Xsec * genWeight *  {0} / genEventSumW)* (trg_wgt_single_ele30 * trg_single_ele30 > 0 + 1 * trg_single_ele30 < 1 ) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight * puweight * (trg_wgt_single_mu24 * trg_single_mu24 > 0 + 1 * trg_single_mu24 < 1 )'  .format(lumi), 
 }
 
-
-
-
-
 if channel_name == "et":
     weight_dict = weight_dict_et 
 elif channel_name == "mt":
@@ -160,54 +180,20 @@ elif channel_name == "em":
 else:
     sys.exit()
 
-if PNN:
-    weight = 'Train_weight'
-else:
-    weight = weight_dict[era]
-    # weight = 'Train_weight'
+weight = weight_dict[era]
 
-plot_vars = {
-#    'genWeight'           :           ('genWeight',             ';genWeight;',           100,     0,      10000),
-}
-# mt_tot_b = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450, 500, 550,  600, 650, 700, 750, 800, 850,  900, 950, 1000, 1100, 1200, 1300, 1400, 1500]
+plot_vars = {}
+
 mt_tot_b = [30, 60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450, 500]
-# mt_tot_b  = make_logbinning(20, 2500, 36)
 nob_tight_mT = [0,50.0,60.0,70.0,80.0,90.0,100.0,110.0,120.0,130.0,140.0,150.0,160.0,170.0,180.0,190.0,200.0,225.0,250.0,275.0,300.0,325.0,350.0,400.0,450.0,500.0,600.0,700.0,800.0,900.0,1100.0,1300.0,2100.0,5000.0]
 m_fastmtt = [0,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,220,240,260,300]
-PNN_100 = [            0,            0.001232,            0.004982,            0.011598,            0.021114,            0.034304,            0.052314,            0.077834,            0.114538,            0.16762,            0.24431,            0.355564,            0.489926,            0.625302,            0.724916,            0.797848,            0.86386,            0.919758,            1.0]
-
-# met =  make_logbinning(5, 1500, 36)
 met = [0,10,20,30,40,50,60,70,80,90,120,140,200,400]
-# pt =  make_logbinning(20, 1500, 36)
 pt = [30,40,50,60,70,80,90,100,120,140,200,350,500, 700, 1000]
-# mt = make_logbinning(20, 2500, 36)
-# from Muon
-# plot_vars.update({
-#     'pnn_100' : ('pnn_100',     ';PNN 100 [GeV];NEvents', 50,0,1),     
-# })
 plot_vars.update({
-    # 'dxy_1' : ('dxy_1',';dxy_{1};NEvents',50,-0.1,0.1),
-    # 'dxy_2' : ('dxy_2',';dxy_{2};NEvents',50,-0.1,0.1),
-    # 'dz_1' : ('dz_1',';dz_{1};NEvents',50,-0.2,0.2),
-    # 'dz_2' : ('dz_2',';dz_{2};NEvents',50,-0.2,0.2),
-    # 'iso_1' : ('iso_1',';iso_{1};NEvents',20,0,3),
-    # 'iso_2' : ('iso_2',';iso_{2};NEvents',20,0,3),
-    # 'mTdileptonMET_pf' : ('mTdileptonMET_pf',';mTdileptonMET_pf;NEvents',100,0,200),
-    # 'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,0.1),
-    # 'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,3),    
-    # 'njets' : ('njets',';njets;NEvents',10,0,10),
-    # 'phi_fastmtt' : ('phi_fastmtt',';phi_{#tau#tau};NEvents',50,-5,5),
-    
     
     'eta_1' : ('eta_1',';eta_{1};NEvents',30,-2.3,2.3),
     'eta_2' : ('eta_2',';eta_{2};NEvents',30,-2.3,2.3),
     'eta_fastmtt' : ('eta_fastmtt',';eta_{#tau#tau};NEvents',20,-10,10),
-    # 'jeta_1' : ('jeta_1',';jeta_{1};NEvents',100,-20,20),
-    # 'jeta_2' : ('jeta_2',';jeta_{2};NEvents',100,-20,20),
-    # 'jphi_1' : ('jphi_1',';jphi_{1};NEvents',100,-20,20),
-    # 'jphi_2' : ('jphi_2',';jphi_{2};NEvents',100,-20,20),
-    # 'jpt_1' : ('jpt_1',';jpt_{1};NEvents',100,-100,400),
-    # 'jpt_2' : ('jpt_2',';jpt_{2};NEvents',100,-100,400),
     'mTdileptonMET' : ('mTdileptonMET',';mTdileptonMET;NEvents',20,0,200),
     'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents', 30, 0, 500),
     'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 30, 0, 300),
@@ -217,9 +203,6 @@ plot_vars.update({
     'mt_tot': ('mt_tot', ';m_{T}^{tot} [GeV];NEvents', 50, 0, 500),
     'mt_1' : ('mt_1',';mt_{1};NEvents',50,0,200),
     'mt_2' : ('mt_2',';mt_{2};NEvents',50,0,200),
-    # 'nprejets' : ('nprejets',';nprejets;NEvents',10,0,10),
-    # 'pfmet' : ('pfmet',';pfmet;NEvents',50,0,500),
-    # 'pfmetphi' : ('pfmetphi',';pfmetphi;NEvents',50,-5,5),
     'phi_1' : ('phi_1',';phi_{1};NEvents',20,-3.14,3.14),
     'phi_2' : ('phi_2',';phi_{2};NEvents',20,-3.14,3.14),
     'pt_1' : ('pt_1',';pt_{1};NEvents',20,20,220),
@@ -231,23 +214,20 @@ plot_vars.update({
     'pzetamissvis' : ('pzetamissvis',';D_{#zeta};NEvents',25,-150,100),    
     'deltaR_ditaupair' :  ('deltaR_ditaupair', ';#deltaR [GeV];NEvents',25 , 0, 5),
     
-
-    #   'taujet_pt_2':    ('taujet_pt_2', '#tau_{h} jetp_{T}} [GeV];', 20,0,400),
-#     'mu0_pt'           :           ('mu0_pt',             ';p_{T}_Mu1 [GeV];',  25,     0,      600),
-#     'm_2mu'           :            ('m_2mu',              ';Mass_H(mm) [GeV];', 25,     50,     200),
 })
 if PNN:
-    plot_vars.update({
-        # 'PNN_60' : ('PNN_60',     ';PNN 60 [GeV];NEvents', 20,0,1),     
-        # 'PNN_80' : ('PNN_80',     ';PNN 80 [GeV];NEvents', 20,0,1),     
-        # # 'PNN_85' : ('PNN_85',     ';PNN 85 [GeV];NEvents', 20,0,1),     
-        # 'PNN_90' : ('PNN_90',     ';PNN 90 [GeV];NEvents', 20,0,1),     
-        'PNN_%s' %mass : ('PNN_%s' %mass,     ';PNN %s [GeV];NEvents' %mass,  20,0,1),     
-        # 'PNN_100' : ('PNN_100',     ';PNN 100 [GeV];NEvents', 20,0,1),     
-        # # 'PNN_105' : ('PNN_105',     ';PNN 105 [GeV];NEvents', 20,0,1),     
-        # 'PNN_110' : ('PNN_110',     ';PNN 110 [GeV];NEvents', 20,0,1),     
-        # 'PNN_120' : ('PNN_120',     ';PNN 120 [GeV];NEvents', 20,0,1),     
-    })
+    plot_vars = {
+        
+        'mt_tot': ('mt_tot', ';m_{T}^{tot} [GeV];NEvents', 50, 0, 500),
+        'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents', 30, 0, 500),
+        'pt_1' : ('pt_1',';pt_{1};NEvents',20,20,220),
+        'pt_2' : ('pt_2',';pt_{2};NEvents',20,20,220),
+        'mt_1' : ('mt_1',';mt_{1};NEvents',50,0,200),
+        'mt_2' : ('mt_2',';mt_{2};NEvents',50,0,200),
+    }
+    if int(mass) < 250:
+        plot_vars.update({       
+            'PNN_%s' %mass : ('PNN_%s' %mass,     ';PNN %s [GeV];NEvents' %mass,  20,0,1),     })
 else:
     plot_vars.update({
     'dxy_1' : ('dxy_1',';dxy_{1};NEvents',25,-0.05,0.05),
@@ -256,7 +236,6 @@ else:
     'dz_2' : ('dz_2',';dz_{2};NEvents',25,-0.2,0.2),
     'iso_1' : ('iso_1',';iso_{1};NEvents',20,0,3),
     'iso_2' : ('iso_2',';iso_{2};NEvents',20,0,3),
-    # 'mTdileptonMET_pf' : ('mTdileptonMET_pf',';mTdileptonMET_pf;NEvents',20,0,200),
     'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,0.1),
     'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,3),    
     'njets' : ('njets',';njets;NEvents',10,0,10),
@@ -267,22 +246,14 @@ else:
 # Samples, Selections, and Categories #
 #######################################
 
-
-
-
-
 """
 Xsec: dictionary with key: nick name, value: dictionary of 'xsec', 'era', 'nevents', 'nfiles', 'sample_type'
 """
 
-scope = "mt"
 y_bounds = (100,10e6)
 treename = 'ntuple'
 
-if run_fakes:
-    use_faketau = False
-else:
-    use_faketau = True
+
 input_pattern = [input_path + '/%s*root']
 def get_samples(channel, signal_overlay=True, **kwargs):
     sf_lumi = 1.
@@ -310,30 +281,29 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                     samples["FF_W"] = ['1', 1,   sample_type     , ["FF_W"] ,  0 ]
                 elif region == "DR_ttbar":
                     samples["FF_ttbar"] = ['1', 1,   sample_type     , ["FF_ttbar"] ,  0 ]
-            
-            elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ):
-                # print('+++++++++++++++++++++++++', nick)
+            elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ) or 'bbHto' in nick:
                 if "2HDM" not in nick:
-                    # samples[nick] = ['1', 1 ,   "Single H", [nick] ,  0 ]
                     pass
                 elif PNN and  "M-%s_2HDM" %mass in nick:
-                    samples[nick] = ['1000', 1 ,   "1000 * 2HDM %s" %mass      , [nick] ,  0 ] 
+
+                    if 'bbH' in signal_type and 'bbHto' in nick:
+                        samples[nick] = ['%s'%scale, 1 ,   "%s * bbH %s" %(scale, mass)      , [nick] ,  0 ] 
+                    if 'ggH' in signal_type and 'GluGlu' in nick:
+                        samples[nick] = ['%s'%scale , 1 ,   "%s * ggH %s" %(scale, mass)      , [nick] ,  0 ] 
                 else:
                     continue
             elif sample_type == 'ttbar':
-                samples[nick] = ['1', 1 ,   sample_type     , [nick] ,  0 ]
+                continue
                 
             elif 'dyjets_ee' in sample_type or 'dyjets_mumu' in sample_type:
                 # samples[nick] = ['1* (gen_match_2 == {0})'.format(channel_index), 1 ,  "Z->ll"     , [nick] ,  0 ]
                 samples[nick] = ['1', 1 ,  "Z->ll"     , [nick] ,  0 ]
             elif 'dyjets_tautau' in sample_type:
                     samples[nick] = ['1', 1 ,  "Z->tautau"     , [nick] ,  0 ]
-                # continue
+                
 
             else:
                 if 'data' not in sample_type:
-                # sumofweight = getnickweight(input_path,nick, rerun = get_weight)  
-                # if sumofweight != 0:
                     if  'electroweak_boson' in sample_type or 'diboson' in sample_type or 'singletop' in sample_type  :
                         samples[nick] = ['1', 1.,   'other'     , [nick] ,  0 ]
                     elif 'wjets' in sample_type:
@@ -342,8 +312,13 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                         print("sample type: ", sample_type, "sample name: ", nick)
                         samples[nick] = ['1', 1.,   sample_type     , [nick] ,  0 ]
 
+    ttbar_list=[]
+    for i in range(0, 11):
+        for v in ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q']:
+            ttbar_list.append('{0}_{1}'.format(i, v),)
+            
     samples.update({
-
+            'ttbar': ['1', 1 ,   'ttbar'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q'] + ttbar_list ,  0 ],
             'Data': ["1", 1, 'Data', ['SingleMuon_Run201', 'Tau_Run201', 'EGamma_Run201', 'SingleElectron_Run201', 'DoubleMuon_Run201','MuonEG_Run2', "Muon_Sep", "EGamma_Sep", "SingleMuon_Sep", "Tau_Sep", "Data", "MuonEG_Sep", "Run2022" ],0],
             
         })
@@ -360,6 +335,8 @@ elif channel_name == "et":
 elif channel_name == "tt":
     lepton_selection = combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_leadingtau_selections, Htautau.tt_secondtau_selections)
     anti_selection =  combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_secondtau_selections, "(id_tau_vsJet_Medium_1 <1 && dz_1 < 0.2 && pt_1 > 40 && eta_1 < 2.1 && eta_1 > -2.1 && id_tau_vsEle_VVLoose_1 > 0   &&id_tau_vsMu_VLoose_1 > 0  )")
+elif channel_name == "em":
+    lepton_selection = combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.lepton_veto, Htautau.em_triggers_selections[era])
 the_samples_dict = get_samples(
     channel='Htt',
     
@@ -368,39 +345,29 @@ the_samples_dict = get_samples(
     sf_zjb = 1.0,
 )
 
-# print("===================== the_sample_dict, ========================", the_samples_dict)
-if PNN:
-    regions = {
-    "ALL"                  : '1 > 0',
-    # "nob_loose_mT" : combinecut(Htautau.nob, Htautau.loose_mT ),
-    # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT ),
-    # "btag_loose_mT"      : combinecut(Htautau.btag, Htautau.loose_mT),
-    # "btag_tight_mT"      : combinecut(Htautau.btag, Htautau.tight_mT),
-    }
-else:
-    regions = {
-    # 'nob': '1> 0 '
-    
-    #####em#####
-    # "low_nob"     : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.lowDzeta, ),
-    # "medium_nob"  : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.mediumDzeta, ),
-    # "high_nob"    : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign, Htautau.highDzeta, ),
-    # "All"         : combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
 
-    # "btag"    : combinecut(Htautau.btag, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
-    # "nob"     : combinecut(Htautau.nob, Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.opposite_sign,),
-    ####em##### 
+regions = {
+# 'nob': '1> 0 '
+"nob" :Htautau.nob,
+"btag" : Htautau.btag,
+"nob_PNN0p8" : combinecut( "PNN_100 > 0.8", Htautau.nob),
+"btag_PNN0p8" : combinecut("PNN_100 > 0.8", Htautau.btag),
 
-    "nob" : combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only,Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
-    "btag" : combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign),
-    # # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT,lepton_selection, Htautau.W_true_only, Htautau.opposite_sign,"mt_1 < 40"),
-    # "nob_AntiID" : combinecut( Htautau.nob,   anti_selection, Htautau.W_true_only, Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.nob,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
-    # "btag_AntiID" : combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if channel_name != 'tt' else combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
-    
-    }
-    if channel_name == 'et' and era =="2022postEE":
-        for i in regions:
-            regions[i] = combinecut(regions[i], '( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  )')
+# # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT,lepton_selection, Htautau.W_true_only, Htautau.opposite_sign,"mt_1 < 40"),
+# "nob_AntiID" : combinecut( Htautau.nob,   anti_selection, Htautau.W_true_only, Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if (channel_name != 'tt' and channel_name != 'em') else combinecut( Htautau.nob,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+# "btag_AntiID" : combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if (channel_name != 'tt' and channel_name != 'em') else combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
+
+}
+selections = [ combinecut (lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign )]
+
+if (channel_name == 'mt') or (channel_name =='et'):
+     for i in regions:
+        regions[i] = combinecut(regions[i], Htautau.ttbar_true_only, "mt_1 < 70")
+
+if channel_name == 'et' and era =="2022postEE":
+    for i in regions:
+        regions[i] = combinecut(regions[i], '( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  )')
+
 
 
 
@@ -421,13 +388,9 @@ elif region == "DR_ttbar":
 else:
     print("wrong region provided!! region supported: SR, DR_QCD,DR_ttbar, DR_W ")
     sys.exit(0)
-# print( "printing cuts applied:   ",regions['nob_tight_mT'] , "for channels: ", channel_name )
-selections = [
-    # Htautau.lepton_veto, # DR selections
-#    '{0}>0'.format(weight),  
-                                ]
-if PNN:
-    selections = [ ]
+print( "printing cuts applied:   ",regions['nob_PNN0p8'] , "for channels: ", channel_name )
+
+
 
 the_category_dict = {
     'Htautau': [regions, selections, plot_vars],
@@ -451,11 +414,20 @@ def additional_input_hook(wrps):
 
     def blind_in_HmmWin(w):
         if w.legend == 'Data': # and w.in_file_path.startswith('Hmm_win'):
-            if 'm_fastmtt'  in w.name:
+            if 'm_fastmtt'  in w.name or 'PNN' in w.name:
                 print('BLINDING Data in %s' % w.in_file_path)
-                for i in xrange(w.histo.GetNbinsX() + 1):
+                for i in xrange(w.histo.GetNbinsX() -9, w.histo.GetNbinsX() + 1):
                     w.histo.SetBinContent(i, 0.)
                     w.histo.SetBinError(i, 0.)
+            if 'mt_tot' in w.name:  #
+                if args.mass >= 200:
+                    for i in xrange(6, w.histo.GetNbinsX() + 1):
+                        w.histo.SetBinContent(i, 0.)
+                        w.histo.SetBinError(i, 0.)
+                else:
+                    for i in xrange(3, 11):
+                        w.histo.SetBinContent(i, 0.)
+                        w.histo.SetBinError(i, 0.)
         return w
     def getyields(w):
         region = ["nob_loose","nob_tight","btag_tight","btag_loose"]
@@ -537,9 +509,9 @@ def additional_input_hook(wrps):
         return w
             # print('+++++++++++++++++ ' , yields , '+++++++++++++++++ ')
     # wrps = (getyields(w) for w in wrps)
-    if not use_all_signal:
-        wrps = (rebin(w) for w in wrps)
-    # wrps = (blind_in_HmmWin(w) for w in wrps)
+    # if not use_all_signal:
+    wrps = (rebin(w) for w in wrps)
+    wrps = (blind_in_HmmWin(w) for w in wrps)
     # wrps = (setylimit(w) for w in wrps)
     # wrps = (scale_by_binwidth(w) for w in wrps)
     # for w in wrps:
