@@ -187,7 +187,8 @@ def input_hook(wrps):
     wrps = varial.gen.gen_add_wrp_info(
         wrps,
         is_data = lambda w: config.the_samples_dict[w.sample][2] == 'Data',
-        is_signal = lambda w: ('2HDM-II_TuneCP5_13p6TeV_powheg-pythia8' in w.sample),
+        # is_signal = lambda w: ('2HDM-II_TuneCP5_13p6TeV_powheg-pythia8' in w.sample),
+        is_signal = lambda w: ('*ggH-' in config.the_samples_dict[w.sample][2] or '*bbH-' in config.the_samples_dict[w.sample][2] ) ,
         # is_signal = lambda w: ('Xtohh' in w.sample),
         legend = lambda w: config.the_samples_dict[w.sample][2],
         scale = lambda w: config.the_samples_dict[w.sample][1],

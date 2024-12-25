@@ -361,12 +361,132 @@
 # rm -r  SR_2022postEE_et_run6 ; python run_plotting_with_varial.py plot_config_ggF.py   SR_2022postEE_et_run6 2022postEE_et_run6_nominal  0 0 et 2022postEE 1 SR & 
 
 
-rm -r Version6_2022EE_et_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_et_SR_CMSWeek     2022EE_et_Version8_Rerun_nominal_double_corrected      0 0 et 2022EE     1 SR & 2>&1 &
-rm -r Version6_2022EE_mt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_mt_SR_CMSWeek      2022EE_mt_Version8_Rerun_nominal_double_corrected     0 0 mt 2022EE     1 SR 2>&1 &
-rm -r Version6_2022EE_tt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_tt_SR_CMSWeek    2022EE_tt_Version9_Rerun_nominal_corrected     0 0 tt 2022EE     1 SR & 2>&1 &
-rm -r Judge_Version6_2022postEE_et_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Judge_Version6_2022postEE_et_SR_CMSWeek  2022postEE_et_Version8_Rerun_nominal_double_corrected  0 0 et 2022postEE 1 SR & 2>&1 & 
-rm -r Judge_Version6_2022postEE_mt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Judge_Version6_2022postEE_mt_SR_CMSWeek  2022postEE_mt_Version8_Rerun_nominal_double_corrected  0 0 mt 2022postEE 1 SR & 2>&1 & 
-rm -r Version6_2022postEE_tt_SR_CMSWeek; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022postEE_tt_SR_CMSWeek  2022postEE_tt_Version8_Rerun_nominal_corrected  0 0 tt 2022postEE 1 SR & 2>&1 & 
+# rm -r Version6_2022EE_et_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_et_SR_CMSWeek     2022EE_et_Version8_Rerun_nominal_double_corrected      0 0 et 2022EE     1 SR & 2>&1 &
+# rm -r Version6_2022EE_mt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_mt_SR_CMSWeek      2022EE_mt_Version8_Rerun_nominal_double_corrected     0 0 mt 2022EE     1 SR 2>&1 &
+# rm -r Version6_2022EE_tt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022EE_tt_SR_CMSWeek    2022EE_tt_Version9_Rerun_nominal_corrected     0 0 tt 2022EE     1 SR & 2>&1 &
+# rm -r Judge_Version6_2022postEE_et_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Judge_Version6_2022postEE_et_SR_CMSWeek  2022postEE_et_Version8_Rerun_nominal_double_corrected  0 0 et 2022postEE 1 SR & 2>&1 & 
+# rm -r Judge_Version6_2022postEE_mt_SR_CMSWeek ; python run_plotting_with_varial.py plot_config_ggF.py   Judge_Version6_2022postEE_mt_SR_CMSWeek  2022postEE_mt_Version8_Rerun_nominal_double_corrected  0 0 mt 2022postEE 1 SR & 2>&1 & 
+# rm -r Version6_2022postEE_tt_SR_CMSWeek; python run_plotting_with_varial.py plot_config_ggF.py   Version6_2022postEE_tt_SR_CMSWeek  2022postEE_tt_Version8_Rerun_nominal_corrected  0 0 tt 2022postEE 1 SR & 2>&1 & 
 
 # python run_plotting_with_varial.py plot_config_ggF.py Version6_2022postEE_tt_SR_CMSWeek 2022postEE_tt_Version8_Rerun_nominal_corrected 0 0 tt 2022postEE 1 SR
 # rm -r Debug_Version6_2022postEE_et_SR_CMSWeek python run_plotting_with_varial.py plot_config_ggF.py   Debug_Version6_2022postEE_et_SR_CMSWeek  debug_V6_et_nominal_double_corrected  0 0 et 2022postEE 1 SR & 2>&1 &
+
+# rm -r Version8_2022postEE_em_SR; python run_plotting_with_varial.py plot_config_ggF Version8_2022postEE_em_SR 2022postEE_em_Version8_nominal 0 0 em 2022postEE 1 SR &
+# rm -r Version8_2022EE_em_SR; python run_plotting_with_varial.py plot_config_ggF Version8_2022EE_em_SR 2022EE_em_Version8_nominal 0 0 em 2022EE 1 SR &
+
+# rm -r Version8_2022postEE_mt_SR; python run_plotting_with_varial.py plot_config_ggF Version8_2022postEE_mt_SR 2022postEE_mt_Version8_nominal 0 0 mt 2022postEE 1 SR &
+# rm -r Version8_2022EE_mt_SR; python run_plotting_with_varial.py plot_config_ggF Version8_2022EE_mt_SR 2022EE_mt_Version8_nominal 0 0 mt 2022EE 1 SR &
+# rm -r Version8_2022postEE_et_SR; python run_plotting_with_varial.py plot_config_ggF Version8_2022postEE_et_SR 2022postEE_et_Version8_nominal 0 0 et 2022postEE 1 SR &
+# rm -r Version8_2022EE_et_SR; python run_plotting_with_varial.py plot_config_ggF Version8_2022EE_et_SR 2022EE_et_Version8_nominal 0 0 et 2022EE 1 SR &
+
+# rm -r Version8_2022postEE_tt_SR; python run_plotting_with_varial.py plot_config_ggF Version8_2022postEE_tt_SR 2022postEE_tt_Version8_nominal 0 0 tt 2022postEE 1 SR &
+# rm -r Version8_2022EE_tt_SR; python run_plotting_with_varial.py plot_config_ggF Version8_2022EE_tt_SR 2022EE_tt_Version8_nominal 0 0 tt 2022EE 1 SR &
+
+
+# for m in 100 ; do #     200 1000   
+# for channel in 'mt'    ; do  #    'em' 'tt' 'et'
+# for year in  "2022postEE" ; do  # "2022EE"
+# for sig in  ggH_bbH ; do  #'ggH' 'bbH'
+
+# rm -r  SR_${year}_${channel}_Version8_nominal_${sig}_$m ; 
+# python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version8_nominal_${sig}_$m \
+#  --input_path fitting_template_Version8/Plotting/${year}_${channel}_Version8_nominal --channel  $channel --era ${year} --region SR \
+#  --mass $m --PNN  1 --signal_type $sig &
+
+
+
+
+# done 
+# done
+# done
+# done
+# wait 
+# mv SR_2022*_*t_Version8_nominal* PNN_plots/  
+
+# for m in 100 ; do #     200 1000   
+# for channel in 'tt'    ; do  #    'em' 'tt' 'et'
+# for year in  "2022postEE" ; do  # "2022EE"
+# for sig in  ggH_bbH ; do  #'ggH' 'bbH'
+
+# rm -r  SR_${year}_${channel}_Version9_nominal ; 
+# python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version9_nominal \
+#  --input_path ${year}_${channel}_Version9_nominal_corrected --channel  $channel --era ${year} --region SR \
+#  --mass $m --PNN  0 --signal_type $sig &
+
+# done 
+# done
+# done
+# done
+
+
+
+# for m in 100 ; do #     200 1000   
+# for channel in 'em' ; do  # 'mt' et  'mt'   'em' 'mt' 'et'   
+# for year in "2022postEE"   ; do  # "2022EE"   "2022EE"
+# for sig in  ggH_bbH ; do  #'ggH' 'bbH'
+
+# # rm -r  SR_${year}_${channel}_Version10_nominal_LO_DY ; 
+# # python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_nominal_LO_DY \
+# #  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
+# #  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
+
+# rm -r  SR_${year}_${channel}_Version10_nominal ; 
+# python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_nominal \
+#  --input_path ${year}_${channel}_Version8_nominal --channel  $channel --era ${year} --region SR \
+#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 0 &
+# # rm -r  SR_${year}_${channel}_DY_Jets_Version10 ; 
+# # python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_DY_Jets_Version10 \
+# #  --input_path 2022postEE_mm_Version10_nominal --channel  $channel --era ${year} --region SR \
+# #  --mass $m --PNN  0 --signal_type $sig &
+
+
+
+# # 2022postEE_mm_merged
+# done 
+# done
+# done
+# done
+
+
+
+
+for m in 100 ; do #     200 1000   
+for channel in em;  do  #  em tt 'mt'   'mt'   'em' 'mt' 'et'    'mt' et  em
+for year in  2023 2022postEE; do  # 2022postEE 2022EE    "2022EE"   "2022EE"
+for sig in  ggH ; do  #'ggH' 'bbH'
+
+# rm -r  SR_${year}_${channel}_Version10_nominal_larger_test_test ; 
+# python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_nominal_larger_test_test \
+#  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
+#  --mass $m --PNN  0 --signal_type $sig &
+rm -r  SR_${year}_${channel}_Version10_Version10_LO_DY_Dzeta_m30; 
+python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_Version10_LO_DY_Dzeta_m30 \
+ --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
+ --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
+
+
+# rm -r  DR_QCD_${year}_${channel}_Version10_LO_DY ; 
+# python run_plotting_with_varial.py plot_config_ggF.py   DR_QCD_${year}_${channel}_Version10_LO_DY \
+#  --input_path ${year}_${channel}_Version10_nominal_VVVLooseVsJet --channel  $channel --era ${year} --region DR_QCD \
+#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
+
+
+# rm -r  DR_W_${year}_${channel}_Version10_LO_DY ; 
+# python run_plotting_with_varial.py plot_config_ggF.py   DR_W_${year}_${channel}_Version10_LO_DY \
+#  --input_path ${year}_${channel}_Version10_nominal_VVVLooseVsJet --channel  $channel --era ${year} --region DR_W \
+#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
+
+
+# rm -r  SR_${year}_${channel}_Version10_DY_10_only ; 
+# python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_DY_10_only \
+#  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
+#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 0 &
+
+
+
+# 2022postEE_mm_merged
+done 
+done
+done
+done
+

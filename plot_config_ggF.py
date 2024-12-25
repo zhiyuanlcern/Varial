@@ -30,6 +30,7 @@ parser.add_argument('--channel', type=str, default='mt', help='decay channel, mt
 parser.add_argument('--region', type=str, default='nob', help='btag selection, nob, btag')
 parser.add_argument('--PNN', type=int, default=0, help='run PNN score or not')
 parser.add_argument('--signal_type', type=str, default='ggH', help='ggH or bbH or ggH_bbH')
+parser.add_argument('--use_LO_DY', type=int, default=0, help='0: use NLO DY, 1: use LO DY')
 args = parser.parse_args()
 
 input_path= args.input_path
@@ -58,20 +59,23 @@ elif channel_name == "mt":
 else:
     channel_index = 1
 
-embedding_SF = {"2016preVFPmt": 1.15,"2016preVFPet": 1.15,"2016postVFPmt": 0.75,"2016postVFPet": 1.05,"2017et": 0.9,"2017mt": 0.9,"2018et": 0.85,"2018mt": 1    }
 luminosities = {
     "2016preVFP": 15.1158e3,
     "2016postVFP": 10.0093e3,
     "2017": 41.5e3,
     "2018": 59.8e3,
-    "2022EE":7.875e3,
-    "2022postEE":  	26.337e3  }
+    "2022EE":8.077009684e3,
+    "2022postEE":  26.671609707e3,
+    "2023": 0.641474303e3 + 18.062659111e3, # B + C
+    "2023BPix": 9.693130053e3, # D 
+     }
 # 2022 golden json
-# C 	 	4.953 	
-# D 	 	2.922 	
-# E 	 	5.672 	
-# F 	 	17.610 	
-# G 	 	3.055 	
+# B         0.096555539
+# C 	 	5.010409016
+# D 	 	2.970045129
+# E 	 	5.806955207
+# F 	 	17.781901464     	
+# G 	 	3.082753036
 # postEE  26.337
 if era in luminosities:
         lumi = luminosities[era]
@@ -87,23 +91,22 @@ samples_f = open(samples_name, "r")
 samples_list =  yaml.load(samples_f, Loader = yaml.Loader) 
 
 # 'embedding', 
-stacking_order = [
-'fakes',
-'Z->tautau', 
-'Z->ll', 
-'ttbar',
-'wjets', 
-'Single H',   ###
-'other',
-
-]
+if channel_name != "tt":
+    stacking_order = [
+    # 'Z->tautau', # 'Z->ll', # 'wjets', # 'Single H',   ###
+    'DY-Jets',     'fakes',     'Top',     'other',     ]
+else:
+    stacking_order = [
+    'fakes', 'DY-Jets', 'Top',     'other',     ]
 
 if int(mass) > 200:
     scale =10 
 elif int(mass) >= 100:
     scale = 200
 else:
-    scale =1000
+    scale =10000
+
+
                      
 sample_colors = {
 # 'embedding'  :  838,
@@ -111,14 +114,18 @@ sample_colors = {
 # 'electroweak_boson'  :  804,
 # 'dyjets'  :  814,
 'fakes' : 617,
-'Z->ll'  :  814,
-'Z->tautau'  :  864,
-'ttbar'  :  400,
-'wjets'  :  632,
+'DY-Jets' : 864,
+'DY-Jets-ll'  :  814,
+'DY-Jets-tt'  :  864,
+"DY-Jets-fakes": 596,
+'Top'  :  400,
+# 'wjets'  :  632,
 'Single H': 838,
 'other' : 920, 
-"%s * bbH %s" %(scale,mass) : 416,
-"%s * ggH %s" %(scale,mass) : 632,
+"%s*bbH-%s" %(scale,mass) : 416,
+"%s*ggH-%s" %(scale,mass) : 632,
+'Top-true': 401,
+'Top-fake': 501,
 # 'diboson'  :  596,
 # 'ggh_hbb'  :  596,
 # 'ggh_htautau'  :  838,
@@ -139,48 +146,36 @@ enable_reuse_step = True
 #################
 
 name = sys.argv[2]
-# 'DR-ttbar-Run2-fixbtag_nprebtagjets_newgensum'
-weight_dict_mt = {
-    "2022postEE": 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *trg_wgt_ditau_crosstau_2 *  id_wgt_tau_vsMu_Tight_2 * id_wgt_mu_1'.format(lumi), # 
-    "2022EE": 'Xsec   * {0} * puweight * genWeight/genEventSumW * btag_weight * FF_weight   * id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1 * trg_wgt_ditau_crosstau_2 *  id_wgt_tau_vsMu_Tight_2 * id_wgt_mu_1'.format(lumi), # 
-    "2018": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
-    "2017": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
-    "2016": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
-}
+weight_dict ={"mt" : {}, "et": {}, "tt": {}, "em": {}, "mm":{}}
+# weight_dict["mt"] = {
+#     "2018": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
+#     "2017": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
+#     "2016": 'Xsec * {0} * genWeight/genEventSumW * id_wgt_mu_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_Tight_2 * iso_wgt_mu_1 *  btag_weight * puweight  '.format(lumi),
+# }
+# weight_dict["et"] = {
+#     "2018": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
+#     "2017": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
+#     "2016": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
+# }
 
-weight_dict_et = {
-    "2022postEE": 'Xsec * {0}* puweight * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2  *  btag_weight * FF_weight * id_wgt_tau_vsJet_Medium_2  * id_wgt_ele_wpTight * trg_wgt_ditau_crosstau_2  * trg_wgt_single_ele30  ' .format(lumi), 
-    "2022EE": 'Xsec * {0}* puweight * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 *  *  btag_weight * FF_weight * id_wgt_tau_vsJet_Medium_2  * id_wgt_ele_wpTight * trg_wgt_ditau_crosstau_2  * trg_wgt_single_ele30  ' .format(lumi), 
-    "2018": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
-    "2017": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
-    "2016": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
-}
+weight_dict["mt"]["2022postEE"] = 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *trg_wgt_ditau_crosstau_2 *  id_wgt_tau_vsMu_Tight_2 * id_wgt_mu_1'.format(lumi)
+weight_dict["mt"]["2022EE"] =weight_dict["mt"]["2023"] =weight_dict["mt"]["2023BPix"]= weight_dict["mt"]["2022postEE"]
+     
 
-weight_dict_tt = {
-    "2022postEE": 'Xsec *  {0}* puweight * genWeight/genEventSumW *    btag_weight   *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2  '.format(lumi),
-    "2022EE": 'Xsec  *  {0}* puweight * genWeight/genEventSumW *    btag_weight  *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2 '.format(lumi),
-}
+weight_dict["et"]["2022postEE"] =  'Xsec * {0}* puweight * genWeight/genEventSumW     *  btag_weight * FF_weight * id_wgt_tau_vsJet_Medium_2  * id_wgt_ele_wpTight * trg_wgt_ditau_crosstau_2  * trg_wgt_single_ele30  * id_wgt_tau_vsEle_Tight_2' .format(lumi) #
+weight_dict["et"]["2022EE"] =weight_dict["et"]["2023"] =weight_dict["et"]["2023BPix"]= weight_dict["et"]["2022postEE"]
 
+weight_dict["tt"] = {}
+weight_dict["tt"]["2022postEE"]  =   'Xsec *  {0}* puweight * genWeight/genEventSumW *    btag_weight   *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2  '.format(lumi)
+weight_dict["tt"]["2022EE"] =weight_dict["tt"]["2023"] =weight_dict["tt"]["2023BPix"]= weight_dict["tt"]["2022postEE"]
 
-weight_dict_em = {
-    ## id_wgt_tau_vsEle_VVLoose_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsMu_VLoose_1 * id_wgt_tau_vsMu_VLoose_2 * id_wgt_tau_vsJet_Medium_1 * id_wgt_tau_vsJet_Medium_2
-    ## id_wgt_tau_vsEle_VVLoose_1 * id_wgt_tau_vsEle_VVLoose_2 * id_wgt_tau_vsMu_VLoose_1 * id_wgt_tau_vsMu_VLoose_2 * id_wgt_tau_vsJet_Medium_1 * id_wgt_tau_vsJet_Medium_2
-    "2022postEE": '(Xsec * genWeight *  {0} / genEventSumW)* (trg_wgt_single_ele30 * trg_single_ele30 > 0 + 1 * trg_single_ele30 < 1 ) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight * puweight * (trg_wgt_single_mu24 * trg_single_mu24 > 0 + 1 * trg_single_mu24 < 1 )'   .format(lumi) ,
-    "2022EE": '(Xsec * genWeight *  {0} / genEventSumW)* (trg_wgt_single_ele30 * trg_single_ele30 > 0 + 1 * trg_single_ele30 < 1 ) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight * puweight * (trg_wgt_single_mu24 * trg_single_mu24 > 0 + 1 * trg_single_mu24 < 1 )'  .format(lumi), 
-}
+weight_dict["em"] = {"2022postEE": '(Xsec * genWeight *  {0} / genEventSumW)* (trg_wgt_single_ele30  ) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight * puweight * (trg_wgt_single_mu24 )'   .format(lumi)}
+weight_dict["em"]["2022EE"] =weight_dict["em"]["2023"] =weight_dict["em"]["2023BPix"]= weight_dict["em"]["2022postEE"]
 
-if channel_name == "et":
-    weight_dict = weight_dict_et 
-elif channel_name == "mt":
-    weight_dict = weight_dict_mt 
-elif channel_name == "tt":
-    weight_dict = weight_dict_tt
-elif channel_name == "em":
-    weight_dict = weight_dict_em  
-else:
-    sys.exit()
+weight_dict["mm"] = {"2022postEE": '(Xsec * genWeight *  {0} / genEventSumW) * puweight '.format(lumi)}
+weight_dict["mm"]["2022EE"] =weight_dict["mm"]["2023"] =weight_dict["mm"]["2023BPix"]= weight_dict["mm"]["2022postEE"]
 
-weight = weight_dict[era]
+weight = weight_dict[channel_name][era]
 
 plot_vars = {}
 
@@ -189,37 +184,119 @@ nob_tight_mT = [0,50.0,60.0,70.0,80.0,90.0,100.0,110.0,120.0,130.0,140.0,150.0,1
 m_fastmtt = [0,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,220,240,260,300]
 met = [0,10,20,30,40,50,60,70,80,90,120,140,200,400]
 pt = [30,40,50,60,70,80,90,100,120,140,200,350,500, 700, 1000]
-plot_vars.update({
-    
+plot_vars.update({    
     'eta_1' : ('eta_1',';eta_{1};NEvents',30,-2.3,2.3),
     'eta_2' : ('eta_2',';eta_{2};NEvents',30,-2.3,2.3),
-    'eta_fastmtt' : ('eta_fastmtt',';eta_{#tau#tau};NEvents',20,-10,10),
+    'jeta_1' : ('jeta_1',';jeta_{1};NEvents',60,-6.3,6.3),
+    'jeta_2' : ('jeta_2',';jeta_{2};NEvents',60,-6.3,6.3),
+    'jpt_1' : ('jpt_1', ';jpt_{1};NEvents', 40,0,200 ),
+    'jpt_2' : ('jpt_2', ';jpt_{1};NEvents', 40,0,200 ),
+    
     'mTdileptonMET' : ('mTdileptonMET',';mTdileptonMET;NEvents',20,0,200),
-    'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents', 30, 0, 500),
-    'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 30, 0, 300),
-    'met' : ('met',';met;NEvents',40,0,400), 
-    'metSumEt' : ('metSumEt',';metSumEt;NEvents',20,0,200),
+    'mass_tt'       :    ('mass_tt', '; mass_tt;NEvents', 30, 0, 300),
+    'pt_tt'       :    ('pt_tt', '; pt_tt;NEvents', 30, 0, 300),
+    'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 40, 0, 200),
+    'met' : ('met',';met;NEvents',30,0,150), 
+    'metSumEt' : ('metSumEt',';metSumEt;NEvents',40,0,400),
     'metphi' : ('metphi',';metphi;NEvents',80,-4,4),
     'mt_tot': ('mt_tot', ';m_{T}^{tot} [GeV];NEvents', 50, 0, 500),
     'mt_1' : ('mt_1',';mt_{1};NEvents',50,0,200),
     'mt_2' : ('mt_2',';mt_{2};NEvents',50,0,200),
     'phi_1' : ('phi_1',';phi_{1};NEvents',20,-3.14,3.14),
     'phi_2' : ('phi_2',';phi_{2};NEvents',20,-3.14,3.14),
-    'pt_1' : ('pt_1',';pt_{1};NEvents',20,20,220),
-    'pt_2' : ('pt_2',';pt_{2};NEvents',20,20,220),
-    'pt_fastmtt'   :    ('pt_fastmtt', ';p_{T}^{#tau#tau} ;NEvents', 50, 0, 500),
-    'pt_tt'   :    ('pt_tt', ';pt_{tt} ;NEvents', 40, 0, 400),
-    'pt_vis'   :    ('pt_vis', ';pt_{vis} ;NEvents', 30, 0, 300),
-
+    'pt_1' : ('pt_1',';pt_{1};NEvents',50,0,100),
+    'pt_2' : ('pt_2',';pt_{2};NEvents',50,0,100),
+    'pt_tt'   :    ('pt_tt', ';pt_{tt} ;NEvents', 40, 0, 200),
+    'pt_vis'   :    ('pt_vis', ';pt_{vis} ;NEvents', 40, 0, 200),
     'pzetamissvis' : ('pzetamissvis',';D_{#zeta};NEvents',25,-150,100),    
     'deltaR_ditaupair' :  ('deltaR_ditaupair', ';#deltaR [GeV];NEvents',25 , 0, 5),
-    
+    # 'C_W'   : ('C_W', ';C_W ;NEvents', 20, -5, 6),
+    # 'C_QCD'   : ('C_QCD', ';C_QCD ;NEvents', 20, -2, 2),
+    # 'dphi_12' : ('dphi_12', ';#dphi_12;NEvents',30 ,0, 3.1415),
+    # 'deta_12' : ('deta_12', ';#deta_12;NEvents',30 ,-3.5, 3.5),
+    # 'dphi_H1' : ('dphi_H1', ';#dphi_H1;NEvents',30 ,0, 3.1415),
+    # 'dphi_H2' : ('dphi_H2', ';#dphi_H2;NEvents',30 ,0, 3.1415),
+    # 'dphi_H1_LT' : ('dphi_H1_LT', ';#dphi_H1_LT;NEvents',30 ,0, 3.1415),
+    # 'dphi_H2_LT' : ('dphi_H2_LT', ';#dphi_H2_LT;NEvents',30 ,0, 3.1415),    
+    # 'dphi_HMET' : ('dphi_HMET', ';#dphi_HMET;NEvents',30 ,0, 3.1415),
+    # 'dphi_MET_1' : ('dphi_MET_1', ';#dphi_MET_1;NEvents',30 ,0, 3.1415),
+    # 'dphi_MET_2' : ('dphi_MET_2', ';#dphi_MET_2;NEvents',30 ,0, 3.1415),
+    # 'dphi_HMET_LT' : ('dphi_HMET_LT', ';#dphi_HMET_LT;NEvents',30 ,0, 3.1415),
+    # 'dphi_MET_1_LT' : ('dphi_MET_1_LT', ';#dphi_MET_1_LT;NEvents',30 ,0, 3.1415),
+    # 'dphi_MET_2_LT' : ('dphi_MET_2_LT', ';#dphi_MET_2_LT;NEvents',30 ,0, 3.1415),
+    # 'cos_dphi_H1' : ('cos_dphi_H1', ';#cos_dphi_H1;NEvents',40 ,-1, 1),
+    # 'cos_dphi_H2' : ('cos_dphi_H2', ';#cos_dphi_H2;NEvents',40 ,-1, 1),
+    # 'cos_dphi_H1_LT' : ('cos_dphi_H1_LT', ';#cos_dphi_H1_LT;NEvents',40 ,-1, 1),
+    # 'cos_dphi_H2_LT' : ('cos_dphi_H2_LT', ';#cos_dphi_H2_LT;NEvents',40 ,-1, 1),    
+    # 'cos_dphi_HMET' : ('cos_dphi_HMET', ';#cos_dphi_HMET;NEvents',40 ,-1, 1),
+    # 'cos_dphi_MET_1' : ('cos_dphi_MET_1', ';#cos_dphi_MET_1;NEvents',40 ,-1, 1),
+    # 'cos_dphi_MET_2' : ('cos_dphi_MET_2', ';#cos_dphi_MET_2;NEvents',40 ,-1, 1),
+    # 'cos_dphi_HMET_LT' : ('cos_dphi_HMET_LT', ';#cos_dphi_HMET_LT;NEvents',40 ,-1, 1),
+    # 'cos_dphi_MET_1_LT' : ('cos_dphi_MET_1_LT', ';#cos_dphi_MET_1_LT;NEvents',40 ,-1, 1),
+    # 'cos_dphi_MET_2_LT' : ('cos_dphi_MET_2_LT', ';#cos_dphi_MET_2_LT;NEvents',40 ,-1, 1),
+    # 'costhstar_1_LT' : ('costhstar_1_LT', ';costhstar_1_LT;NEvents', 40, -1, 1),
+    # 'costhstar_2_LT' : ('costhstar_2_LT', ';costhstar_2_LT;NEvents', 40, -1, 1),
+    # 'costheta_1_LT' : ('costheta_1_LT', ';costheta_1_LT;NEvents', 40, -1, 1),
+    # 'costheta_2_LT' : ('costheta_2_LT', ';costheta_2_LT;NEvents', 40, -1, 1),
+    # 'pt_1_LT' : ('pt_1_LT',   ';pt_1_LT;NEvents',   50,0,100         ),
+    # 'pt_2_LT' : ('pt_2_LT',   ';pt_2_LT;NEvents',   50,0,100         ),
+    # 'eta_1_LT' : ('eta_1_LT',   ';eta_1_LT;NEvents',   30,-3,3         ),
+    # 'eta_2_LT' : ('eta_2_LT',   ';eta_2_LT;NEvents',   30,-3,3         ),
+    # 'phi_1_LT' : ('phi_1_LT',   ';phi_1_LT;NEvents',   20,-3.14,3.14         ),
+    # 'phi_2_LT' : ('phi_2_LT',   ';phi_2_LT;NEvents',   20,-3.14,3.14         ),
+    # 'deltaR_LT' : ('deltaR_LT',   ';deltaR_LT;NEvents',25 , 0, 5            ),
+    # 'kT_LT' : ('kT_LT',   ';kT_LT;NEvents',     40,0,400       ),
+    # 'kT' : ('kT',   ';kT;NEvents',     40,0,400       ),
+    # 'antikT_LT' : ('antikT_LT',   ';antikT_LT;NEvents',     40,0,0.2       ),
+    # 'antikT' : ('antikT',   ';antikT;NEvents',     40,0,0.2       ),
+    # 'Z_NN_LT' : ('Z_NN_LT',   ';Z_NN_LT;NEvents',    30,0,0.6        ),
+    # 'm_vis_square' : ('m_vis_square',   ';m_vis_square;NEvents',    40, 0, 30e3        ),
+    # 'pt1_to_ptH' : ('pt1_to_ptH',   ';pt1_to_ptH;NEvents',  40, 0, 3         ),
+    # 'pt2_to_ptH' : ('pt2_to_ptH',   ';pt2_to_ptH;NEvents',  40, 0, 3          ),
+    # 'pt1_LT_to_ptH' : ('pt1_LT_to_ptH',   ';pt1_LT_to_ptH;NEvents',  40, 0, 3         ),
+    # 'pt2_LT_to_ptH' : ('pt2_LT_to_ptH',   ';pt2_LT_to_ptH;NEvents',  40, 0, 3          ),
+    # 'dtheta_12' : ('dtheta_12', ';#dtheta_12;NEvents',30 ,-3.5, 3.5),
+    # 'dphi_12_LT' : ('dphi_12_LT', ';#dphi_12_LT;NEvents', 30 ,0, 3.5 ),
+    # 'deta_12_LT' : ('deta_12_LT', ';#deta_12_LT;NEvents',30 ,-3.5, 3.5 ),
+    # 'dtheta_12' : ('dtheta_12', ';#cos(dtheta_12);NEvents', 30 ,-3.5, 3.5),
+    # 'cos_dtheta_12' : ('cos_dtheta_12', ';#cos(dtheta_12);NEvents', 40 ,-1, 1 ),
+    # 'pt1_to_mH' : ('pt1_to_mH', ';#pt1_to_mH;NEvents', 40, 0, 1),
+    # 'pt2_to_mH' : ('pt2_to_mH', ';#pt2_to_mH;NEvents', 40, 0, 1),
+    # 'pt1_LT_to_mH' : ('pt1_LT_to_mH', ';#pt1_LT_to_mH;NEvents', 40, 0, 0.5),
+    # 'pt2_LT_to_mH' : ('pt2_LT_to_mH', ';#pt2_LT_to_mH;NEvents', 40, 0, 0.5),
+    # 'pt_ttmet_to_mH' : ('pt_ttmet_to_mH', ';#pt_ttmet_to_mH;NEvents', 40, 0, 1),
+    # 'pt_fastmtt_to_mH' : ('pt_fastmtt_to_mH', ';#pt_fastmtt_to_mH;NEvents', 40, 0, 1),
+    # 'pt_vis_to_mH' : ('pt_vis_to_mH', ';#pt_vis_to_mH;NEvents', 40, 0, 1),
+    # 'pt1_LT_to_pt2_LT' : ('pt1_LT_to_pt2_LT', ';#pt1_LT_to_pt2_LT;NEvents', 40, 0, 2),
+    # 'eta_vis' :  ('eta_vis',';eta_vis;NEvents',30,-2.3,2.3),
+    # 'phi_vis' : ('phi_vis',';phi_vis;NEvents',30,-3.5,3.5),
 })
+if channel_name == "em":
+    plot_vars.update({
+    'pt_1' : ('pt_1',';pt_{1};NEvents',24,0,120),
+    'pt_2' : ('pt_2',';pt_{2};NEvents',24,0,120),
+    'eta_1' : ('eta_1',';eta_{1};NEvents',30,-3,3),
+    'eta_2' : ('eta_2',';eta_{2};NEvents',30,-3,3),
+    'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 13, 50, 310),
+    }
+    )
+if channel_name == "mm":
+     plot_vars.update({       
+            'mass_ll'       :    ('mass_ll', '; mass_ll;NEvents', 30, 0, 300),
+            'pt_ll'       :    ('pt_ll', '; pt_ll;NEvents', 30, 0, 300),
+            })
+else:
+    plot_vars.update({
+        'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents',  27, 30, 300),
+        # 'eta_fastmtt' : ('eta_fastmtt',';eta_{#tau#tau};NEvents',30,-2.3,2.3),
+        # 'pt_fastmtt'   :    ('pt_fastmtt', ';p_{T}^{#tau#tau} ;NEvents', 40, 0, 200),
+        # 'phi_fastmtt' : ('phi_fastmtt',';phi_{#tau#tau};NEvents',30,-3.5,3.5),
+    })
 if PNN:
     plot_vars = {
         
         'mt_tot': ('mt_tot', ';m_{T}^{tot} [GeV];NEvents', 50, 0, 500),
-        'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents', 30, 0, 500),
+        'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents', 27, 30, 300),
         'pt_1' : ('pt_1',';pt_{1};NEvents',20,20,220),
         'pt_2' : ('pt_2',';pt_{2};NEvents',20,20,220),
         'mt_1' : ('mt_1',';mt_{1};NEvents',50,0,200),
@@ -230,16 +307,16 @@ if PNN:
             'PNN_%s' %mass : ('PNN_%s' %mass,     ';PNN %s [GeV];NEvents' %mass,  20,0,1),     })
 else:
     plot_vars.update({
-    'dxy_1' : ('dxy_1',';dxy_{1};NEvents',25,-0.05,0.05),
-    'dxy_2' : ('dxy_2',';dxy_{2};NEvents',25,-0.1,0.1),
-    'dz_1' : ('dz_1',';dz_{1};NEvents',25,-0.2,0.2),
-    'dz_2' : ('dz_2',';dz_{2};NEvents',25,-0.2,0.2),
-    'iso_1' : ('iso_1',';iso_{1};NEvents',20,0,3),
-    'iso_2' : ('iso_2',';iso_{2};NEvents',20,0,3),
-    'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,0.1),
-    'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,3),    
-    'njets' : ('njets',';njets;NEvents',10,0,10),
-    'phi_fastmtt' : ('phi_fastmtt',';phi_{#tau#tau};NEvents',20,-3.14,3.14),
+    # 'dxy_1' : ('dxy_1',';dxy_{1};NEvents',25,-0.02,0.02),
+    # 'dxy_2' : ('dxy_2',';dxy_{2};NEvents',25,-0.02,0.02),
+    # 'dz_1' : ('dz_1',';dz_{1};NEvents',25,-0.02,0.02),
+    # 'dz_2' : ('dz_2',';dz_{2};NEvents',25,-0.02,0.02),
+    # 'iso_1' : ('iso_1',';iso_{1};NEvents',50,0,0.3),
+    # 'iso_2' : ('iso_2',';iso_{2};NEvents',20,0,3),
+    # 'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,0.1),
+    # 'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,3),    
+    # 'njets' : ('njets',';njets;NEvents',10,0,10),
+    
     })
 
 #######################################
@@ -260,75 +337,100 @@ def get_samples(channel, signal_overlay=True, **kwargs):
     sf_zjb = kwargs.get('sf_zjb', 1.)
     ##########################################
     samples = {}
-    ## for the first run, set rerun = True
     
-    for nick in samples_list:
-        # print(nick)
-        try:
-            xsec = samples_list[nick]['xsec']
-        except:
-            xsec = 0
-        sample_type = samples_list[nick]['sample_type']
-        if os.path.exists(input_path):
+    #         if sample_type == 'fakes':
+    #             if region == "SR":
+    #                 samples["FF_Combined"] = ['1', 1,   sample_type     , ["FF_Combined"] ,  0 ]
+    #             elif region == "DR_QCD":
+    #                 samples["FF_QCD"] = ['1', 1,   sample_type     , ["FF_QCD"] ,  0 ]
+    #             elif region == "DR_W":
+    #                 samples["FF_W"] = ['1', 1,   sample_type     , ["FF_W"] ,  0 ]
+    #             elif region == "DR_ttbar":
+    #                 samples["FF_ttbar"] = ['1', 1,   sample_type     , ["FF_ttbar"] ,  0 ]
 
-
-            if sample_type == 'fakes':
-                if region == "SR":
-                    samples["FF_Combined"] = ['1', 1,   sample_type     , ["FF_Combined"] ,  0 ]
-                elif region == "DR_QCD":
-                    samples["FF_QCD"] = ['1', 1,   sample_type     , ["FF_QCD"] ,  0 ]
-                elif region == "DR_W":
-                    samples["FF_W"] = ['1', 1,   sample_type     , ["FF_W"] ,  0 ]
-                elif region == "DR_ttbar":
-                    samples["FF_ttbar"] = ['1', 1,   sample_type     , ["FF_ttbar"] ,  0 ]
-            elif 'vbf' in sample_type or 'ggh_hbb' in sample_type or 'ggh' in sample_type or ("H" in nick and "SUSY" not in nick ) or 'bbHto' in nick:
-                if "2HDM" not in nick:
-                    pass
-                elif PNN and  "M-%s_2HDM" %mass in nick:
-
-                    if 'bbH' in signal_type and 'bbHto' in nick:
-                        samples[nick] = ['%s'%scale, 1 ,   "%s * bbH %s" %(scale, mass)      , [nick] ,  0 ] 
-                    if 'ggH' in signal_type and 'GluGlu' in nick:
-                        samples[nick] = ['%s'%scale , 1 ,   "%s * ggH %s" %(scale, mass)      , [nick] ,  0 ] 
-                else:
-                    continue
-            elif sample_type == 'ttbar':
-                continue
-                
-            elif 'dyjets_ee' in sample_type or 'dyjets_mumu' in sample_type:
-                # samples[nick] = ['1* (gen_match_2 == {0})'.format(channel_index), 1 ,  "Z->ll"     , [nick] ,  0 ]
-                samples[nick] = ['1', 1 ,  "Z->ll"     , [nick] ,  0 ]
-            elif 'dyjets_tautau' in sample_type:
-                    samples[nick] = ['1', 1 ,  "Z->tautau"     , [nick] ,  0 ]
-                
-
-            else:
-                if 'data' not in sample_type:
-                    if  'electroweak_boson' in sample_type or 'diboson' in sample_type or 'singletop' in sample_type  :
-                        samples[nick] = ['1', 1.,   'other'     , [nick] ,  0 ]
-                    elif 'wjets' in sample_type:
-                        samples[nick] = ['1', 1.,   'wjets'     , [nick] ,  0 ]
-                    else:
-                        print("sample type: ", sample_type, "sample name: ", nick)
-                        samples[nick] = ['1', 1.,   sample_type     , [nick] ,  0 ]
-
-    ttbar_list=[]
-    for i in range(0, 11):
-        for v in ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q']:
-            ttbar_list.append('{0}_{1}'.format(i, v),)
+    # ttbar_list=[]
+    # for i in range(0, 11):
+    #     for v in ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q']:
+    #         ttbar_list.append('{0}_{1}'.format(i, v),)
             
+        
     samples.update({
-            'ttbar': ['1', 1 ,   'ttbar'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q'] + ttbar_list ,  0 ],
-            'Data': ["1", 1, 'Data', ['SingleMuon_Run201', 'Tau_Run201', 'EGamma_Run201', 'SingleElectron_Run201', 'DoubleMuon_Run201','MuonEG_Run2', "Muon_Sep", "EGamma_Sep", "SingleMuon_Sep", "Tau_Sep", "Data", "MuonEG_Sep", "Run2022" ],0],
-            
+            # 'Single-Top':['1', 1, 'Single-Top', ["TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"], 0],
+            'Data': ["1", 1, 'Data', [ "Muon", "Tau", "EGamma", "DoubleMuon", "SingleMuon" ],0], ## "MuonEG" will be identified by Muon so don't double count
+            # "DY-Jets": ["1", 1, 'DY-Jets', DY_list, 0],
+            "other": ["1", 1, 'other', [ "WZto", "ZZto", "WWto", "GluGluHto2Tau_M-125_TuneCP5_13p6TeV_amcatnloFXFX", "GluGluHToTauTau_M-125_TuneCP5_13p6TeV_powheg", "VBFH"],0],
+            "Wjets" : ["1", 1, 'W-Jets', ["WtoLNu"], 0], 
+            # "fakes": ["1", 1, 'fakes', ["FF_Combined"],0],
+            "%s*%s-%s" %(scale,signal_type,mass) : ["1", scale, "%s*%s-%s" %(scale,signal_type,mass), ["GluGluHto2Tau_M-%s_2HDM"%(mass)], 0 ]
+            })
+    if channel_name != 'em':
+        samples.update({
+            'Top': ['1', 1 ,   'Top'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
         })
+    else:
+        samples.update({
+            # 'Top-true': ['((gen_match_1 ==1 && gen_match_2 ==2) ||(gen_match_1 ==3 && gen_match_2 ==4) || (gen_match_1 ==1 && gen_match_2 ==4) || (gen_match_1 ==3 && gen_match_2 ==2))', 1 ,   'Top-true'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
+            # 'Top-fake': ['(!((gen_match_1 ==1 && gen_match_2 ==2) ||(gen_match_1 ==3 && gen_match_2 ==4) || (gen_match_1 ==1 && gen_match_2 ==4) || (gen_match_1 ==3 && gen_match_2 ==2)))', 1 ,   'Top-fake'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
+            'Top-true': ['(gen_match_1 ==1 && gen_match_2 ==2)', 1 ,   'Top-true'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
+            'Top-fake': ['!(gen_match_1 ==1 && gen_match_2 ==2)', 1 ,   'Top-fake'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
+        })
+    print(samples)
+    if args.use_LO_DY:
+        samples.update({
+            "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 1, 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
+        })
+        
+        if channel_name == 'em':
+            samples.update({
+                "DY-Jets-tt": ["(gen_match_1 == 3 && gen_match_2 ==4)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],        
+            })
+        elif channel_name =='et':
+            samples.update({
+                "DY-Jets-tt": ["(gen_match_1 == 3 && gen_match_2 ==5)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],        
+                "DY-Jets-fakes": ["(gen_match_1 == 3 &&  gen_match_2 !=5)", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],
+            })
+        elif channel_name =='mt':
+            samples.update({
+                "DY-Jets-tt": ["(gen_match_1 == 4 && gen_match_2 ==5)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],    
+                "DY-Jets-fakes": ["(gen_match_1 == 4 &&  gen_match_2 !=5)", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],    
+            })
+        elif channel_name =='tt':
+            samples.update({
+                "DY-Jets-tt": ["(gen_match_1 == 5 && gen_match_2 ==5)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],     
+                "DY-Jets-fakes": ["(gen_match_1 == 5 &&  gen_match_2 !=5) || (gen_match_1 != 5 &&  gen_match_2 ==5) ", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],   
+            })
+        elif channel_name =='mm':
+            samples.update({
+                "DY-Jets-tt": ["(gen_match_1 == 5 && gen_match_2 ==5)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],     
+                "DY-Jets-fakes": ["(gen_match_1 == 5 &&  gen_match_2 !=5) || (gen_match_1 != 5 &&  gen_match_2 ==5) ", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],   
+            })
+        
+        # ///   1 = prompt electron,
+        # ///   2 = prompt muon,
+        # ///   3 = tau->e decay,
+        # ///   4 = tau->mu decay,
+        # ///   5 = hadronic tau decay,
+        # ///   0 = unknown or unmatched
+    else:
+        samples.update({
+            "DY-Jets-tautau": ["1", 1, 'DY-Jets-tautau', ["DYto2Tau",], 0],
+            "DY-Jets-ll": ["1", 1, 'DY-Jets-ll', ["DYto2Mu_MLL", "DYto2E_MLL"]  , 0],
+        })
+    if region == "SR":
+        samples.update({"fakes": ["1", 1, 'fakes', ["FF_Combined"],0],})
+    elif region == "DR_QCD":
+        samples.update({"fakes": ["1", 1, 'fakes', ["FF_QCD"],0],})
+    elif region == "DR_W":
+        samples.update({"fakes": ["1", 1, 'fakes', ["FF_W"],0],})
+    elif region == "DR_ttbar":
+        samples.update({"fakes": ["1", 1, 'fakes', ["FF_ttbar"],0],})
     
     return samples
 
 Htautau = Htautau_selections()
 if channel_name == "mt":
     lepton_selection = combinecut( Htautau.mt_triggers_selections[era],Htautau.muon_selections,Htautau.lepton_veto,Htautau.mt_tau_selections[era])
-    anti_selection = combinecut( Htautau.mt_triggers_selections[era],Htautau.muon_selections,Htautau.lepton_veto,"(id_tau_vsMu_Loose_2 > 0 && id_tau_vsJet_Medium_2 < 1 &&  id_tau_vsEle_VVLoose_2 > 0 && pt_2 > 30 ) ")
+    anti_selection = combinecut( Htautau.mt_triggers_selections[era],Htautau.muon_selections,Htautau.lepton_veto,"(id_tau_vsMu_Tight_2 > 0 && id_tau_vsJet_Medium_2 < 1 &&  id_tau_vsEle_VVLoose_2 > 0 && pt_2 > 30 ) ")
 elif channel_name == "et":
     lepton_selection = combinecut( Htautau.et_triggers_selections[era],Htautau.electron_selections,Htautau.lepton_veto,Htautau.et_tau_selections[era])
     anti_selection = combinecut( Htautau.et_triggers_selections[era],Htautau.electron_selections,Htautau.lepton_veto, "(id_tau_vsMu_VLoose_2 > 0  &&  id_tau_vsEle_Tight_2 > 0 && id_tau_vsJet_Medium_2  <1  && pt_2 > 30 )")
@@ -337,6 +439,8 @@ elif channel_name == "tt":
     anti_selection =  combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_secondtau_selections, "(id_tau_vsJet_Medium_1 <1 && dz_1 < 0.2 && pt_1 > 40 && eta_1 < 2.1 && eta_1 > -2.1 && id_tau_vsEle_VVLoose_1 > 0   &&id_tau_vsMu_VLoose_1 > 0  )")
 elif channel_name == "em":
     lepton_selection = combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.lepton_veto, Htautau.em_triggers_selections[era])
+elif channel_name == "mm":
+    lepton_selection = "(pt_1 > 26 && pt_2 > 26 && trg_single_mu24 > 0)"
 the_samples_dict = get_samples(
     channel='Htt',
     
@@ -345,34 +449,53 @@ the_samples_dict = get_samples(
     sf_zjb = 1.0,
 )
 
-
+print(the_samples_dict)
 regions = {
 # 'nob': '1> 0 '
-"nob" :Htautau.nob,
+'all' : '1>0',
+'nob' : Htautau.nob,
+# 'nob1' : combinecut( Htautau.nob, "pt_tt > 0" , "pt_tt < 50"),
+# 'nob2' : combinecut( Htautau.nob, "pt_tt > 50" , "pt_tt < 100"),
+# 'nob3' : combinecut( Htautau.nob, "pt_tt > 100" , "pt_tt < 200"),
+# 'nob4' : combinecut( Htautau.nob, "pt_tt > 200" ),
+
+# "nob" : combinecut( Htautau.nob, Htautau.ttbar_true_only),
+# "nob_mt_2_50" : combinecut( Htautau.nob, Htautau.ttbar_true_only, "mt_2 < 50"),
 "btag" : Htautau.btag,
-"nob_PNN0p8" : combinecut( "PNN_100 > 0.8", Htautau.nob),
-"btag_PNN0p8" : combinecut("PNN_100 > 0.8", Htautau.btag),
+
 
 # # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT,lepton_selection, Htautau.W_true_only, Htautau.opposite_sign,"mt_1 < 40"),
 # "nob_AntiID" : combinecut( Htautau.nob,   anti_selection, Htautau.W_true_only, Htautau.ttbar_true_only,Htautau.opposite_sign, "mt_1 < 70") if (channel_name != 'tt' and channel_name != 'em') else combinecut( Htautau.nob,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
 # "btag_AntiID" : combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only,Htautau.ttbar_true_only, Htautau.opposite_sign, "mt_1 < 70") if (channel_name != 'tt' and channel_name != 'em') else combinecut( Htautau.btag,   anti_selection,  Htautau.W_true_only, Htautau.opposite_sign),
-
 }
-selections = [ combinecut (lepton_selection,  Htautau.W_true_only, Htautau.opposite_sign )]
+
+if PNN:
+    regions["nob_PNN0p8"] = combinecut( "PNN_100 > 0.8", Htautau.nob),
+    regions["btag_PNN0p8"] = combinecut("PNN_100 > 0.8", Htautau.btag),
+
+selections = [ lepton_selection , "mt_1 > 0"] #, Htautau.W_true_only????
 
 if (channel_name == 'mt') or (channel_name =='et'):
      for i in regions:
-        regions[i] = combinecut(regions[i], Htautau.ttbar_true_only, "mt_1 < 70")
+        regions[i] = combinecut(regions[i],  "mt_1 < 50" ) #
+if channel_name == 'em':
+     for i in regions:
+        regions[i] = combinecut(regions[i],  "pzetamissvis > -30" ) #
 
 if channel_name == 'et' and era =="2022postEE":
     for i in regions:
         regions[i] = combinecut(regions[i], '( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  )')
-
+if channel_name == 'et':
+    for i in regions:
+        regions[i] = combinecut(regions[i], '(!(jpt_1 < 50 && abs(jeta_1) > 2.5 &&abs(jeta_1) < 3 && is_data==0) ) ', '(!(jpt_2 < 50 && abs(jeta_2) > 2.5 &&abs(jeta_2) < 3 && is_data==0) ) ')
 
 
 
 if region == "SR":
-    pass
+    if channel_name != 'em':
+        selections += [ Htautau.opposite_sign , Htautau.W_true_only]
+    else:
+        selections += [ Htautau.opposite_sign ]
 elif region == "DR_QCD":
     regions["DR_QCD"] = combinecut(Htautau.DR_QCD_tt, lepton_selection)
     regions["AntiDR_QCD"] = combinecut(Htautau.DR_QCD_tt, anti_selection)
@@ -380,6 +503,8 @@ elif region == "DR_QCD":
 elif region == "DR_W":
     regions["DR_W"] = combinecut(Htautau.DR_W, lepton_selection, Htautau.W_true_only)
     regions["AntiDR_W"] = combinecut(Htautau.DR_W, anti_selection, Htautau.W_true_only)
+    regions['nob'] = combinecut(regions['nob'], Htautau.W_true_only ) 
+    regions['btag'] = combinecut(regions['btag'], Htautau.W_true_only ) 
     #regions["DR_W_btag"] = combinecut(Htautau.btag, Htautau.DR_W_tt ,anti_selection)
 elif region == "DR_ttbar":
     regions["DR_ttbar"] = combinecut(Htautau.DR_ttbar, lepton_selection,Htautau.ttbar_true_only)
@@ -388,7 +513,7 @@ elif region == "DR_ttbar":
 else:
     print("wrong region provided!! region supported: SR, DR_QCD,DR_ttbar, DR_W ")
     sys.exit(0)
-print( "printing cuts applied:   ",regions['nob_PNN0p8'] , "for channels: ", channel_name )
+# print( "printing cuts applied:   ",regions['nob_PNN0p8'] , "for channels: ", channel_name )
 
 
 
@@ -396,7 +521,8 @@ the_category_dict = {
     'Htautau': [regions, selections, plot_vars],
 }
 
-
+print("regions",regions)
+print("selections",selections)
 # yields_f_tmp = open('sample_database/datayields.yaml', 'r')
 # yields = yaml.safe_load(yields_f_tmp)
 # bins = yields['bins']
@@ -414,7 +540,7 @@ def additional_input_hook(wrps):
 
     def blind_in_HmmWin(w):
         if w.legend == 'Data': # and w.in_file_path.startswith('Hmm_win'):
-            if 'm_fastmtt'  in w.name or 'PNN' in w.name:
+            if  'PNN' in w.name:  #'m_fastmtt'  in w.name or
                 print('BLINDING Data in %s' % w.in_file_path)
                 for i in xrange(w.histo.GetNbinsX() -9, w.histo.GetNbinsX() + 1):
                     w.histo.SetBinContent(i, 0.)
@@ -451,8 +577,8 @@ def additional_input_hook(wrps):
         #     w.histo = w.histo.Rebin(len(mt_tot_b)-1, 'rebinned_mt_tot', array.array('d', mt_tot_b))
         # if "mt_" in w.name or "mT" in w.name:
         #         w.histo = w.histo.Rebin(len(mt)-1, 'rebinned_mt', array.array('d', mt))
-        if "met" in w.name:
-            w.histo = w.histo.Rebin(len(met)-1, 'rebinned_met{0}'.format(w.name), array.array('d', met))
+        # if "met" in w.name:
+        #     w.histo = w.histo.Rebin(len(met)-1, 'rebinned_met{0}'.format(w.name), array.array('d', met))
         # if "pt_2"  in w.name or "pt_1" in w.name:
         #     w.histo = w.histo.Rebin(len(pt)-1, 'rebinned_{0}'.format(w.name), array.array('d', pt))            
         # if "mt_tot" in w.name:
@@ -462,8 +588,8 @@ def additional_input_hook(wrps):
         # if "mt_tot_rebinned" in w.name:
         #     w.histo = w.histo.Rebin(len(nob_tight_mT)-1, 'rebinned_mt_tot', array.array('d', nob_tight_mT))
 
-        if "mt_tot" in w.name:
-            w.histo = w.histo.Rebin(len(nob_tight_mT)-1, 'mt_tot', array.array('d', nob_tight_mT))    
+        # if "mt_tot" in w.name:
+        #     w.histo = w.histo.Rebin(len(nob_tight_mT)-1, 'mt_tot', array.array('d', nob_tight_mT))    
         if "PNN_500_rebinned" in w.name:
             rebinned_h = w.histo.Rebin(len(PNN_500) -1, 'rebinned_mt_tot', array.array('d', PNN_500))   
             # h_PNN_500 = R.TH1F("h1", "Original Histogram", w.histo.GetNbinsX(), 0, w.histo.GetNbinsX()) 
@@ -511,7 +637,7 @@ def additional_input_hook(wrps):
     # wrps = (getyields(w) for w in wrps)
     # if not use_all_signal:
     wrps = (rebin(w) for w in wrps)
-    wrps = (blind_in_HmmWin(w) for w in wrps)
+    # wrps = (blind_in_HmmWin(w) for w in wrps)
     # wrps = (setylimit(w) for w in wrps)
     # wrps = (scale_by_binwidth(w) for w in wrps)
     # for w in wrps:
