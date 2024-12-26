@@ -438,7 +438,12 @@ elif channel_name == "tt":
     lepton_selection = combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_leadingtau_selections, Htautau.tt_secondtau_selections)
     anti_selection =  combinecut( Htautau.tt_triggers_selections[era],Htautau.lepton_veto, Htautau.tt_secondtau_selections, "(id_tau_vsJet_Medium_1 <1 && dz_1 < 0.2 && pt_1 > 40 && eta_1 < 2.1 && eta_1 > -2.1 && id_tau_vsEle_VVLoose_1 > 0   &&id_tau_vsMu_VLoose_1 > 0  )")
 elif channel_name == "em":
-    lepton_selection = combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.lepton_veto, Htautau.em_triggers_selections[era])
+
+    if region == "SR":
+         lepton_selection = combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection, Htautau.lepton_veto, Htautau.em_triggers_selections[era])
+    if region == "DR":
+         lepton_selection = combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection_DR, Htautau.lepton_veto, Htautau.em_triggers_selections[era])
+
 elif channel_name == "mm":
     lepton_selection = "(pt_1 > 26 && pt_2 > 26 && trg_single_mu24 > 0)"
 the_samples_dict = get_samples(
@@ -462,6 +467,9 @@ regions = {
 # "nob" : combinecut( Htautau.nob, Htautau.ttbar_true_only),
 # "nob_mt_2_50" : combinecut( Htautau.nob, Htautau.ttbar_true_only, "mt_2 < 50"),
 "btag" : Htautau.btag,
+"0jet" : Htautau.N0jet,
+"1jet" : Htautau.N1jet,
+"2jets_more": Htautau.N2jet,
 
 
 # # "nob_tight_mT" : combinecut(Htautau.nob, Htautau.tight_mT,lepton_selection, Htautau.W_true_only, Htautau.opposite_sign,"mt_1 < 40"),
@@ -496,6 +504,9 @@ if region == "SR":
         selections += [ Htautau.opposite_sign , Htautau.W_true_only]
     else:
         selections += [ Htautau.opposite_sign ]
+
+
+        
 elif region == "DR_QCD":
     regions["DR_QCD"] = combinecut(Htautau.DR_QCD_tt, lepton_selection)
     regions["AntiDR_QCD"] = combinecut(Htautau.DR_QCD_tt, anti_selection)

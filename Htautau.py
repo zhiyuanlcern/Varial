@@ -10,6 +10,12 @@ def combinecut(*args):
 class Htautau_selections:
     nob = "( nbtag == 0 ) "
     btag = "( nbtag >= 1 ) "
+
+    N0jet = "(njets  == 0)"
+    N1jet = "(njets == 1)"
+    N2jet = "(njets  >1 )"
+
+    
     tight_mT = " ( mt_1 < 40.0) "
     loose_mT = " ( mt_1 > 40.0 && mt_1 < 70.0 ) "
     mt_tau_selections={}
@@ -66,7 +72,13 @@ class Htautau_selections:
 
     ## changed dxy and dz cut
     em_electron_selection = "(abs(dz_1) < 0.2 && abs(dxy_1) < 0.045 && iso_1 < 0.15 && deltaR_ditaupair > 0.3 && pt_1 > 15)"
+    
+    
     em_muon_selection = "(abs(dz_2) < 0.2 && abs(dxy_2) < 0.045 && iso_2 < 0.2 && pt_2 > 15)"
+    em_muon_selection_DR = "(abs(dz_2) < 0.2 && abs(dxy_2) < 0.045 && iso_2 > 0.2 && iso_2 < 0.5 && pt_2 > 15)"
+
+
+
     electron_selections = 'pt_1 > 30 '
     muon_selections = " pt_1> 25.0 "
     
