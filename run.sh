@@ -465,6 +465,26 @@ python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Ve
  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
 
 
+
+#### add usage DR by Leyan 2024/12/26 
+
+# for m in 100 ; do #     200 1000   
+# for channel in em;  do  #  em tt 'mt'   'mt'   'em' 'mt' 'et'    'mt' et  em
+# for year in  2023 2022postEE; do  # 2022postEE 2022EE    "2022EE"   "2022EE"
+# for sig in  ggH ; do  #'ggH' 'bbH'
+
+# # rm -r  SR_${year}_${channel}_Version10_nominal_larger_test_test ; 
+# # python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_nominal_larger_test_test \
+# #  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
+# #  --mass $m --PNN  0 --signal_type $sig &
+# rm -r  DR_OS_${year}_${channel}_Version10_Version10_LO_DY_Dzeta_m30; 
+# python run_plotting_with_varial.py plot_config_ggF.py   DR_OS_${year}_${channel}_Version10_Version10_LO_DY_Dzeta_m30 \
+#  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region DR \
+#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
+
+
+
+
 # rm -r  DR_QCD_${year}_${channel}_Version10_LO_DY ; 
 # python run_plotting_with_varial.py plot_config_ggF.py   DR_QCD_${year}_${channel}_Version10_LO_DY \
 #  --input_path ${year}_${channel}_Version10_nominal_VVVLooseVsJet --channel  $channel --era ${year} --region DR_QCD \

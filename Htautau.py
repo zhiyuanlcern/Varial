@@ -67,7 +67,7 @@ class Htautau_selections:
     tt_triggers_selections["2022EE"] = "( trg_double_tau35_mediumiso_hps  ==1 ||  trg_double_tau30_plusPFjet60  ==1 || trg_double_tau30_plusPFjet75  ==1 ||  trg_single_deeptau180_1  ==1 || trg_single_deeptau180_2  ==1  ) " #  
     tt_triggers_selections["2022postEE"] =tt_triggers_selections["2023"] = tt_triggers_selections["2023BPix"] =tt_triggers_selections["2022EE"] 
 
-    em_triggers_selections["2022EE"] = "(trg_cross_mu23ele12 == 1 || trg_cross_mu8ele23 == 1  || (trg_single_ele30 == 1) ||(trg_single_ele32 == 1)|| (trg_single_ele35 == 1) || (trg_single_mu24 == 1)|| (trg_single_mu27 == 1))" 
+    em_triggers_selections["2022EE"] = "(trg_cross_mu23ele12 == 1 || trg_cross_mu8ele23 == 1 )"# || (trg_single_ele30 == 1) ||(trg_single_ele32 == 1)|| (trg_single_ele35 == 1) || (trg_single_mu24 == 1)|| (trg_single_mu27 == 1))" 
     em_triggers_selections["2022postEE"] =em_triggers_selections["2023"] =em_triggers_selections["2023BPix"] = em_triggers_selections["2022EE"]
 
     ## changed dxy and dz cut
