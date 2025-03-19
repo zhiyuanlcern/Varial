@@ -6,12 +6,19 @@ import array
 import yaml
 from Htautau import *
 import argparse
+import matplotlib.pyplot as plt
+
+
+plt.rcParams["text.usetex"] = True
+plt.rcParams["font.family"] = "serif"
+
 
 # import wrappers
 
 ''' usage:
 python run_plotting_with_varial.py plot_config_ggF.py input_path plot_tag & 
 '''
+
 
 
 
@@ -117,7 +124,7 @@ if channel_name != 'em':
     'fakes' : 617,
     'DY-Jets' : 864,
     'DY-Jets-ll'  :  814,
-    'DY-Jets-tt'  :  864,
+    'DY-Jets-#tau#tau'  :  864,
     "DY-Jets-fakes": 596,
     'Top'  :  400,
     # 'wjets'  :  632,
@@ -125,8 +132,8 @@ if channel_name != 'em':
     'other' : 920, 
     "%s*bbH-%s" %(scale,mass) : 416,
     "%s*ggH-%s" %(scale,mass) : 632,
-    'Top: genuine tau': 401,
-    'Top: fake tau': 501,
+    # 'Top-genuine-#tau': 401,
+    # 'Top-fake-#tau': 501,
     # 'diboson'  :  596,
     # 'ggh_hbb'  :  596,
     # 'ggh_htautau'  :  838,
@@ -144,21 +151,21 @@ elif channel_name == 'em':
     # 'electroweak_boson'  :  804,
     # 'electroweak_boson'  :  804,
     # 'dyjets'  :  814,
-    'QCD_fakes' : 901,
+    'QCD-fakes' : 901,
     'DY-Jets' : 864,
     'DY-Jets-ll'  :  814,
-    'DY-Jets-tt'  :  864,
-    'DY-Jets-tt-em'  :  865,
+    "DY-Jets-#tau#tau"  :  865,
+    # 'DY-Jets-tt-em'  :  865,
     "DY-Jets-fakes": 596,
-    'DY-Jets-tt-other': 838,
+    # 'DY-Jets-tt-other': 838,
     'Top'  :  400,
-    'wjets'  :  804,
+    # 'wjets'  :  804,
     'Single H': 838,
     'other' : 920, 
     "%s*bbH-%s" %(scale,mass) : 416,
     "%s*ggH-%s" %(scale,mass) : 632,
-    'Top-genuine_tau': 401,
-    'Top-fake_tau': 617,
+    "Top-genuine-#tau" : 401,
+    "Top-fake-#tau": 617,
     # 'diboson'  :  596,
     # 'ggh_hbb'  :  596,
     # 'ggh_htautau'  :  838,
@@ -416,25 +423,25 @@ def get_samples(channel, signal_overlay=True, **kwargs):
         
     samples.update({
             # 'Single-Top':['1', 1, 'Single-Top', ["TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"], 0],
-            'Data': ["1", 1, 'Data', [ "Muon", "Tau", "EGamma", "DoubleMuon", "SingleMuon" ],0], ## "MuonEG" will be identified by Muon so don't double count
+            'Data': ["jpt_1 > -999", 1, 'Data', [ "Muon", "Tau", "EGamma", "DoubleMuon", "SingleMuon" ],0], ## "MuonEG" will be identified by Muon so don't double count
             # "DY-Jets": ["1", 1, 'DY-Jets', DY_list, 0],
-            "other": ["1", 1, 'other', [ "WZto", "ZZto", "WWto", "GluGluHto2Tau_M-125_TuneCP5_13p6TeV_amcatnloFXFX", "GluGluHToTauTau_M-125_TuneCP5_13p6TeV_powheg", "VBFH"],0],
-            "Wjets" : ["1", 1, 'W-Jets', ["WtoLNu"], 0], 
+            "other": ["1", 1, 'other', ["WtoLNu" , "WZto", "ZZto", "WWto", "GluGluHto2Tau_M-125_TuneCP5_13p6TeV_amcatnloFXFX", "GluGluHToTauTau_M-125_TuneCP5_13p6TeV_powheg", "VBFH"],0],
+            # "Wjets" : ["1", 1, 'W-Jets', ["WtoLNu"], 0], 
             # "fakes": ["1", 1, 'fakes', ["FF_Combined"],0],
                 
             })
     if "ggH" in signal_type and "bbH" in signal_type:
         samples.update({
-            "%s*%s-%s" %(scale,"ggH",mass) : ["1", scale, "%s*%s-%s" %(scale,"ggH",mass), ["GluGluHto2Tau_M-%s_2HDM"%(mass)], 0 ]    ,
-            "%s*%s-%s" %(scale,"bbH",mass) : ["1", scale, "%s*%s-%s" %(scale,"bbH",mass), ["bbHto2Tau_M-%s_"%(mass) ,"BBHto2Tau_M-%s_"%(mass)], 0 ]    ,
+            "%s*%s-%s" %(scale,"ggH",mass) : ["abs(Train_weight )<10", scale, "%s*%s-%s" %(scale,"ggH",mass), ["GluGluHto2Tau_M-%s_2HDM"%(mass)], 0 ]    ,
+            "%s*%s-%s" %(scale,"bbH",mass) : ["abs(Train_weight )<10", scale, "%s*%s-%s" %(scale,"bbH",mass), ["bbHto2Tau_M-%s_"%(mass) ,"BBHto2Tau_M-%s_"%(mass)], 0 ]    ,
         })
     elif "ggH" in signal_type:
         samples.update({
-            "%s*%s-%s" %(scale,"ggH",mass) : ["1", scale, "%s*%s-%s" %(scale,"ggH",mass), ["GluGluHto2Tau_M-%s_2HDM"%(mass)], 0 ]    ,
+            "%s*%s-%s" %(scale,"ggH",mass) : ["abs(Train_weight )<10", scale, "%s*%s-%s" %(scale,"ggH",mass), ["GluGluHto2Tau_M-%s_2HDM"%(mass)], 0 ]    ,
         })
     elif "bbH" in signal_type:
         samples.update({
-            "%s*%s-%s" %(scale,"bbH",mass) : ["1", scale, "%s*%s-%s" %(scale,"bbH",mass), ["bbHto2Tau_M-%s_"%(mass), "BBHto2Tau_M-%s_"%(mass)], 0 ]    ,
+            "%s*%s-%s" %(scale,"bbH",mass) : ["abs(Train_weight )<10", scale, "%s*%s-%s" %(scale,"bbH",mass), ["bbHto2Tau_M-%s_"%(mass), "BBHto2Tau_M-%s_"%(mass)], 0 ]    ,
         })
     if channel_name != 'em':
         samples.update({
@@ -446,8 +453,8 @@ def get_samples(channel, signal_overlay=True, **kwargs):
         samples.update({
             # 'Top-true': ['((gen_match_1 ==1 && gen_match_2 ==2) ||(gen_match_1 ==3 && gen_match_2 ==4) || (gen_match_1 ==1 && gen_match_2 ==4) || (gen_match_1 ==3 && gen_match_2 ==2))', 1 ,   'Top-true'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
             # 'Top-fake': ['(!((gen_match_1 ==1 && gen_match_2 ==2) ||(gen_match_1 ==3 && gen_match_2 ==4) || (gen_match_1 ==1 && gen_match_2 ==4) || (gen_match_1 ==3 && gen_match_2 ==2)))', 1 ,   'Top-fake'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
-            'Top-genuine_tau': ['(gen_match_1 ==1 && gen_match_2 ==2)', 1 ,   'Top-genuine_tau'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
-            'Top-fake_tau': ['!(gen_match_1 ==1 && gen_match_2 ==2)', 1 ,   'Top-fake_tau'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
+            "Top-genuine-tau": ['(gen_match_1 ==1 && gen_match_2 ==2)', 1 ,   "Top-genuine-#tau"     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
+            "Top-fake-tau": ['!(gen_match_1 ==1 && gen_match_2 ==2)', 1 ,   "Top-fake-#tau"     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
         })
     print(samples)
 
@@ -461,8 +468,8 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                     "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 0.82 , 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
                 })
                 samples.update({
-                    "DY-Jets-tt-em": ["(gen_match_1 == 3 && gen_match_2 ==4)", 0.82, 'DY-Jets-tt-em', ["DYto2L-2Jets",], 0],
-                    "DY-Jets-tt-other": ["  !(       (gen_match_1 == 3 && gen_match_2 ==4) || (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)   ) ", 0.82 , 'DY-Jets-tt-other', ["DYto2L-2Jets",], 0],    ###    
+                    "DY-Jets-tautau": ["! ( (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2) )", 0.82, "DY-Jets-#tau#tau", ["DYto2L-2Jets",], 0],
+                    # "DY-Jets-tt-other": ["  !(       (gen_match_1 == 3 && gen_match_2 ==4) || (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)   ) ", 0.82 , 'DY-Jets-tt-other', ["DYto2L-2Jets",], 0],    ###    
                 })
                 
 
@@ -471,8 +478,8 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                     "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 0.783 , 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
                 })   
                 samples.update({
-                    "DY-Jets-tt-em": ["(gen_match_1 == 3 && gen_match_2 ==4)", 0.783, 'DY-Jets-tt-em', ["DYto2L-2Jets",], 0],
-                    "DY-Jets-tt-other": ["  !(       (gen_match_1 == 3 && gen_match_2 ==4) || (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)   ) ", 0.783 , 'DY-Jets-tt-other', ["DYto2L-2Jets",], 0],    ###    
+                    "DY-Jets-tautau": ["! ( (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2) )", 0.783, "DY-Jets-#tau#tau", ["DYto2L-2Jets",], 0],
+                    # "DY-Jets-tt-other": ["  !(       (gen_match_1 == 3 && gen_match_2 ==4) || (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)   ) ", 0.783 , 'DY-Jets-tt-other', ["DYto2L-2Jets",], 0],    ###    
                 })
 
             elif era == '2023':
@@ -480,8 +487,8 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                     "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 0.903 , 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
                 })                     
                 samples.update({
-                    "DY-Jets-tt-em": ["(gen_match_1 == 3 && gen_match_2 ==4)", 0.903, 'DY-Jets-tt-em', ["DYto2L-2Jets",], 0],
-                    "DY-Jets-tt-other": ["  !(       (gen_match_1 == 3 && gen_match_2 ==4) || (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)   ) ", 0.903 , 'DY-Jets-tt-other', ["DYto2L-2Jets",], 0],    ###    
+                    "DY-Jets-tautau": ["! ( (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2) )", 0.903, "DY-Jets-#tau#tau", ["DYto2L-2Jets",], 0],
+                    # "DY-Jets-tt-other": ["  !(       (gen_match_1 == 3 && gen_match_2 ==4) || (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)   ) ", 0.903 , 'DY-Jets-tt-other', ["DYto2L-2Jets",], 0],    ###    
                 })   
 
             elif era == '2023BPix':
@@ -489,14 +496,14 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                     "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 0.897 , 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
                 })
                 samples.update({
-                    "DY-Jets-tt-em": ["(gen_match_1 == 3 && gen_match_2 ==4)", 0.897, 'DY-Jets-tt-em', ["DYto2L-2Jets",], 0],
-                    "DY-Jets-tt-other": ["  !(       (gen_match_1 == 3 && gen_match_2 ==4) || (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)   ) ", 0.897 , 'DY-Jets-tt-other', ["DYto2L-2Jets",], 0],    ###    
+                    "DY-Jets-tautau": [" ! ( (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2) )", 0.897, "DY-Jets-#tau#tau", ["DYto2L-2Jets",], 0],
+                    # "DY-Jets-tt-other": ["  !(       (gen_match_1 == 3 && gen_match_2 ==4) || (gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)   ) ", 0.897 , 'DY-Jets-tt-other', ["DYto2L-2Jets",], 0],    ###    
                 })  
 
 
         elif channel_name =='et':
             samples.update({
-                "DY-Jets-tt": ["(gen_match_1 == 3 && gen_match_2 ==5)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],        
+                "DY-Jets-tt": ["(gen_match_1 == 3 && gen_match_2 ==5)", 1, 'DY-Jets-#tau#tau', ["DYto2L-2Jets",], 0],        
                 "DY-Jets-fakes": ["(gen_match_1 == 3 &&  gen_match_2 !=5)", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],
             })
             samples.update({
@@ -504,7 +511,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
             })                
         elif channel_name =='mt':
             samples.update({
-                "DY-Jets-tt": ["(gen_match_1 == 4 && gen_match_2 ==5)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],    
+                "DY-Jets-tt": ["(gen_match_1 == 4 && gen_match_2 ==5)", 1, 'DY-Jets-#tau#tau', ["DYto2L-2Jets",], 0],    
                 "DY-Jets-fakes": ["(gen_match_1 == 4 &&  gen_match_2 !=5)", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],    
             })
             samples.update({
@@ -512,7 +519,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
             })                
         elif channel_name =='tt':
             samples.update({
-                "DY-Jets-tt": ["(gen_match_1 == 5 && gen_match_2 ==5)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],     
+                "DY-Jets-tt": ["(gen_match_1 == 5 && gen_match_2 ==5)", 1, 'DY-Jets-#tau#tau', ["DYto2L-2Jets",], 0],     
                 "DY-Jets-fakes": ["(gen_match_1 == 5 &&  gen_match_2 !=5) || (gen_match_1 != 5 &&  gen_match_2 ==5) ", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],   
             })
             samples.update({
@@ -523,7 +530,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
                 "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 1, 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
             })                
             samples.update({
-                "DY-Jets-tt": ["(gen_match_1 == 5 && gen_match_2 ==5)", 1, 'DY-Jets-tt', ["DYto2L-2Jets",], 0],     
+                "DY-Jets-tt": ["(gen_match_1 == 5 && gen_match_2 ==5)", 1, 'DY-Jets-#tau#tau', ["DYto2L-2Jets",], 0],     
                 "DY-Jets-fakes": ["(gen_match_1 == 5 &&  gen_match_2 !=5) || (gen_match_1 != 5 &&  gen_match_2 ==5) ", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],   
             })
         
@@ -546,7 +553,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
         
         elif channel_name == 'em' : 
 
-            samples.update({"QCD_fakes": ["1", 1, 'QCD_fakes', ["FF_Combined"],0],})
+            samples.update({"QCD-fakes": ["1", 1, 'QCD-fakes', ["FF_Combined"],0],})
 
 
     elif region == "DR_QCD":
