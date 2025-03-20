@@ -213,7 +213,7 @@ weight_dict["tt"] = {}
 weight_dict["tt"]["2022postEE"]  =   'Xsec *  {0}* puweight * genWeight/genEventSumW *    btag_weight   *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2 *ZPtMassReweightWeight '.format(lumi) # 
 weight_dict["tt"]["2022EE"] =weight_dict["tt"]["2023"] =weight_dict["tt"]["2023BPix"]= weight_dict["tt"]["2022postEE"]
 
-weight_dict["em"] = {"2022postEE": '(Xsec * genWeight *  {0} / genEventSumW) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight *  FF_weight * puweight * (trg_wgt_single_mu24 )'   .format(lumi)}   #add FF_weight 2025/2/12
+weight_dict["em"] = {"2022postEE": '(Xsec * genWeight *  {0} / genEventSumW) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight *  FF_weight * puweight * (trg_wgt_single_mu24 ) * ZPtMassReweightWeight'   .format(lumi)}   #add FF_weight 2025/2/12
 weight_dict["em"]["2022EE"] =weight_dict["em"]["2023"] =weight_dict["em"]["2023BPix"]= weight_dict["em"]["2022postEE"]
 
 weight_dict["mm"] = {"2022postEE": '(Xsec * genWeight *  {0} / genEventSumW) * puweight *  id_wgt_mu_1*iso_wgt_mu_1*id_wgt_mu_2*iso_wgt_mu_2* trg_wgt_single_mu24 '.format(lumi)} # * ZPtMassReweightWeight
@@ -423,7 +423,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
         
     samples.update({
             # 'Single-Top':['1', 1, 'Single-Top', ["TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"], 0],
-            'Data': ["jpt_1 > -999", 1, 'Data', [ "Muon", "Tau", "EGamma", "DoubleMuon", "SingleMuon" ],0], ## "MuonEG" will be identified by Muon so don't double count
+            'Data': ["jpt_1 > -99", 1, 'Data', [ "Muon", "Tau", "EGamma", "DoubleMuon", "SingleMuon" ],0], ## "MuonEG" will be identified by Muon so don't double count
             # "DY-Jets": ["1", 1, 'DY-Jets', DY_list, 0],
             "other": ["1", 1, 'other', ["WtoLNu" , "WZto", "ZZto", "WWto", "GluGluHto2Tau_M-125_TuneCP5_13p6TeV_amcatnloFXFX", "GluGluHToTauTau_M-125_TuneCP5_13p6TeV_powheg", "VBFH"],0],
             # "Wjets" : ["1", 1, 'W-Jets', ["WtoLNu"], 0], 
@@ -504,7 +504,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
         elif channel_name =='et':
             samples.update({
                 "DY-Jets-tt": ["(gen_match_1 == 3 && gen_match_2 ==5)", 1, 'DY-Jets-#tau#tau', ["DYto2L-2Jets",], 0],        
-                "DY-Jets-fakes": ["(gen_match_1 == 3 &&  gen_match_2 !=5)", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],
+                # "DY-Jets-fakes": ["(gen_match_1 == 3 &&  gen_match_2 !=5)", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],
             })
             samples.update({
                 "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 1, 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
@@ -512,7 +512,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
         elif channel_name =='mt':
             samples.update({
                 "DY-Jets-tt": ["(gen_match_1 == 4 && gen_match_2 ==5)", 1, 'DY-Jets-#tau#tau', ["DYto2L-2Jets",], 0],    
-                "DY-Jets-fakes": ["(gen_match_1 == 4 &&  gen_match_2 !=5)", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],    
+                # "DY-Jets-fakes": ["(gen_match_1 == 4 &&  gen_match_2 !=5)", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],    
             })
             samples.update({
                 "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 1, 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
@@ -520,7 +520,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
         elif channel_name =='tt':
             samples.update({
                 "DY-Jets-tt": ["(gen_match_1 == 5 && gen_match_2 ==5)", 1, 'DY-Jets-#tau#tau', ["DYto2L-2Jets",], 0],     
-                "DY-Jets-fakes": ["(gen_match_1 == 5 &&  gen_match_2 !=5) || (gen_match_1 != 5 &&  gen_match_2 ==5) ", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],   
+                # "DY-Jets-fakes": ["(gen_match_1 == 5 &&  gen_match_2 !=5) || (gen_match_1 != 5 &&  gen_match_2 ==5) ", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],   
             })
             samples.update({
                 "DY-Jets-ll": ["(gen_match_1 == 1 && gen_match_2 ==1) || (gen_match_1 == 2 && gen_match_2 ==2)", 1, 'DY-Jets-ll', ["DYto2L-2Jets",], 0],
@@ -531,7 +531,7 @@ def get_samples(channel, signal_overlay=True, **kwargs):
             })                
             samples.update({
                 "DY-Jets-tt": ["(gen_match_1 == 5 && gen_match_2 ==5)", 1, 'DY-Jets-#tau#tau', ["DYto2L-2Jets",], 0],     
-                "DY-Jets-fakes": ["(gen_match_1 == 5 &&  gen_match_2 !=5) || (gen_match_1 != 5 &&  gen_match_2 ==5) ", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],   
+                # "DY-Jets-fakes": ["(gen_match_1 == 5 &&  gen_match_2 !=5) || (gen_match_1 != 5 &&  gen_match_2 ==5) ", 1, 'DY-Jets-fakes', ["DYto2L-2Jets",], 0],   
             })
         
         # ///   1 = prompt electron,
