@@ -80,8 +80,8 @@ defaults_BottomPlot = {
     'y_title': '',
     'draw_opt': 'E0X0',
     'draw_opt_multi_line': 'E0X1',
-    'y_min': -.8,
-    'y_max': .8,
+    'y_min': -.5,
+    'y_max': .5,
     'force_y_range': True,
     'poisson_errs': False,
 }

@@ -451,62 +451,53 @@
 
 
 for m in 100 ; do #     200 1000   
-for channel in em;  do  #  em tt 'mt'   'mt'   'em' 'mt' 'et'    'mt' et  em
-for year in  2023 2022postEE; do  # 2022postEE 2022EE    "2022EE"   "2022EE"
-for sig in  ggH ; do  #'ggH' 'bbH'
+for channel in     mt  et tt;  do  #  em tt 'mt'   'mt'   'em' 'mt' 'et'    'mt' et  em
+for year in     2022EE 2022postEE 2023 2023BPix ; do  # 2023 2023BPix    2022postEE 2022EE    "2022EE"   "2022EE"
+for sig in  ggH_bbH ; do  #'ggH' 'bbH'
+for r in  SR; do
+# rm -r   ${r}_${year}_${channel}_Version10_nominal_fix_jetveto_fixjetpt_skimmed; 
+rm -r   ${r}_${year}_${channel}_Version11_ggH_bbH_100_test; 
+# rm -r ${r}_${year}_${channel}_Version10_Version10_LO_DY_PNN_check
+# python run_plotting_with_varial.py plot_config_ggF.py   ${r}_${year}_${channel}_Version10_Version10_LO_DY_newfakes_newtest \
+# --input_path ${year}_${channel}_Version10_nominal_fix_jetveto --channel  $channel --era ${year} --region $r \
+#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
+# python run_plotting_with_varial.py plot_config_ggF.py   ${r}_${year}_${channel}_Version10_Version10_LO_DY_newfakes_newtest \
+# --input_path /data/bond/zhiyuanl/Plotting/PNN_input/${channel}/${year}_${channel}_Version10_nominal_fix_jetveto --channel  $channel --era ${year} --region $r \
+#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
 
-# rm -r  SR_${year}_${channel}_Version10_nominal_larger_test_test ; 
-# python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_nominal_larger_test_test \
-#  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
-#  --mass $m --PNN  0 --signal_type $sig &
-rm -r  SR_${year}_${channel}_Version10_Version10_LO_DY_Dzeta_m30; 
-python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_Version10_LO_DY_Dzeta_m30 \
- --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
+# python run_plotting_with_varial.py plot_config_ggF.py   ${r}_${year}_${channel}_Version10_ggH_bbH_100 \
+# --input_path /data/bond/zhiyuanl/Plotting/fitting_template_Version10/${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region $r \
+#  --mass $m --PNN  1 --signal_type $sig --use_LO_DY 1 &
+
+# python run_plotting_with_varial.py plot_config_ggF.py   ${r}_${year}_${channel}_Version11_ggH_bbH_100 \
+# --input_path /data/bond/zhiyuanl/Plotting/${year}_${channel}_Version11_nominal --channel  $channel --era ${year} --region $r \
+#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
+python run_plotting_with_varial.py plot_config_ggF.py   ${r}_${year}_${channel}_Version11_ggH_bbH_100_test \
+--input_path /data/bond/zhiyuanl/Plotting/test/${year}_${channel}_Version11_VVVLoose --channel  $channel --era ${year} --region $r \
  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
 
 
-
-#### add usage DR by Leyan 2024/12/26 
-
-# for m in 100 ; do #     200 1000   
-# for channel in em;  do  #  em tt 'mt'   'mt'   'em' 'mt' 'et'    'mt' et  em
-# for year in  2023 2022postEE; do  # 2022postEE 2022EE    "2022EE"   "2022EE"
-# for sig in  ggH ; do  #'ggH' 'bbH'
-
-# # rm -r  SR_${year}_${channel}_Version10_nominal_larger_test_test ; 
-# # python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_nominal_larger_test_test \
-# #  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
-# #  --mass $m --PNN  0 --signal_type $sig &
-# rm -r  DR_OS_${year}_${channel}_Version10_Version10_LO_DY_Dzeta_m30; 
-# python run_plotting_with_varial.py plot_config_ggF.py   DR_OS_${year}_${channel}_Version10_Version10_LO_DY_Dzeta_m30 \
-#  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region DR \
+# python run_plotting_with_varial.py plot_config_ggF.py   ${r}_${year}_${channel}_Version10_Version10_LO_DY_PNN_check \
+# --input_path ${year}_${channel}_Version10_nominal_fix_jetveto --channel  $channel --era ${year} --region $r \
 #  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
 
-
-
-
-# rm -r  DR_QCD_${year}_${channel}_Version10_LO_DY ; 
-# python run_plotting_with_varial.py plot_config_ggF.py   DR_QCD_${year}_${channel}_Version10_LO_DY \
-#  --input_path ${year}_${channel}_Version10_nominal_VVVLooseVsJet --channel  $channel --era ${year} --region DR_QCD \
-#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
-
-
-# rm -r  DR_W_${year}_${channel}_Version10_LO_DY ; 
-# python run_plotting_with_varial.py plot_config_ggF.py   DR_W_${year}_${channel}_Version10_LO_DY \
-#  --input_path ${year}_${channel}_Version10_nominal_VVVLooseVsJet --channel  $channel --era ${year} --region DR_W \
-#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 1 &
-
-
-# rm -r  SR_${year}_${channel}_Version10_DY_10_only ; 
-# python run_plotting_with_varial.py plot_config_ggF.py   SR_${year}_${channel}_Version10_DY_10_only \
-#  --input_path ${year}_${channel}_Version10_nominal --channel  $channel --era ${year} --region SR \
-#  --mass $m --PNN  0 --signal_type $sig --use_LO_DY 0 &
-
-
-
-# 2022postEE_mm_merged
+done
 done 
 done
 done
 done
+
+
+
+
+
+
+# for channel in mt et tt ;  do  #   'mt'   'mt'   'em' 'mt' 'et'    'mt' et  em
+# for year in    2022postEE 2022EE 2023BPix 2023  ; do  # 2022postEE 2022EE    "2022EE"   "2022EE"
+
+# python3 /data/pku/home/LeyanLee13/Htautau/Plotting_2024/get_yield.py "SR_${year}_${channel}_Version10_Version10_LO_DY_fix_jetveto/HistosFromTree/Htautau/*.root" nob deltaR_ditaupair 
+# echo SR_${year}_${channel}
+# done
+# done
+
 

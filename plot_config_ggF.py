@@ -158,25 +158,28 @@ weight_dict ={"mt" : {}, "et": {}, "tt": {}, "em": {}, "mm":{}}
 #     "2016": 'Xsec * {0} * genWeight/genEventSumW *  id_wgt_tau_vsEle_Tight_2 * id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsMu_VLoose_2 *   btag_weight * puweight  '.format(lumi),
 # }
 
-weight_dict["mt"]["2022postEE"] = 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight *id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *trg_wgt_ditau_crosstau_2 *  id_wgt_tau_vsMu_Tight_2 * id_wgt_mu_1'.format(lumi)
+weight_dict["mt"]["2022postEE"] = 'Xsec   * {0} * puweight * genWeight/genEventSumW *  btag_weight  * FF_weight * id_wgt_tau_vsJet_Medium_2 * iso_wgt_mu_1  *trg_wgt_ditau_crosstau_2 *  id_wgt_tau_vsMu_Tight_2 * id_wgt_mu_1 *ZPtMassReweightWeight'.format(lumi) ##  
 weight_dict["mt"]["2022EE"] =weight_dict["mt"]["2023"] =weight_dict["mt"]["2023BPix"]= weight_dict["mt"]["2022postEE"]
      
 
-weight_dict["et"]["2022postEE"] =  'Xsec * {0}* puweight * genWeight/genEventSumW     *  btag_weight * FF_weight * id_wgt_tau_vsJet_Medium_2  * id_wgt_ele_wpTight * trg_wgt_ditau_crosstau_2  * trg_wgt_single_ele30  * id_wgt_tau_vsEle_Tight_2' .format(lumi) #
+weight_dict["et"]["2022postEE"] =  'Xsec * {0}* puweight * genWeight/genEventSumW     *  btag_weight * FF_weight * id_wgt_tau_vsJet_Medium_2  * id_wgt_ele_wpTight * trg_wgt_ditau_crosstau_2  * trg_wgt_single_ele30 * id_wgt_tau_vsEle_Tight_2 *ZPtMassReweightWeight ' .format(lumi) #  
 weight_dict["et"]["2022EE"] =weight_dict["et"]["2023"] =weight_dict["et"]["2023BPix"]= weight_dict["et"]["2022postEE"]
 
 weight_dict["tt"] = {}
-weight_dict["tt"]["2022postEE"]  =   'Xsec *  {0}* puweight * genWeight/genEventSumW *    btag_weight   *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2  '.format(lumi)
+weight_dict["tt"]["2022postEE"]  =   'Xsec *  {0}* puweight * genWeight/genEventSumW *    btag_weight   *id_wgt_tau_vsJet_Medium_2 * id_wgt_tau_vsJet_Medium_1 *  FF_weight * trg_wgt_ditau_crosstau_1 *trg_wgt_ditau_crosstau_2 *ZPtMassReweightWeight '.format(lumi) # 
 weight_dict["tt"]["2022EE"] =weight_dict["tt"]["2023"] =weight_dict["tt"]["2023BPix"]= weight_dict["tt"]["2022postEE"]
 
-weight_dict["em"] = {"2022postEE": '(Xsec * genWeight *  {0} / genEventSumW)* (trg_wgt_single_ele30  ) * id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight * puweight * (trg_wgt_single_mu24 )'   .format(lumi)}
+weight_dict["em"] = {"2022postEE":    'Xsec * {0} * genWeight/genEventSumW *    id_wgt_ele_wpTight * id_wgt_mu_2 * btag_weight * puweight '.format(lumi)} #   *ZPtMassReweightWeight    ((trg_wgt_single_ele30 * (trg_single_ele30 > 0) + 1 * (trg_single_ele30 < 1) ) * * (trg_wgt_single_mu24 * (trg_single_mu24 > 0) + 1 * (trg_single_mu24 < 1) )) 
+ 
 weight_dict["em"]["2022EE"] =weight_dict["em"]["2023"] =weight_dict["em"]["2023BPix"]= weight_dict["em"]["2022postEE"]
 
-weight_dict["mm"] = {"2022postEE": '(Xsec * genWeight *  {0} / genEventSumW) * puweight '.format(lumi)}
+weight_dict["mm"] = {"2022postEE": '(Xsec * genWeight *  {0} / genEventSumW) * puweight *  id_wgt_mu_1*iso_wgt_mu_1*id_wgt_mu_2*iso_wgt_mu_2* trg_wgt_single_mu24 '.format(lumi)} # * ZPtMassReweightWeight
 weight_dict["mm"]["2022EE"] =weight_dict["mm"]["2023"] =weight_dict["mm"]["2023BPix"]= weight_dict["mm"]["2022postEE"]
 
 weight = weight_dict[channel_name][era]
 
+
+# weight = "Train_weight"
 plot_vars = {}
 
 mt_tot_b = [30, 60, 80, 100, 120, 140, 160, 180, 200, 250, 300, 350, 400, 450, 500]
@@ -184,17 +187,18 @@ nob_tight_mT = [0,50.0,60.0,70.0,80.0,90.0,100.0,110.0,120.0,130.0,140.0,150.0,1
 m_fastmtt = [0,60,70,80,90,100,110,120,130,140,150,160,170,180,190,200,220,240,260,300]
 met = [0,10,20,30,40,50,60,70,80,90,120,140,200,400]
 pt = [30,40,50,60,70,80,90,100,120,140,200,350,500, 700, 1000]
+
+
 plot_vars.update({    
-    'eta_1' : ('eta_1',';eta_{1};NEvents',30,-2.3,2.3),
-    'eta_2' : ('eta_2',';eta_{2};NEvents',30,-2.3,2.3),
-    'jeta_1' : ('jeta_1',';jeta_{1};NEvents',60,-6.3,6.3),
-    'jeta_2' : ('jeta_2',';jeta_{2};NEvents',60,-6.3,6.3),
-    'jpt_1' : ('jpt_1', ';jpt_{1};NEvents', 40,0,200 ),
-    'jpt_2' : ('jpt_2', ';jpt_{1};NEvents', 40,0,200 ),
-    
-    'mTdileptonMET' : ('mTdileptonMET',';mTdileptonMET;NEvents',20,0,200),
-    'mass_tt'       :    ('mass_tt', '; mass_tt;NEvents', 30, 0, 300),
-    'pt_tt'       :    ('pt_tt', '; pt_tt;NEvents', 30, 0, 300),
+    'eta_1' : ('eta_1',';eta_{1};NEvents',30,-2.4,2.4),
+    'eta_2' : ('eta_2',';eta_{2};NEvents',30,-2.4,2.4),
+    # 'eta_1_morebins' : ('eta_1',';eta_{1};NEvents',50,-2.5,2.5),
+    # 'eta_2_morebins' : ('eta_2',';eta_{2};NEvents',50,-2.5,2.5),
+    # 'jeta_1' : ('jeta_1',';jeta_{1};NEvents',60,-6.3,6.3),
+    # 'jeta_2' : ('jeta_2',';jeta_{2};NEvents',60,-6.3,6.3),
+    # 'mTdileptonMET' : ('mTdileptonMET',';mTdileptonMET;NEvents',20,0,200),
+    # 'mass_tt'       :    ('mass_tt', '; mass_tt;NEvents', 30, 0, 300),
+    # 'pt_tt'       :    ('pt_tt', '; pt_tt;NEvents', 30, 0, 300),
     'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 40, 0, 200),
     'met' : ('met',';met;NEvents',30,0,150), 
     'metSumEt' : ('metSumEt',';metSumEt;NEvents',40,0,400),
@@ -210,87 +214,96 @@ plot_vars.update({
     'pt_vis'   :    ('pt_vis', ';pt_{vis} ;NEvents', 40, 0, 200),
     'pzetamissvis' : ('pzetamissvis',';D_{#zeta};NEvents',25,-150,100),    
     'deltaR_ditaupair' :  ('deltaR_ditaupair', ';#deltaR [GeV];NEvents',25 , 0, 5),
-    # 'C_W'   : ('C_W', ';C_W ;NEvents', 20, -5, 6),
-    # 'C_QCD'   : ('C_QCD', ';C_QCD ;NEvents', 20, -2, 2),
-    # 'dphi_12' : ('dphi_12', ';#dphi_12;NEvents',30 ,0, 3.1415),
-    # 'deta_12' : ('deta_12', ';#deta_12;NEvents',30 ,-3.5, 3.5),
-    # 'dphi_H1' : ('dphi_H1', ';#dphi_H1;NEvents',30 ,0, 3.1415),
-    # 'dphi_H2' : ('dphi_H2', ';#dphi_H2;NEvents',30 ,0, 3.1415),
-    # 'dphi_H1_LT' : ('dphi_H1_LT', ';#dphi_H1_LT;NEvents',30 ,0, 3.1415),
-    # 'dphi_H2_LT' : ('dphi_H2_LT', ';#dphi_H2_LT;NEvents',30 ,0, 3.1415),    
-    # 'dphi_HMET' : ('dphi_HMET', ';#dphi_HMET;NEvents',30 ,0, 3.1415),
-    # 'dphi_MET_1' : ('dphi_MET_1', ';#dphi_MET_1;NEvents',30 ,0, 3.1415),
-    # 'dphi_MET_2' : ('dphi_MET_2', ';#dphi_MET_2;NEvents',30 ,0, 3.1415),
-    # 'dphi_HMET_LT' : ('dphi_HMET_LT', ';#dphi_HMET_LT;NEvents',30 ,0, 3.1415),
-    # 'dphi_MET_1_LT' : ('dphi_MET_1_LT', ';#dphi_MET_1_LT;NEvents',30 ,0, 3.1415),
-    # 'dphi_MET_2_LT' : ('dphi_MET_2_LT', ';#dphi_MET_2_LT;NEvents',30 ,0, 3.1415),
-    # 'cos_dphi_H1' : ('cos_dphi_H1', ';#cos_dphi_H1;NEvents',40 ,-1, 1),
-    # 'cos_dphi_H2' : ('cos_dphi_H2', ';#cos_dphi_H2;NEvents',40 ,-1, 1),
-    # 'cos_dphi_H1_LT' : ('cos_dphi_H1_LT', ';#cos_dphi_H1_LT;NEvents',40 ,-1, 1),
-    # 'cos_dphi_H2_LT' : ('cos_dphi_H2_LT', ';#cos_dphi_H2_LT;NEvents',40 ,-1, 1),    
-    # 'cos_dphi_HMET' : ('cos_dphi_HMET', ';#cos_dphi_HMET;NEvents',40 ,-1, 1),
-    # 'cos_dphi_MET_1' : ('cos_dphi_MET_1', ';#cos_dphi_MET_1;NEvents',40 ,-1, 1),
-    # 'cos_dphi_MET_2' : ('cos_dphi_MET_2', ';#cos_dphi_MET_2;NEvents',40 ,-1, 1),
-    # 'cos_dphi_HMET_LT' : ('cos_dphi_HMET_LT', ';#cos_dphi_HMET_LT;NEvents',40 ,-1, 1),
-    # 'cos_dphi_MET_1_LT' : ('cos_dphi_MET_1_LT', ';#cos_dphi_MET_1_LT;NEvents',40 ,-1, 1),
-    # 'cos_dphi_MET_2_LT' : ('cos_dphi_MET_2_LT', ';#cos_dphi_MET_2_LT;NEvents',40 ,-1, 1),
-    # 'costhstar_1_LT' : ('costhstar_1_LT', ';costhstar_1_LT;NEvents', 40, -1, 1),
-    # 'costhstar_2_LT' : ('costhstar_2_LT', ';costhstar_2_LT;NEvents', 40, -1, 1),
-    # 'costheta_1_LT' : ('costheta_1_LT', ';costheta_1_LT;NEvents', 40, -1, 1),
-    # 'costheta_2_LT' : ('costheta_2_LT', ';costheta_2_LT;NEvents', 40, -1, 1),
-    # 'pt_1_LT' : ('pt_1_LT',   ';pt_1_LT;NEvents',   50,0,100         ),
-    # 'pt_2_LT' : ('pt_2_LT',   ';pt_2_LT;NEvents',   50,0,100         ),
-    # 'eta_1_LT' : ('eta_1_LT',   ';eta_1_LT;NEvents',   30,-3,3         ),
-    # 'eta_2_LT' : ('eta_2_LT',   ';eta_2_LT;NEvents',   30,-3,3         ),
-    # 'phi_1_LT' : ('phi_1_LT',   ';phi_1_LT;NEvents',   20,-3.14,3.14         ),
-    # 'phi_2_LT' : ('phi_2_LT',   ';phi_2_LT;NEvents',   20,-3.14,3.14         ),
-    # 'deltaR_LT' : ('deltaR_LT',   ';deltaR_LT;NEvents',25 , 0, 5            ),
-    # 'kT_LT' : ('kT_LT',   ';kT_LT;NEvents',     40,0,400       ),
-    # 'kT' : ('kT',   ';kT;NEvents',     40,0,400       ),
-    # 'antikT_LT' : ('antikT_LT',   ';antikT_LT;NEvents',     40,0,0.2       ),
-    # 'antikT' : ('antikT',   ';antikT;NEvents',     40,0,0.2       ),
-    # 'Z_NN_LT' : ('Z_NN_LT',   ';Z_NN_LT;NEvents',    30,0,0.6        ),
-    # 'm_vis_square' : ('m_vis_square',   ';m_vis_square;NEvents',    40, 0, 30e3        ),
-    # 'pt1_to_ptH' : ('pt1_to_ptH',   ';pt1_to_ptH;NEvents',  40, 0, 3         ),
-    # 'pt2_to_ptH' : ('pt2_to_ptH',   ';pt2_to_ptH;NEvents',  40, 0, 3          ),
-    # 'pt1_LT_to_ptH' : ('pt1_LT_to_ptH',   ';pt1_LT_to_ptH;NEvents',  40, 0, 3         ),
-    # 'pt2_LT_to_ptH' : ('pt2_LT_to_ptH',   ';pt2_LT_to_ptH;NEvents',  40, 0, 3          ),
-    # 'dtheta_12' : ('dtheta_12', ';#dtheta_12;NEvents',30 ,-3.5, 3.5),
-    # 'dphi_12_LT' : ('dphi_12_LT', ';#dphi_12_LT;NEvents', 30 ,0, 3.5 ),
-    # 'deta_12_LT' : ('deta_12_LT', ';#deta_12_LT;NEvents',30 ,-3.5, 3.5 ),
-    # 'dtheta_12' : ('dtheta_12', ';#cos(dtheta_12);NEvents', 30 ,-3.5, 3.5),
-    # 'cos_dtheta_12' : ('cos_dtheta_12', ';#cos(dtheta_12);NEvents', 40 ,-1, 1 ),
-    # 'pt1_to_mH' : ('pt1_to_mH', ';#pt1_to_mH;NEvents', 40, 0, 1),
-    # 'pt2_to_mH' : ('pt2_to_mH', ';#pt2_to_mH;NEvents', 40, 0, 1),
-    # 'pt1_LT_to_mH' : ('pt1_LT_to_mH', ';#pt1_LT_to_mH;NEvents', 40, 0, 0.5),
-    # 'pt2_LT_to_mH' : ('pt2_LT_to_mH', ';#pt2_LT_to_mH;NEvents', 40, 0, 0.5),
-    # 'pt_ttmet_to_mH' : ('pt_ttmet_to_mH', ';#pt_ttmet_to_mH;NEvents', 40, 0, 1),
-    # 'pt_fastmtt_to_mH' : ('pt_fastmtt_to_mH', ';#pt_fastmtt_to_mH;NEvents', 40, 0, 1),
-    # 'pt_vis_to_mH' : ('pt_vis_to_mH', ';#pt_vis_to_mH;NEvents', 40, 0, 1),
-    # 'pt1_LT_to_pt2_LT' : ('pt1_LT_to_pt2_LT', ';#pt1_LT_to_pt2_LT;NEvents', 40, 0, 2),
-    # 'eta_vis' :  ('eta_vis',';eta_vis;NEvents',30,-2.3,2.3),
-    # 'phi_vis' : ('phi_vis',';phi_vis;NEvents',30,-3.5,3.5),
+    
+    'dphi_12' : ('dphi_12', ';#dphi_12;NEvents',30 ,0, 3.1415),
+    'dphi_H1' : ('dphi_H1', ';#dphi_H1;NEvents',30 ,0, 3.1415),
+    'dphi_H2' : ('dphi_H2', ';#dphi_H2;NEvents',30 ,0, 3.1415),
+    'kT' : ('kT',   ';kT;NEvents',     40,0,400       ),
+    'antikT' : ('antikT',   ';antikT;NEvents',     40,0,0.2       ),
+    'pt1_LT_to_ptH' : ('pt1_LT_to_ptH',   ';pt1_LT_to_ptH;NEvents',  40, 0, 3         ),
+    'pt2_LT_to_ptH' : ('pt2_LT_to_ptH',   ';pt2_LT_to_ptH;NEvents',  40, 0, 3          ),
+
+#     # 'C_W'   : ('C_W', ';C_W ;NEvents', 20, -5, 6),
+#     # 'C_QCD'   : ('C_QCD', ';C_QCD ;NEvents', 20, -2, 2),
+#     # 'deta_12' : ('deta_12', ';#deta_12;NEvents',30 ,-3.5, 3.5),
+#     # 'dphi_H1_LT' : ('dphi_H1_LT', ';#dphi_H1_LT;NEvents',30 ,0, 3.1415),
+#     # 'dphi_H2_LT' : ('dphi_H2_LT', ';#dphi_H2_LT;NEvents',30 ,0, 3.1415),    
+#     # 'dphi_HMET' : ('dphi_HMET', ';#dphi_HMET;NEvents',30 ,0, 3.1415),
+#     # 'dphi_MET_1' : ('dphi_MET_1', ';#dphi_MET_1;NEvents',30 ,0, 3.1415),
+#     # 'dphi_MET_2' : ('dphi_MET_2', ';#dphi_MET_2;NEvents',30 ,0, 3.1415),
+#     # 'dphi_HMET_LT' : ('dphi_HMET_LT', ';#dphi_HMET_LT;NEvents',30 ,0, 3.1415),
+#     # 'dphi_MET_1_LT' : ('dphi_MET_1_LT', ';#dphi_MET_1_LT;NEvents',30 ,0, 3.1415),
+#     # 'dphi_MET_2_LT' : ('dphi_MET_2_LT', ';#dphi_MET_2_LT;NEvents',30 ,0, 3.1415),
+#     # 'cos_dphi_H1' : ('cos_dphi_H1', ';#cos_dphi_H1;NEvents',40 ,-1, 1),
+#     # 'cos_dphi_H2' : ('cos_dphi_H2', ';#cos_dphi_H2;NEvents',40 ,-1, 1),
+#     # 'cos_dphi_H1_LT' : ('cos_dphi_H1_LT', ';#cos_dphi_H1_LT;NEvents',40 ,-1, 1),
+#     # 'cos_dphi_H2_LT' : ('cos_dphi_H2_LT', ';#cos_dphi_H2_LT;NEvents',40 ,-1, 1),    
+#     # 'cos_dphi_HMET' : ('cos_dphi_HMET', ';#cos_dphi_HMET;NEvents',40 ,-1, 1),
+#     # 'cos_dphi_MET_1' : ('cos_dphi_MET_1', ';#cos_dphi_MET_1;NEvents',40 ,-1, 1),
+#     # 'cos_dphi_MET_2' : ('cos_dphi_MET_2', ';#cos_dphi_MET_2;NEvents',40 ,-1, 1),
+#     # 'cos_dphi_HMET_LT' : ('cos_dphi_HMET_LT', ';#cos_dphi_HMET_LT;NEvents',40 ,-1, 1),
+#     # 'cos_dphi_MET_1_LT' : ('cos_dphi_MET_1_LT', ';#cos_dphi_MET_1_LT;NEvents',40 ,-1, 1),
+#     # 'cos_dphi_MET_2_LT' : ('cos_dphi_MET_2_LT', ';#cos_dphi_MET_2_LT;NEvents',40 ,-1, 1),
+#     # 'costhstar_1_LT' : ('costhstar_1_LT', ';costhstar_1_LT;NEvents', 40, -1, 1),
+#     # 'costhstar_2_LT' : ('costhstar_2_LT', ';costhstar_2_LT;NEvents', 40, -1, 1),
+#     # 'costheta_1_LT' : ('costheta_1_LT', ';costheta_1_LT;NEvents', 40, -1, 1),
+#     # 'costheta_2_LT' : ('costheta_2_LT', ';costheta_2_LT;NEvents', 40, -1, 1),
+#     # 'pt_1_LT' : ('pt_1_LT',   ';pt_1_LT;NEvents',   50,0,100         ),
+#     # 'pt_2_LT' : ('pt_2_LT',   ';pt_2_LT;NEvents',   50,0,100         ),
+#     # 'eta_1_LT' : ('eta_1_LT',   ';eta_1_LT;NEvents',   30,-3,3         ),
+#     # 'eta_2_LT' : ('eta_2_LT',   ';eta_2_LT;NEvents',   30,-3,3         ),
+#     # 'phi_1_LT' : ('phi_1_LT',   ';phi_1_LT;NEvents',   20,-3.14,3.14         ),
+#     # 'phi_2_LT' : ('phi_2_LT',   ';phi_2_LT;NEvents',   20,-3.14,3.14         ),
+#     # 'deltaR_LT' : ('deltaR_LT',   ';deltaR_LT;NEvents',25 , 0, 5            ),
+#     # 'kT_LT' : ('kT_LT',   ';kT_LT;NEvents',     40,0,400       ),
+#     # 'antikT_LT' : ('antikT_LT',   ';antikT_LT;NEvents',     40,0,0.2       ),
+#     # 'Z_NN_LT' : ('Z_NN_LT',   ';Z_NN_LT;NEvents',    30,0,0.6        ),
+#     # 'm_vis_square' : ('m_vis_square',   ';m_vis_square;NEvents',    40, 0, 30e3        ),
+#     # 'pt1_to_ptH' : ('pt1_to_ptH',   ';pt1_to_ptH;NEvents',  40, 0, 3         ),
+#     # 'pt2_to_ptH' : ('pt2_to_ptH',   ';pt2_to_ptH;NEvents',  40, 0, 3          ),
+
+#     # 'dtheta_12' : ('dtheta_12', ';#dtheta_12;NEvents',30 ,-3.5, 3.5),
+#     # 'dphi_12_LT' : ('dphi_12_LT', ';#dphi_12_LT;NEvents', 30 ,0, 3.5 ),
+#     # 'deta_12_LT' : ('deta_12_LT', ';#deta_12_LT;NEvents',30 ,-3.5, 3.5 ),
+#     # 'dtheta_12' : ('dtheta_12', ';#cos(dtheta_12);NEvents', 30 ,-3.5, 3.5),
+#     # 'cos_dtheta_12' : ('cos_dtheta_12', ';#cos(dtheta_12);NEvents', 40 ,-1, 1 ),
+#     # 'pt1_to_mH' : ('pt1_to_mH', ';#pt1_to_mH;NEvents', 40, 0, 1),
+#     # 'pt2_to_mH' : ('pt2_to_mH', ';#pt2_to_mH;NEvents', 40, 0, 1),
+#     # 'pt1_LT_to_mH' : ('pt1_LT_to_mH', ';#pt1_LT_to_mH;NEvents', 40, 0, 0.5),
+#     # 'pt2_LT_to_mH' : ('pt2_LT_to_mH', ';#pt2_LT_to_mH;NEvents', 40, 0, 0.5),
+#     # 'pt_ttmet_to_mH' : ('pt_ttmet_to_mH', ';#pt_ttmet_to_mH;NEvents', 40, 0, 1),
+#     # 'pt_fastmtt_to_mH' : ('pt_fastmtt_to_mH', ';#pt_fastmtt_to_mH;NEvents', 40, 0, 1),
+#     # 'pt_vis_to_mH' : ('pt_vis_to_mH', ';#pt_vis_to_mH;NEvents', 40, 0, 1),
+#     # 'pt1_LT_to_pt2_LT' : ('pt1_LT_to_pt2_LT', ';#pt1_LT_to_pt2_LT;NEvents', 40, 0, 2),
+#     # 'eta_vis' :  ('eta_vis',';eta_vis;NEvents',30,-2.3,2.3),
+#     # 'phi_vis' : ('phi_vis',';phi_vis;NEvents',30,-3.5,3.5),
 })
-if channel_name == "em":
-    plot_vars.update({
-    'pt_1' : ('pt_1',';pt_{1};NEvents',24,0,120),
-    'pt_2' : ('pt_2',';pt_{2};NEvents',24,0,120),
-    'eta_1' : ('eta_1',';eta_{1};NEvents',30,-3,3),
-    'eta_2' : ('eta_2',';eta_{2};NEvents',30,-3,3),
-    'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 13, 50, 310),
-    }
-    )
+# if channel_name == "em":
+#     plot_vars.update({
+#     'pt_1' : ('pt_1',';pt_{1};NEvents',24,0,120),
+#     'pt_2' : ('pt_2',';pt_{2};NEvents',24,0,120),
+#     'eta_1' : ('eta_1',';eta_{1};NEvents',30,-3,3),
+#     'eta_2' : ('eta_2',';eta_{2};NEvents',30,-3,3),
+#     'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 13, 50, 310),
+#     }
+#     )
 if channel_name == "mm":
      plot_vars.update({       
             'mass_ll'       :    ('mass_ll', '; mass_ll;NEvents', 30, 0, 300),
-            'pt_ll'       :    ('pt_ll', '; pt_ll;NEvents', 30, 0, 300),
+            'pt_ll'       :    ('pt_ll', '; pt_ll;NEvents', 75, 0, 150),
+            'iso_1' : ('iso_1',';iso_{1};NEvents',50,0,0.3),
+            'iso_2' : ('iso_2',';iso_{2};NEvents',50,0,0.3),
+            'met' : ('met',';met;NEvents',50,0,150),
             })
 else:
     plot_vars.update({
         'm_fastmtt'       :    ('m_fastmtt', '; m^{#tau#tau};NEvents',  27, 30, 300),
-        # 'eta_fastmtt' : ('eta_fastmtt',';eta_{#tau#tau};NEvents',30,-2.3,2.3),
-        # 'pt_fastmtt'   :    ('pt_fastmtt', ';p_{T}^{#tau#tau} ;NEvents', 40, 0, 200),
-        # 'phi_fastmtt' : ('phi_fastmtt',';phi_{#tau#tau};NEvents',30,-3.5,3.5),
+        
+        'eta_fastmtt' : ('eta_fastmtt',';eta_{#tau#tau};NEvents',30,-2.3,2.3),
+        'pt_fastmtt'   :    ('pt_fastmtt', ';p_{T}^{#tau#tau} ;NEvents', 40, 0, 200),
+        'phi_fastmtt' : ('phi_fastmtt',';phi_{#tau#tau};NEvents',30,-3.5,3.5),
+        'iso_1' : ('iso_1',';iso_{1};NEvents',50,0,1),
+        'iso_2' : ('iso_2',';iso_{2};NEvents',50,0,1),
     })
 if PNN:
     plot_vars = {
@@ -311,13 +324,24 @@ else:
     # 'dxy_2' : ('dxy_2',';dxy_{2};NEvents',25,-0.02,0.02),
     # 'dz_1' : ('dz_1',';dz_{1};NEvents',25,-0.02,0.02),
     # 'dz_2' : ('dz_2',';dz_{2};NEvents',25,-0.02,0.02),
-    # 'iso_1' : ('iso_1',';iso_{1};NEvents',50,0,0.3),
-    # 'iso_2' : ('iso_2',';iso_{2};NEvents',20,0,3),
+
     # 'mass_1' : ('mass_1',';mass_{1};NEvents',30,0,0.1),
     # 'mass_2' : ('mass_2',';mass_{2};NEvents',30,0,3),    
-    # 'njets' : ('njets',';njets;NEvents',10,0,10),
+    'njets' : ('njets',';njets;NEvents',10,0,10),
     
     })
+
+# plot_vars.update({  
+#     'm_vis'       :    ('m_vis', '; m^{vis};NEvents', 40, 0, 200),
+#     'eta_1' : ('eta_1',';eta_{1};NEvents',30,-2.3,2.3),
+#     'eta_2' : ('eta_2',';eta_{2};NEvents',30,-2.3,2.3),
+#     'pt_1' : ('pt_1',';pt_{1};NEvents',50,0,100),
+#     'pt_2' : ('pt_2',';pt_{2};NEvents',50,0,100),
+    
+#         'met' : ('met',';met;NEvents',30,0,150), 
+#             'iso_1' : ('iso_1',';iso_{1};NEvents',30,0,0.3),
+#     'iso_2' : ('iso_2',';iso_{2};NEvents',50,0,1),
+#   })
 
 #######################################
 # Samples, Selections, and Categories #
@@ -356,13 +380,26 @@ def get_samples(channel, signal_overlay=True, **kwargs):
         
     samples.update({
             # 'Single-Top':['1', 1, 'Single-Top', ["TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"], 0],
-            'Data': ["1", 1, 'Data', [ "Muon", "Tau", "EGamma", "DoubleMuon", "SingleMuon" ],0], ## "MuonEG" will be identified by Muon so don't double count
+            'Data': ["jpt_1 > -99", 1, 'Data', [ "Muon", "Tau", "EGamma", "DoubleMuon", "SingleMuon" ],0], ## "MuonEG" will be identified by Muon so don't double count
             # "DY-Jets": ["1", 1, 'DY-Jets', DY_list, 0],
             "other": ["1", 1, 'other', [ "WZto", "ZZto", "WWto", "GluGluHto2Tau_M-125_TuneCP5_13p6TeV_amcatnloFXFX", "GluGluHToTauTau_M-125_TuneCP5_13p6TeV_powheg", "VBFH"],0],
             "Wjets" : ["1", 1, 'W-Jets', ["WtoLNu"], 0], 
             # "fakes": ["1", 1, 'fakes', ["FF_Combined"],0],
-            "%s*%s-%s" %(scale,signal_type,mass) : ["1", scale, "%s*%s-%s" %(scale,signal_type,mass), ["GluGluHto2Tau_M-%s_2HDM"%(mass)], 0 ]
+                
             })
+    if "ggH" in signal_type and "bbH" in signal_type:
+        samples.update({
+            "%s*%s-%s" %(scale,"ggH",mass) : ["1", scale, "%s*%s-%s" %(scale,"ggH",mass), ["GluGluHto2Tau_M-%s_2HDM"%(mass)], 0 ]    ,
+            "%s*%s-%s" %(scale,"bbH",mass) : ["1", scale, "%s*%s-%s" %(scale,"bbH",mass), ["bbHto2Tau_M-%s_"%(mass) ,"BBHto2Tau_M-%s_"%(mass)], 0 ]    ,
+        })
+    elif "ggH" in signal_type:
+        samples.update({
+            "%s*%s-%s" %(scale,"ggH",mass) : ["1", scale, "%s*%s-%s" %(scale,"ggH",mass), ["GluGluHto2Tau_M-%s_2HDM"%(mass)], 0 ]    ,
+        })
+    elif "bbH" in signal_type:
+        samples.update({
+            "%s*%s-%s" %(scale,"bbH",mass) : ["1", scale, "%s*%s-%s" %(scale,"bbH",mass), ["bbHto2Tau_M-%s_"%(mass), "BBHto2Tau_M-%s_"%(mass)], 0 ]    ,
+        })
     if channel_name != 'em':
         samples.update({
             'Top': ['1', 1 ,   'Top'     , ['TTtoLNu2Q', 'TTto2L2Nu', 'TTto4Q', "TBbarQ_t", "TbarBQ_t", "TbarWplus", "TWminus"] ,  0 ], # + ttbar_list 
@@ -445,7 +482,7 @@ elif channel_name == "em":
          lepton_selection = combinecut(Htautau.em_electron_selection, Htautau.em_muon_selection_DR, Htautau.lepton_veto, Htautau.em_triggers_selections[era])
 
 elif channel_name == "mm":
-    lepton_selection = "(pt_1 > 26 && pt_2 > 26 && trg_single_mu24 > 0)"
+    lepton_selection = "pt_1 > 25 && iso_1 < 0.15 && iso_2 < 0.15 && abs(dxy_1) < 0.045 && abs(dxy_2)  < 0.045 && abs(dz_1) < 0.2 && abs(dz_2) < 0.2 &&  met > 0 && nmuons==2 && (q_1 * q_2 ) < 0 && mass_ll > 50 && HLT_IsoMu24 > 0  "
 the_samples_dict = get_samples(
     channel='Htt',
     
@@ -478,35 +515,38 @@ regions = {
 }
 
 if PNN:
-    regions["nob_PNN0p8"] = combinecut( "PNN_100 > 0.8", Htautau.nob),
-    regions["btag_PNN0p8"] = combinecut("PNN_100 > 0.8", Htautau.btag),
+    regions["nob_PNN0p8"] = combinecut( "PNN_100 > 0.8", Htautau.nob)
+    regions["btag_PNN0p8"] = combinecut("PNN_100 > 0.8", Htautau.btag)
 
-selections = [ lepton_selection , "mt_1 > 0"] #, Htautau.W_true_only????
+selections = [ "mt_1 > 0 && jpt_1 > -99 "] #, Htautau.W_true_only????
 
 if (channel_name == 'mt') or (channel_name =='et'):
      for i in regions:
+        print(regions[i])
+        print("hi ====================== ")
         regions[i] = combinecut(regions[i],  "mt_1 < 50" ) #
 if channel_name == 'em':
      for i in regions:
-        regions[i] = combinecut(regions[i],  "pzetamissvis > -30" ) #
+        regions[i] = combinecut(regions[i],  "pzetamissvis > -35" ) #
 
-if channel_name == 'et' and era =="2022postEE":
-    for i in regions:
-        regions[i] = combinecut(regions[i], '( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  )')
-if channel_name == 'et':
-    for i in regions:
-        regions[i] = combinecut(regions[i], '(!(jpt_1 < 50 && abs(jeta_1) > 2.5 &&abs(jeta_1) < 3 && is_data==0) ) ', '(!(jpt_2 < 50 && abs(jeta_2) > 2.5 &&abs(jeta_2) < 3 && is_data==0) ) ')
+# if channel_name == 'et' and era =="2022postEE":
+#     for i in regions:
+#         regions[i] = combinecut(regions[i], '( ! (phi_2>1.8 && phi_2< 2.7 && eta_2 > 1.5  && eta_2<2.2)  )')
+# if channel_name == 'et':
+    
+# ## apply to all reigions    
+# for i in regions:
+    # regions[i] = combinecut(regions[i], '&& abs(jeta_1) > 2.5 &&abs(jeta_1) < 3 && is_data==0) ) ', '&& abs(jeta_2) > 2.5 &&abs(jeta_2) < 3 && is_data==0) ) ')
+    # regions[i] = combinecut(regions[i], '&& abs(jeta_1) > 2.5 &&abs(jeta_1) < 3 ) ) ', '&& abs(jeta_2) > 2.5 &&abs(jeta_2) < 3 ) ) ')
+
 
 
 
 if region == "SR":
     if channel_name != 'em':
-        selections += [ Htautau.opposite_sign , Htautau.W_true_only]
+        selections += [ Htautau.opposite_sign , Htautau.W_true_only,  lepton_selection ]
     else:
-        selections += [ Htautau.opposite_sign ]
-
-
-        
+        selections += [ Htautau.opposite_sign,  lepton_selection ]
 elif region == "DR_QCD":
     regions["DR_QCD"] = combinecut(Htautau.DR_QCD_tt, lepton_selection)
     regions["AntiDR_QCD"] = combinecut(Htautau.DR_QCD_tt, anti_selection)
@@ -521,6 +561,8 @@ elif region == "DR_ttbar":
     regions["DR_ttbar"] = combinecut(Htautau.DR_ttbar, lepton_selection,Htautau.ttbar_true_only)
     regions["AntiDR_ttbar"] = combinecut(Htautau.DR_ttbar, anti_selection,Htautau.ttbar_true_only)
     #regions["DR_ttbar_btag"] = combinecut(Htautau.btag, Htautau.DR_ttbar_tt ,anti_selection) 
+elif region == "AR":
+    selections += [ Htautau.opposite_sign , Htautau.W_true_only, anti_selection]
 else:
     print("wrong region provided!! region supported: SR, DR_QCD,DR_ttbar, DR_W ")
     sys.exit(0)
@@ -648,7 +690,8 @@ def additional_input_hook(wrps):
     # wrps = (getyields(w) for w in wrps)
     # if not use_all_signal:
     wrps = (rebin(w) for w in wrps)
-    # wrps = (blind_in_HmmWin(w) for w in wrps)
+    if PNN:
+        wrps = (blind_in_HmmWin(w) for w in wrps)
     # wrps = (setylimit(w) for w in wrps)
     # wrps = (scale_by_binwidth(w) for w in wrps)
     # for w in wrps:

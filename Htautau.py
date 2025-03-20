@@ -19,10 +19,10 @@ class Htautau_selections:
     tight_mT = " ( mt_1 < 40.0) "
     loose_mT = " ( mt_1 > 40.0 && mt_1 < 70.0 ) "
     mt_tau_selections={}
-    mt_tau_selections = {"2018" : "(id_tau_vsMu_Tight_2 > 0 && id_tau_vsJet_Medium_2 > 0 &&  id_tau_vsEle_VVLoose_2 > 0 && pt_2 > 30 ) "} 
+    mt_tau_selections = {"2018" : "(id_tau_vsMu_Tight_2 > 0 && id_tau_vsJet_Medium_2 > 0 &&  id_tau_vsEle_VVLoose_2 > 0 && pt_2 > 30 && abs(eta_2) < 2.3  ) "} 
     mt_tau_selections["2022EE"] = mt_tau_selections["2022postEE"] = mt_tau_selections["2023"] = mt_tau_selections["2023BPix"] = mt_tau_selections["2018"]
     
-    et_tau_selections = {"2018": " (id_tau_vsMu_VLoose_2 > 0 && id_tau_vsJet_Medium_2 > 0 &&  id_tau_vsEle_Tight_2 > 0 && pt_2 > 30 ) "}
+    et_tau_selections = {"2018": " (id_tau_vsMu_VLoose_2 > 0 && id_tau_vsJet_Medium_2 > 0 &&  id_tau_vsEle_Tight_2 > 0 && pt_2 > 30 && abs(eta_2) < 2.3) "}
     et_tau_selections["2022EE"] = et_tau_selections["2022postEE"] = et_tau_selections["2023"] = et_tau_selections["2023BPix"] = et_tau_selections["2018"]
     
     tt_secondtau_selections = " (id_tau_vsJet_Medium_2 > 0  && dz_2 < 0.2 &&   pt_2 > 40 && eta_2 < 2.1 && eta_2 > -2.1 && id_tau_vsEle_VVLoose_2 > 0   &&id_tau_vsMu_VLoose_2 > 0         && deltaR_ditaupair > 0.5 ) "
@@ -47,27 +47,17 @@ class Htautau_selections:
     mt_triggers_selections = {}
     em_triggers_selections = {}
     tt_triggers_selections = {}
-    et_triggers_selections["2016preVFP"]="(trg_cross_ele24tau20==1||trg_cross_ele24tau20_crossL1==1||trg_cross_ele24tau30==1||trg_single_ele25==1||trg_single_tau120_2==1||trg_single_tau140_2==1)"
-    mt_triggers_selections["2016preVFP"]="(trg_cross_mu20tau27==1||trg_cross_mu19tau20==1||trg_single_mu22==1||trg_single_mu22_tk==1||trg_single_tau120_2==1||trg_single_tau140_2==1)"
-    et_triggers_selections["2016postVFP"] = et_triggers_selections["2016preVFP"]
-    mt_triggers_selections["2016postVFP"] = mt_triggers_selections["2016preVFP"]
-    et_triggers_selections["2017"]="(trg_cross_ele24tau30==1||trg_single_ele27==1||trg_single_ele32==1||trg_single_ele35==1||trg_single_tau180_2==1)"
-    mt_triggers_selections["2017"]="(trg_cross_mu20tau27==1||trg_single_mu24==1||trg_single_mu27==1||trg_single_tau180_2==1)"
-    em_triggers_selections["2017"] = "(trg_cross_mu23ele12 == 1 || trg_cross_mu8ele23 == 1 || trg_single_ele27 == 1 || trg_single_ele32 == 1 || trg_single_ele35 == 1 || trg_single_mu24 == 1 || trg_single_mu27 == 1)"
-
-    mt_triggers_selections["2018"]="(trg_cross_mu20tau27==1||trg_cross_mu20tau27_hps==1||trg_single_mu24==1||trg_single_mu27==1||trg_single_tau180_2==1)"
-    et_triggers_selections["2018"]= "(trg_cross_ele24tau30==1||trg_cross_ele24tau30_hps==1||trg_single_ele27==1||trg_single_ele32==1||trg_single_ele35==1||trg_single_tau180_2==1)"
     
-    mt_triggers_selections["2022EE"]="(trg_cross_mu20tau27_hps==1||trg_single_tau180_2==1  ||trg_single_mu24==1||trg_single_mu27==1)" #
+    mt_triggers_selections["2022EE"]="(trg_cross_mu20tau27_hps==1||trg_single_tau180_2==1  ||trg_single_mu24==1)" # ||trg_single_mu27==1
     mt_triggers_selections["2022postEE"]=mt_triggers_selections["2023"]=mt_triggers_selections["2023BPix"]=mt_triggers_selections["2022EE"]
 
-    et_triggers_selections["2022EE"]= "(trg_single_tau180_2==1 ||  trg_single_ele32==1||trg_single_ele35==1)" # trg_cross_ele24tau30_hps==1||  trg_single_ele30 ==1||
+    et_triggers_selections["2022EE"]= "(trg_single_tau180_2==1 ||  trg_single_ele30==1)" # trg_cross_ele24tau30_hps==1||  trg_single_ele30 ==1|| ||trg_single_ele35==1
     et_triggers_selections["2022postEE"]=et_triggers_selections["2023"]=et_triggers_selections["2023BPix"]= et_triggers_selections["2022EE"]
     
-    tt_triggers_selections["2022EE"] = "( trg_double_tau35_mediumiso_hps  ==1 ||  trg_double_tau30_plusPFjet60  ==1 || trg_double_tau30_plusPFjet75  ==1 ||  trg_single_deeptau180_1  ==1 || trg_single_deeptau180_2  ==1  ) " #  
+    tt_triggers_selections["2022EE"] = "( trg_double_tau35_mediumiso_hps  ==1 ||  trg_double_tau30_plusPFjet60  ==1 || trg_double_tau30_plusPFjet75  ==1 || trg_single_tau180_1==1 || trg_single_tau180_2==1  ) " #  
     tt_triggers_selections["2022postEE"] =tt_triggers_selections["2023"] = tt_triggers_selections["2023BPix"] =tt_triggers_selections["2022EE"] 
 
-    em_triggers_selections["2022EE"] = "(trg_cross_mu23ele12 == 1 || trg_cross_mu8ele23 == 1 )"# || (trg_single_ele30 == 1) ||(trg_single_ele32 == 1)|| (trg_single_ele35 == 1) || (trg_single_mu24 == 1)|| (trg_single_mu27 == 1))" 
+    em_triggers_selections["2022EE"] = "(trg_cross_mu23ele12 == 1 || trg_cross_mu8ele23 == 1)"  ##  || (trg_single_ele30 == 1) ||(trg_single_ele32 == 1)|| (trg_single_ele35 == 1) || (trg_single_mu24 == 1)|| (trg_single_mu27 == 1))
     em_triggers_selections["2022postEE"] =em_triggers_selections["2023"] =em_triggers_selections["2023BPix"] = em_triggers_selections["2022EE"]
 
     ## changed dxy and dz cut
@@ -79,17 +69,21 @@ class Htautau_selections:
 
 
 
-    electron_selections = 'pt_1 > 30 '
-    muon_selections = " pt_1> 25.0 "
+    
+    
+    electron_selections = '(pt_1 > 33 && iso_1 < 0.15 && abs(eta_1) < 2.1)'  #
+    muon_selections = "(pt_1> 25.0 && iso_1 < 0.15 && abs(eta_1) < 2.1)" # 
+    electron_selections_FF = '(pt_1 > 33 &&  abs(eta_1) < 2.1)'  #iso_1 < 0.15 &&  remove iso cut to increase stats. 
+    muon_selections_FF = "(pt_1> 25.0 &&  abs(eta_1) < 2.1)" # iso_1 < 0.15 && remove iso cut to increase stats. 
     
     W_true_only =     "(  ( gen_match_2 != 6 && is_wjets>0 ) || (is_wjets <1)  ) " # for w-jets, only consider the true tau components
     ttbar_true_only = "(  ( gen_match_2 != 6 && is_ttbar>0 ) || (is_ttbar <1)  )" # for ttbar, only consider the true tau components 
     opposite_sign = ' ((q_1 * q_2) < 0) '
     same_sign = ' ((q_1 * q_2) > 0) '
-    DR_QCD_lt = ' (  (q_1 * q_2) > 0 && iso_1 > 0.01)   '## SS + iso cut ## && (iso_1 > 0.01)
-    DR_QCD_tt = ' (  (q_1 * q_2) > 0) '## SS + iso cut
-    DR_W = " (q_1 * q_2) < 0 && ( mt_1 > 70.0 ) && nbtag == 0"
-    DR_ttbar = " (q_1 * q_2) < 0 && ( mt_1 > 70.0 ) && nbtag >= 2"
+    DR_QCD_lt = ' (  (q_1 * q_2) > 0 && iso_1 > 0.01 && jpt_1 > -999 && mt_1 > 0)   '## SS + iso cut ## && (iso_1 > 0.01) && iso_1 < 0.15 
+    DR_QCD_tt = ' (  (q_1 * q_2) > 0 && jpt_1 > -999 && mt_1 > 0) '## SS + iso cut
+    DR_W = " (q_1 * q_2) < 0 && ( mt_1 > 70.0 ) && nbtag == 0 &&    jpt_1 > -999 && mt_1 > 0" # &&iso_1 < 0.15
+    DR_ttbar = " (q_1 * q_2) < 0 && ( mt_1 > 70.0 ) && nbtag >= 2 && jpt_1 > -999 && mt_1 > 0"# &&  iso_1 < 0.15
     DR_ttbar_test = " ( mt_1 > 70.0 ) && nbtag >= 1"
     ID_lt = " (id_tau_vsJet_Medium_2 > 0) "
     Anti_ID_lt = " (id_tau_vsJet_Medium_2 == 0) "
