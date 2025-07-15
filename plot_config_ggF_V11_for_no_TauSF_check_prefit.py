@@ -252,6 +252,49 @@ plot_vars.update({
 
     # 'mt_tot': ('mt_tot', ';m_{T}^{tot} [GeV];NEvents', 30, 0, 300),
 
+    # 'PNN_100'       :    ('PNN_100', '; PNN_100;NEvents', 20, 0, 1),
+    # 'PNN_100__jerUncDown'       : ('PNN_100__jerUncDown', '; PNN_100__jerUncDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jerUncUp'         : ('PNN_100__jerUncUp', '; PNN_100__jerUncUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncAbsoluteDown' : ('PNN_100__jesUncAbsoluteDown', '; PNN_100__jesUncAbsoluteDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncAbsoluteUp' : ('PNN_100__jesUncAbsoluteUp', '; PNN_100__jesUncAbsoluteUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncAbsoluteYearDown' : ('PNN_100__jesUncAbsoluteYearDown', '; PNN_100__jesUncAbsoluteYearDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncAbsoluteYearUp' : ('PNN_100__jesUncAbsoluteYearUp', '; PNN_100__jesUncAbsoluteYearUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncBBEC1Down' : ('PNN_100__jesUncBBEC1Down', '; PNN_100__jesUncBBEC1Down; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncBBEC1Up' : ('PNN_100__jesUncBBEC1Up', '; PNN_100__jesUncBBEC1Up; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncBBEC1YearDown' : ('PNN_100__jesUncBBEC1YearDown', '; PNN_100__jesUncBBEC1YearDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncBBEC1YearUp' : ('PNN_100__jesUncBBEC1YearUp', '; PNN_100__jesUncBBEC1YearUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncEC2Down' : ('PNN_100__jesUncEC2Down', '; PNN_100__jesUncEC2Down; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncEC2Up' : ('PNN_100__jesUncEC2Up', '; PNN_100__jesUncEC2Up; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncEC2YearDown' : ('PNN_100__jesUncEC2YearDown', '; PNN_100__jesUncEC2YearDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncEC2YearUp' : ('PNN_100__jesUncEC2YearUp', '; PNN_100__jesUncEC2YearUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncFlavorQCDDown' : ('PNN_100__jesUncFlavorQCDDown', '; PNN_100__jesUncFlavorQCDDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncFlavorQCDUp' : ('PNN_100__jesUncFlavorQCDUp', '; PNN_100__jesUncFlavorQCDUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncHFDown' : ('PNN_100__jesUncHFDown', '; PNN_100__jesUncHFDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncHFUp' : ('PNN_100__jesUncHFUp', '; PNN_100__jesUncHFUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncHFYearDown' : ('PNN_100__jesUncHFYearDown', '; PNN_100__jesUncHFYearDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncHFYearUp' : ('PNN_100__jesUncHFYearUp', '; PNN_100__jesUncHFYearUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncRelativeBalDown' : ('PNN_100__jesUncRelativeBalDown', '; PNN_100__jesUncRelativeBalDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncRelativeBalUp' : ('PNN_100__jesUncRelativeBalUp', '; PNN_100__jesUncRelativeBalUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncRelativeSampleYearDown' : ('PNN_100__jesUncRelativeSampleYearDown', '; PNN_100__jesUncRelativeSampleYearDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncRelativeSampleYearUp' : ('PNN_100__jesUncRelativeSampleYearUp', '; PNN_100__jesUncRelativeSampleYearUp; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncTotalDown' : ('PNN_100__jesUncTotalDown', '; PNN_100__jesUncTotalDown; NEvents', 20, 0, 1),
+    # 'PNN_100__jesUncTotalUp' : ('PNN_100__jesUncTotalUp', '; PNN_100__jesUncTotalUp; NEvents', 20, 0, 1),
+    # 'PNN_100__metRecoilResolutionDown' : ('PNN_100__metRecoilResolutionDown', '; PNN_100__metRecoilResolutionDown; NEvents', 20, 0, 1),
+    # 'PNN_100__metRecoilResolutionUp' : ('PNN_100__metRecoilResolutionUp', '; PNN_100__metRecoilResolutionUp; NEvents', 20, 0, 1),
+    # 'PNN_100__metRecoilResponseDown' : ('PNN_100__metRecoilResponseDown', '; PNN_100__metRecoilResponseDown; NEvents', 20, 0, 1),
+    # 'PNN_100__metRecoilResponseUp' : ('PNN_100__metRecoilResponseUp', '; PNN_100__metRecoilResponseUp; NEvents', 20, 0, 1),
+    # 'PNN_100__tauEs1prong0pizeroDown' : ('PNN_100__tauEs1prong0pizeroDown', '; PNN_100__tauEs1prong0pizeroDown; NEvents', 20, 0, 1),
+    # 'PNN_100__tauEs1prong0pizeroUp' : ('PNN_100__tauEs1prong0pizeroUp', '; PNN_100__tauEs1prong0pizeroUp; NEvents', 20, 0, 1),
+    # 'PNN_100__tauEs1prong1pizeroDown' : ('PNN_100__tauEs1prong1pizeroDown', '; PNN_100__tauEs1prong1pizeroDown; NEvents', 20, 0, 1),
+    # 'PNN_100__tauEs1prong1pizeroUp' : ('PNN_100__tauEs1prong1pizeroUp', '; PNN_100__tauEs1prong1pizeroUp; NEvents', 20, 0, 1),
+    # 'PNN_100__tauEs3prong0pizeroDown' : ('PNN_100__tauEs3prong0pizeroDown', '; PNN_100__tauEs3prong0pizeroDown; NEvents', 20, 0, 1),
+    # 'PNN_100__tauEs3prong0pizeroUp' : ('PNN_100__tauEs3prong0pizeroUp', '; PNN_100__tauEs3prong0pizeroUp; NEvents', 20, 0, 1),
+    # 'PNN_100__tauEs3prong1pizeroDown' : ('PNN_100__tauEs3prong1pizeroDown', '; PNN_100__tauEs3prong1pizeroDown; NEvents', 20, 0, 1),
+    # 'PNN_100__tauEs3prong1pizeroUp' : ('PNN_100__tauEs3prong1pizeroUp', '; PNN_100__tauEs3prong1pizeroUp; NEvents', 20, 0, 1),
+    # 'PNN_100__tauMuFakeEsDown' : ('PNN_100__tauMuFakeEsDown', '; PNN_100__tauMuFakeEsDown; NEvents', 20, 0, 1),
+    # 'PNN_100__tauMuFakeEsUp' : ('PNN_100__tauMuFakeEsUp', '; PNN_100__tauMuFakeEsUp; NEvents', 20, 0, 1),
+    
+
 
     'm_vis'       :    ('m_vis', '; m^{vis}[GeV];NEvents', 40, 0, 200),
     'm_vis__tauEs1prong0pizeroDown': ('m_vis__tauEs1prong0pizeroDown', ';m^{vis}__tauEs1prong0pizeroDown [GeV];NEvents', 40, 0, 200),
@@ -982,12 +1025,12 @@ def additional_input_hook(wrps):
                     print("self.sample: {}".format(w.sample))
                     print("config stat err: {}".format(stat_err))
                     rms =  1e-10
-                    print("config syst err: {}".format(rms))
+                    print("config syst err: {} \n".format(rms))
                 
                 stat_err_new =   ( stat_err**2 + rms**2 ) **.5
-                h_nom.SetBinError(i,stat_err_new)
+                h_nom.SetBinError(i,stat_err_new * 1)
 
-                print("after adjust:")
+                print("after adjust: ")
                 print("bin {}:".format(i))
                 print("self.sample: {}".format(w.sample))
                 print("config stat err: {}".format(stat_err))
@@ -1001,9 +1044,10 @@ def additional_input_hook(wrps):
             print("[Set] histo_sys_err set for {} using {} variations".format(w.name, len(syst_histos)))
 
         # Now accumulate other backgrounds into DY-Jets-tt AFTER all histo_sys_err are built
-        # if w.sample == 'DY-Jets-tt':
+        # if w.sample == 'other':
         #     # define what samples to accumulate from
-        #     accepted_samples = ['DY-Jets-ll', 'fakes', 'other', 'Top']
+        #     accepted_samples = ['DY-Jets-ll', 'fakes', 'DY-Jets-tt', 'Top']
+        #     # accepted_samples = ['DY-Jets-ll', 'fakes', 'other', 'Top']
 
         #     other_bkgs = []
         #     for other in all_wrps:
@@ -1021,12 +1065,34 @@ def additional_input_hook(wrps):
         #         print("[INFO] Accumulating syst error from the following background samples into DY-Jets-tt:")
         #         for o in other_bkgs:
         #             print(" - {:<20} | histo_sys_err: {}".format(o.sample, o.histo_sys_err.GetName()))
+                
+        #         for i in range(w.histo.GetNbinsX()): 
+        #             stat_err0 = w.histo.GetBinError(i) or 1e-10  # DY-tt/other stat error / tot error
+        #             syst_err0 = w.histo_sys_err.GetBinError(i) or 1e-10 # DY-tt/other syst error
+        #             tot_err0 = stat_err0  # DY-tt/other tot error
+        #             print("bin {} and {} process :".format(i,w.in_file_path))
+        #             print("other's stat_err: {}".format(stat_err0))
+        #             print("other's syst_err: {}".format(syst_err0))
+        #             print("other's tot_err: {}".format(tot_err0))
+                   
 
-        #         for i in range(w.histo_sys_err.GetNbinsX()):
-        #             err0 = w.histo_sys_err.GetBinError(i)
-        #             add_err2 = sum(h.histo_sys_err.GetBinError(i)**2 for h in other_bkgs)
-        #             new_err = (err0**2 + add_err2) ** 0.5
-        #             w.histo_sys_err.SetBinError(i, 2*new_err)
+        #             add_err2 = sum(h.histo.GetBinError(i)**2 for h in other_bkgs)
+        #             for h in other_bkgs:
+        #                 print("{} tot_err: {} ".format(h.legend,h.histo.GetBinError(i)))
+        #             new_err = (tot_err0 * 100)
+        #             print("bkg tot_err stack in other: {}".format(new_err))
+
+
+        #             w.histo.SetBinError(i,new_err)
+                    
+
+
+
+        #         # for i in range(w.histo_sys_err.GetNbinsX()):
+        #         #     err0 = w.histo_sys_err.GetBinError(i)
+        #         #     add_err2 = sum(h.histo_sys_err.GetBinError(i)**2 for h in other_bkgs)
+        #         #     new_err = (err0**2 + add_err2) ** 0.5
+        #         #     w.histo_sys_err.SetBinError(i, 2*new_err)
 
         #         print("[INFO] Added {} background samples' syst errors into DY-Jets-#tau#tau.".format(len(other_bkgs)))
 
@@ -1038,7 +1104,7 @@ def additional_input_hook(wrps):
 
 
     print("\n===== PHASE 1: Processing non-DY samples =====")
-    non_dytt_wrps = [w for w in wrps if w.sample != '111']
+    non_dytt_wrps = [w for w in wrps if w.sample != 'other1']
     for w in non_dytt_wrps:
         w = add_syst(w, wrps)
         #check 
@@ -1047,8 +1113,8 @@ def additional_input_hook(wrps):
             "Set" if hasattr(w, 'histo_sys_err') else "Not Set"
         ))
 
-    print("\n===== PHASE 2: Processing DY-Jets-tt samples =====")
-    # dytt_wrps = [w for w in wrps if w.sample == 'DY-Jets-tt']
+    # print("\n===== PHASE 2: Processing DY-Jets-tt samples =====")
+    # dytt_wrps = [w for w in wrps if w.sample == 'other']
     # for w in dytt_wrps:
     #     w = add_syst(w, wrps)
 
@@ -1198,6 +1264,3 @@ def additional_input_hook(wrps):
     # for w in wrps:
     #     w.y_bounds = (1, 10e5)
     return wrps
-
-
-
